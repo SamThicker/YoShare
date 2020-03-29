@@ -102,9 +102,6 @@ export default {
   background-color: #fff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   z-index: 100;
-  border: 0 solid #f0f0f0;
-  border-bottom-width: 1px;
-  margin-bottom: 10px;
   box-sizing: border-box;
 }
 

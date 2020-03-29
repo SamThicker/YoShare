@@ -1,5 +1,10 @@
 <template>
   <div class="header-menu">
+    <div class="nav">
+      <a @click="selectTab('group')">小组</a>
+      <a @click="selectTab('follow')">关注</a>
+      <a @click="selectTab('notice')">消息</a>
+    </div>
     <div class="login-register" v-if="!checkLogedIn()">
       <div class="login-btn" @click="toLogin()">
         登录/注册
@@ -11,17 +16,12 @@
       @mouseleave="show = false"
       v-if="checkLogedIn()"
     >
+      <!--用户头像-->
       <a class="avatar">
-        <el-avatar class="user-icon" :size="size" :src="icon"></el-avatar>
+        <img :src="icon" />
       </a>
       <transition name="el-fade-in">
         <ul v-show="show" class="dropdown-menu">
-          <li class="menu-item">
-            <a href="#/userHome">
-              <i class="el-icon-s-home menu-icon"></i>
-              <span>我的主页</span>
-            </a>
-          </li>
           <li class="menu-item">
             <a href="#/userInfo/simpleInfo">
               <i class="el-icon-user-solid menu-icon"></i>
@@ -37,34 +37,26 @@
         </ul>
       </transition>
     </div>
-    <div class="create-btn-wrapper">
-      <el-button
-        class="create-btn"
-        type="primary"
-        icon="el-icon-edit"
-        circle
-        @click="toWorkBench()"
-      ></el-button>
-    </div>
-    <div class="resource-btn-wrapper">
-      <el-button
-        class="resource-btn"
-        type="primary"
-        icon="el-icon-upload"
-        circle
-        @click="toResource()"
-      >
-      </el-button>
-    </div>
-    <div class="home-btn-wrapper">
-      <el-button
-        class="home-btn"
-        type="primary"
-        icon="el-icon-s-home"
-        circle
-        @click="toHome()"
-      >
-      </el-button>
+    <div class="func-btn">
+      <div class="btn-wrapper">
+        <el-button
+          class="create-btn"
+          type="primary"
+          icon="el-icon-edit"
+          circle
+          @click="toWorkBench()"
+        ></el-button>
+      </div>
+      <div class="btn-wrapper">
+        <el-button
+          class="home-btn"
+          type="primary"
+          icon="el-icon-collection"
+          circle
+          @click="toResource()"
+        >
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -84,6 +76,12 @@ export default {
         icon = "http://localhost" + icon;
       }
       return icon;
+    },
+    path: function(val) {
+      if (val === "/") {
+        this.$router.push("/group");
+      }
+      this.initialTab();
     }
   },
   computed: {
@@ -100,7 +98,10 @@ export default {
       account: state => state.user.account,
       token: state => state.user.token,
       info: state => state.user.info
-    })
+    }),
+    path: function() {
+      return this.$route.path;
+    }
   },
   data() {
     return {
@@ -129,17 +130,36 @@ export default {
       this.$router.push("/loginPage");
     },
     toWorkBench() {
-      this.$router.push("/workBench");
+      let userId = this.$store.state.user.info.id;
+      this.$router.push("/workBench/" + userId);
     },
     toResource() {
+      console.info("aa")
       this.$router.push("/resource");
     },
-    toHome() {
-      this.$router.push("/");
+    selectTab(option) {
+      let tab = ["group", "follow", "notice"];
+      let els = document.getElementsByClassName("nav").item(0).children;
+      tab.forEach((val, index) => {
+        els[index].classList.remove("selected");
+        if (val === option) {
+          els[index].classList.add("selected");
+        }
+      });
+      if (this.$route.path === "/" + option) return;
+      this.$router.push("/" + option);
+    },
+    initialTab() {
+      let option = this.$route.path.split("/");
+      let tab = ["group", "follow", "notice"];
+      option = option[option.length - 1];
+      if (tab.indexOf(option) < 0) return;
+      this.selectTab(option);
     }
   },
   mounted() {
     document.addEventListener("scroll", this.scrollListener);
+    this.initialTab();
   }
 };
 </script>
@@ -150,13 +170,54 @@ export default {
   height: 100%;
 }
 
-.create-btn-wrapper,
-.resource-btn-wrapper,
-.home-btn-wrapper {
+.nav {
+  width: auto;
+  height: 100%;
+  margin-left: 100px;
+  line-height: 100%;
+  display: flex;
+  float: left;
+}
+
+.nav a {
+  line-height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 17px;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+  font-weight: bold;
+}
+
+.nav a:hover {
+  background-color: #f5f5f5;
+  color: #7bb6fb;
+}
+
+.nav a.selected {
+  color: #4594fa;
+}
+
+.func-btn {
+  position: relative;
+  width: 180px;
+  height: 58px;
+  float: right;
+  top: 50%;
+  transform: translate3d(0, -50%, 0);
+}
+
+.btn-wrapper {
   position: relative;
   width: 60px;
   height: 100%;
   float: right;
+}
+
+.btn-wrapper:hover {
+  background-color: #f5f5f5;
 }
 
 .create-btn,
@@ -182,7 +243,6 @@ export default {
   height: 40px;
   line-height: 40px;
   text-align: center;
-  border: 1px solid #ddd;
   font-family: "Microsoft YaHei";
   font-size: 16px;
   color: #fff;
@@ -196,11 +256,10 @@ export default {
 .user {
   display: inline-block;
   height: 100%;
-  width: 95px;
-  padding-right: 30px;
+  width: 75px;
+  margin-right: 10px;
   position: relative;
   float: right;
-  cursor: pointer;
 }
 
 .user:hover {
@@ -209,32 +268,33 @@ export default {
 
 .avatar {
   position: relative;
+  top: 50%;
   width: 40px;
   height: 40px;
-  margin: 8px 24px 8px 16px;
+  transform: translate3d(0, -50%, 0);
+  display: block;
+  cursor: pointer;
+  left: 12px;
 }
+
+.avatar img {
+  position: relative;
+  object-fit: cover;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+}
+
 .avatar:before {
   content: "";
   position: absolute;
-  top: 25px;
-  left: 18px;
+  right: -15px;
+  top: 50%;
+  transform: translate3d(0, -50%, 0);
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 6px solid #999;
-  display: block;
-}
-
-.user-icon {
-  height: 40px;
-  width: 40px;
-  box-sizing: border-box;
-  border-radius: 50%;
-  border: 1px solid #ddd;
-  vertical-align: center;
-  position: relative;
-  float: right;
-  top: 50%;
-  transform: translate3d(0, -50%, 0);
 }
 
 .dropdown-menu {
@@ -244,8 +304,8 @@ export default {
   position: absolute;
   box-sizing: border-box;
   z-index: 1000;
+  right: 0;
   top: 56px;
-  right: 10px;
   width: 140px;
   background-color: #fff;
   margin-top: 0;

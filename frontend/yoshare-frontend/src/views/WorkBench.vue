@@ -1,89 +1,191 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <div>
+  <!--  workbench  -->
+  <div class="workbench">
+    <!--  菜单  -->
     <div class="workbench-menu">
-      <div class="editor-switcher">
-        <div class="switcher-label-wrapper">
-          <span class="switcher-label">QL</span>
-          <span class="switcher-label">MD</span>
+      <div class="back-link" @click="backHome()">
+        <i class="el-icon-arrow-left"></i>
+        <span class="back-link-label">回首页</span>
+      </div>
+      <el-input
+        class="title"
+        placeholder="请输入标题"
+        v-model="title"
+      ></el-input>
+      <div class="note-edit">
+        <div class="setting-btn" @click.stop="showSettingBar">
+          <i class="el-icon-setting"></i>
         </div>
-        <el-switch
-          class="switcher-btn"
-          v-model="style"
-          active-color="#13ce66"
-          inactive-color="#ff4949"
+        <el-button
+          type="primary"
+          class="btn-save"
+          @click.stop="showSaveOption()"
+          >保存</el-button
         >
-        </el-switch>
+        <el-button type="primary" class="btn-publish">发布</el-button>
+      </div>
+
+      <!-- 设置面板 -->
+      <transition name="el-fade-in">
+        <div class="setting-bar" v-show="settingBar">
+          <div class="editor-switcher setting-option">
+            <span class="setting-label">编辑器</span>
+            <div class="switcher-label-wrapper">
+              <span class="switcher-label">Q M</span>
+            </div>
+            <el-switch
+              v-bind:disabled="!!content"
+              class="switcher-btn"
+              v-model="style"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+            >
+            </el-switch>
+          </div>
+          <div class="editor-switcher setting-option">
+            <span class="setting-label">时光机</span>
+            <div class="switcher-label-wrapper">
+              <span class="switcher-label">隐 显</span>
+            </div>
+            <el-switch
+              class="switcher-btn"
+              v-model="timeline"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+            >
+            </el-switch>
+          </div>
+        </div>
+      </transition>
+    </div>
+
+    <!-- 内容 -->
+    <div class="workbench-content">
+      <!--时光机-->
+      <transition name="el-fade-in">
+        <div class="timeline" v-show="timeline">
+          <TimeLine
+            :call-back="timeLineCallback"
+            :items="items"
+            :end-item="endItem"
+          ></TimeLine>
+        </div>
+      </transition>
+
+      <!-- 编辑器面板 -->
+      <div class="editor-panel">
+        <Editor
+          v-if="!style"
+          v-model="content"
+          ref="myQuillEditor"
+          :options="editorOption"
+          @blur="onEditorBlur($event)"
+          @focus="onEditorFocus($event)"
+          @change="onEditorChange($event)"
+          :container-height="quillContainerHeight"
+        ></Editor>
+        <MarkdownEditor
+          v-else
+          :container-height="mdContainerHeight"
+          v-model="content"
+          :editable="markdownEditable"
+        ></MarkdownEditor>
       </div>
     </div>
 
-    <div style="width: 100%; text-align: left">标题</div>
-    <el-input></el-input>
-    <div style="width: 100%; text-align: left">内容</div>
-    <div style="height: 25px; width: 100%"></div>
-
-    <div class="sidebar">
-      <TimeLine
-        :call-back="timeLineCallback"
-        :items="items"
-        :end-item="endItem"
-      ></TimeLine>
-    </div>
-
-    <div class="content">
-      <Editor
-        v-if="style"
-        v-model="content"
-        ref="myQuillEditor"
-        :options="editorOption"
-        @blur="onEditorBlur($event)"
-        @focus="onEditorFocus($event)"
-        @change="onEditorChange($event)"
-      ></Editor>
-
-      <MarkdownEditor v-if="!style"></MarkdownEditor>
+    <!--保存选项-->
+    <div class="save-option-panel" v-show="saveOption">
+      <div class="save-option-bar">
+        <div class="save-option-bar-close-btn" @click="saveOption = false">
+          &#215;
+        </div>
+        <div>
+          <label>标记</label>
+          <el-input v-model="currentTag"></el-input>
+        </div>
+        <div
+          style="text-align: left; margin-top: 15px; color:#a2adc1; font-size: 13px"
+        >
+          "标记"是指在时光机的时间线上的文字，可用于方便的检索笔记的历史记录。
+        </div>
+        <div class="btn-do-save">
+          <el-button type="primary" @click="saveNote">确定</el-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import MarkdownEditor from "../components/MarkdownEditor";
 import TimeLine from "../components/TimeLine";
+import { getNoteForSelf, saveNote } from "../api/note";
 export default {
   name: "WorkBench",
-  components: { TimeLine, MarkdownEditor },
+  watch: {
+    content: function() {
+      this.refreshContainerHeight();
+    },
+    $route: function() {
+      this.getParams();
+      this.getNote();
+    },
+    currentNote: function() {
+      this.setData();
+    }
+  },
+  components: { TimeLine },
   mounted() {
-    this.timeLineCallback = function(index, content) {
-      console.info("index:" + index + "\n" + "content:" + content);
+    let _this = this;
+    this.timeLineCallback = function(id) {
+      _this.timeLineItemClick(id);
     };
+    this.refreshContainerHeight();
+    window.onresize = () => {
+      //只要窗口高度发生变化，就会进入这里面
+      this.refreshContainerHeight();
+    };
+    this.getParams();
+    this.getNote();
+    this.setData();
+  },
+  destroyed() {
+    window.onresize = null;
+    document.removeEventListener("click", this.clickListener);
   },
   data() {
     return {
-      content: null,
+      title: "",
+      content: "",
+      editingBackup: "",
       editorOption: {},
       style: true,
       timeLineCallback: null,
-      items: [
-        {
-          index: "2020-8-14 13:20:30",
-          content: "开始毕设。。"
-        },
-        { index: "2020-8-15 13:20:30", content: "写前端。。" },
-        {
-          index: "2020-8-16 13:20:30",
-          content: "还在写前端。。"
-        },
-        {
-          index: "2020-8-17 13:20:30",
-          content: "仍在写前端。。"
-        },
-        { index: "2020-8-18 13:20:30", content: "不想写前端。。" },
-        { index: "2020-8-19 13:20:30", content: "还得写前端。。。。。" }
-      ],
+      items: [],
       endItem: {
-        index: "2020-8-20 13:20:30",
-        content: "正在写前端。。。。"
-      }
+        index: this.getCurrentTime(),
+        content: "正在编辑...",
+        id: null
+      },
+      settingBar: false,
+      timeline: true,
+      quillContainerHeight: 0,
+      mdContainerHeight: 0,
+      currentNote: null,
+      userId: null,
+      noteId: null,
+      saveOption: false,
+      editing: true,
+      markdownEditable: true
     };
+  },
+  computed: {
+    currentTime: function() {
+      return this.getCurrentTime();
+    },
+    currentTag: function() {
+      if (this.noteId) return "更改";
+      return "新建";
+    }
   },
   methods: {
     onEditorBlur() {
@@ -94,64 +196,345 @@ export default {
     },
     onEditorChange() {
       //内容改变事件
+    },
+    getCurrentTime() {
+      let date = new Date();
+      return (
+        date.getFullYear() +
+        "-" +
+        date.getMonth() +
+        1 +
+        "-" +
+        date.getDate() +
+        " " +
+        date.getHours() +
+        ":" +
+        date.getMinutes() +
+        ":" +
+        date.getSeconds()
+      );
+    },
+    backHome() {
+      this.$router.push("/");
+    },
+    showSettingBar() {
+      this.settingBar = !this.settingBar;
+      if (this.settingBar) {
+        document.addEventListener("click", this.clickListener);
+      } else {
+        document.removeEventListener("click", this.clickListener);
+      }
+    },
+    clickListener(e) {
+      let box = document.getElementsByClassName("setting-bar")[0];
+      if (box.contains(e.target)) return;
+      this.settingBar = false;
+      document.removeEventListener("click", this.clickListener);
+    },
+    refreshContainerHeight() {
+      if (!this.style) {
+        this.quillContainerHeight =
+          document.documentElement.offsetHeight -
+          document.querySelector(".ql-toolbar.ql-snow").offsetHeight -
+          document.querySelector(".workbench-menu").offsetHeight;
+      } else {
+        this.mdContainerHeight =
+          document.documentElement.offsetHeight -
+          document.querySelector(".v-note-op").offsetHeight -
+          document.querySelector(".workbench-menu").offsetHeight;
+      }
+    },
+    getParams() {
+      this.userId = this.$route.params.userId;
+      this.noteId = this.$route.params.noteId;
+    },
+    getNote() {
+      let _this = this;
+      if (!this.userId || !this.noteId) return;
+      getNoteForSelf(this.userId, this.noteId)
+        .then(function(res) {
+          _this.currentNote = res.data;
+        })
+        .catch(function(err) {
+          console.info("err:" + err);
+        });
+    },
+    setData() {
+      if (!this.currentNote) return;
+      let lastIndex = this.currentNote.contents.length - 1;
+      this.content = this.currentNote.contents[lastIndex].content;
+      this.editingBackup = this.content;
+      this.title = this.currentNote.title;
+      let items = [];
+      for (let content of this.currentNote.contents) {
+        let item = {
+          id: content.id,
+          index: content.time,
+          content: content.tag
+        };
+        items.push(item);
+      }
+      this.items = null;
+      this.items = items;
+    },
+    //保存笔记，如果是新的笔记则新建笔记
+    saveNote() {
+      this.saveOption = false;
+      let content = {
+        content: this.content,
+        editor: this.type ? "Quill" : "Mavon",
+        tag: this.currentTag
+      };
+      let data = {
+        id: this.noteId,
+        title: this.title,
+        contents: [content],
+        by: this.userId
+      };
+      let _this = this;
+      saveNote(this.userId, data)
+        .then(function(res) {
+          if (!_this.$route.params.noteId) {
+            let id = res.data.id;
+            _this.$router.push("/workBench/" + _this.userId + "/" + id);
+          }
+          _this.getNote();
+          _this.setData();
+        })
+        .catch(function(err) {
+          console.info("er:" + err);
+        });
+    },
+    //显示保存选项
+    showSaveOption() {
+      this.timeLineItemClick(null);
+      this.saveOption = true;
+      document.addEventListener("click", this.saveOptionBarListener);
+    },
+    saveOptionBarListener(e) {
+      let el = document.querySelector(".save-option-bar");
+      if (el.contains(e.target)) return;
+      this.saveOption = false;
+      document.removeEventListener("click", this.saveOptionBarListener);
+    },
+    //点击时间线更改内容
+    timeLineItemClick(id) {
+      if (id) {
+        this.markdownEditable = false;
+        //如果当前是编辑状态，则保存内容
+        if (this.editing) {
+          this.editingBackup = this.content;
+          this.editing = false;
+        }
+        let contents = this.currentNote.contents.filter(
+          content => content.id === id
+        );
+        this.content = contents[contents.length - 1].content;
+        return;
+      }
+      this.content = this.editingBackup;
+      this.editing = true;
+      this.markdownEditable = true;
     }
   }
 };
 </script>
 
 <style>
+html body {
+  height: 100%;
+}
+
+/*总体*/
+.workbench {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/*菜单*/
 .workbench-menu {
   width: 100%;
   height: 58px;
   border: 0 solid #f0f0f0;
   border-bottom-width: 1px;
+  background-color: #f0f0f0;
+  overflow: hidden;
+  display: flex;
 }
 
-.sidebar {
+/*返回链接*/
+.back-link {
+  width: 100px;
+  height: 100%;
+  position: relative;
+  float: left;
+  color: #7bb6fb;
+  cursor: pointer;
+}
+
+/*箭头*/
+.el-icon-arrow-left {
+  line-height: 58px;
+  height: 25px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.back-link-label {
+  line-height: 58px;
+  font-size: 18px;
+}
+
+/*标题*/
+.title {
+  line-height: 58px;
+  font-size: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  flex: 1;
+}
+
+/*笔记编辑菜单*/
+.note-edit {
+  position: relative;
+  float: right;
+  height: 100%;
+  width: auto;
+}
+
+/*保存、发布*/
+.btn-save,
+.btn-publish {
+  top: 8px;
+  position: relative;
+  float: right;
+  margin-right: 20px;
+}
+
+/*设置相关*/
+.setting-btn {
+  position: relative;
+  width: 50px;
+  height: 100%;
+  display: inline-block;
+  float: right;
+  right: 10px;
+  cursor: pointer;
+}
+
+.el-icon-setting {
+  font-size: 30px;
+  line-height: 58px;
+  height: 30px;
+  color: #7bb6fb;
+}
+
+.setting-bar {
+  position: absolute;
+  z-index: 9999;
+  top: 58px;
+  right: 10px;
+  height: auto;
+  width: auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 3px 5px 3px 0 #c1c1c1;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 172px;
+}
+
+.setting-label {
+  font-size: 10px;
+}
+
+.editor-switcher,
+.setting-option {
+  width: 75px;
+  height: 75px;
+  border-radius: 5px;
+}
+
+.setting-option:hover {
+  background-color: #d1e7fe;
+}
+
+/*内容面板*/
+.workbench-content {
+  display: flex;
+  flex: auto;
+}
+
+.timeline {
   width: 180px;
   height: 100%;
   position: relative;
   float: left;
+  box-sizing: border-box;
+  display: flex;
 }
 
-.content {
-  width: calc(100% - 180px);
+.editor-panel {
+  width: 100%;
+  display: flex;
   height: 100%;
   position: relative;
   float: left;
+  flex: 1;
+  min-width: 0;
+  margin: auto;
+  overflow: hidden;
 }
 
-.editor-switcher {
-  width: 75px;
+.save-option-panel {
+  position: absolute;
+  z-index: 10000;
+  width: 100%;
   height: 100%;
-  float: right;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
-.switcher-label-wrapper {
+.save-option-bar {
   position: relative;
-  float: left;
-  width: 35px;
-  height: 56px;
-  text-align: right;
+  height: 250px;
+  width: 400px;
   top: 50%;
-  transform: translate3d(0, -50%, 0);
-  padding: 5px 0;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 1px 4px 10px 2px #ccc;
+  -webkit-box-shadow: 1px 4px 10px 2px #ccc;
+  padding: 20px;
   box-sizing: border-box;
 }
 
-.switcher-label {
-  width: 100%;
+.save-option-bar-close-btn {
+  position: absolute;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 18px;
+  width: 20px;
   height: 20px;
-  line-height: 28px;
-  float: right;
-  font-size: 18px;
-  font-family: "monospace";
+  top: -10px;
+  right: -10px;
+  box-sizing: border-box;
+  border-radius: 100%;
+  background-color: #eee;
+  border: 1px solid #fff;
+  cursor: pointer;
 }
 
-.switcher-btn {
-  transform: translate3d(0, -50%, 0) rotate3d(0, 0, 1, 90deg);
-  float: right;
-  top: 50%;
+.btn-do-save {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  width: 100px;
+  height: 50px;
 }
 
 body {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="editor editor-body quill-editor-wrapper">
     <!-- 图片上传组件辅助 -->
     <el-upload
       accept="image/jpeg,image/gif,image/png"
@@ -54,7 +54,7 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import "highlight.js/styles/idea.css";
 import hljs from "highlight.js";
-import { getUploadUrl, uploadFile } from "../api/resource";
+import { getUploadUrl, uploadFile } from "../api/file";
 
 export default {
   props: {
@@ -66,7 +66,8 @@ export default {
     maxSize: {
       type: Number,
       default: 5000 //kb
-    }
+    },
+    containerHeight: Number
   },
 
   mounted() {
@@ -76,7 +77,15 @@ export default {
   components: {
     quillEditor
   },
-
+  computed: {},
+  watch: {
+    containerHeight: function(val) {
+      document.querySelector(".ql-editor").style.height = val + "px";
+    },
+    value: function(val) {
+      this.content = val;
+    }
+  },
   data() {
     return {
       content: this.value,
@@ -158,7 +167,7 @@ export default {
       // 如果上传成功
       if (res.status === 200) {
         // 获取图片地址
-        let url = "http://localhost:9000" + res.config.url;
+        let url = "http://localhost:" + res.config.url;
         url = url.replace(url.match("\\?.*"), "");
         let image = {
           index: this.imageNum,
@@ -188,10 +197,7 @@ export default {
       let _this = this;
       getUploadUrl(content.file.name)
         .then(function(res) {
-          let headers = {
-            "Content-Type": content.file.type
-          };
-          uploadFile(res.data, content.file, headers).then(function(res) {
+          uploadFile(res.data, content.file).then(function(res) {
             _this.uploadSuccess(res);
           });
         })
@@ -210,10 +216,47 @@ code {
   font-family: Consolas;
 }
 
-.editor {
-  line-height: normal !important;
-  height: 800px;
+.quill-editor-wrapper {
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 12px 0;
+  height: 100%;
 }
+
+.editor-body {
+  -webkit-text-size-adjust: 100%;
+  /*line-height: 1.5;*/
+  color: #24292e;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+  word-wrap: break-word;
+  line-height: normal !important;
+  height: 100%;
+  width: 100%;
+}
+
+.ql-container.ql-snow {
+  height: 100% !important;
+}
+
+.ql-editor.ql-blank {
+  overflow-y: scroll;
+}
+
+.ql-container.ql-snow {
+  box-sizing: border-box;
+  height: calc(100% - 65px);
+}
+
+.ql-editor.ql-blank,
+.ql-container.ql-snow,
+.ql-toolbar.ql-snow {
+  border: none;
+}
+
+.ql-toolbar.ql-snow {
+  border-bottom: 1px solid #eff4fc;
+}
+
 .ql-snow .ql-tooltip[data-mode="link"]::before {
   content: "请输入链接地址:";
 }

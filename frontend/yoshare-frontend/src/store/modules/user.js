@@ -1,5 +1,6 @@
 import { login, getInfoByToken } from "@/api/user";
 import { getToken, setToken, removeToken } from "../../../static/utils/auth";
+import { getOwnGroupsByUserId } from "../../api/group";
 
 const user = {
   state: {
@@ -18,7 +19,10 @@ const user = {
       introduction: "",
       location: "",
       registeredTime: ""
-    }
+    },
+    ownGroups: [],
+    joinGroups: [],
+    allGroups: new Set()
   },
 
   mutations: {
@@ -39,6 +43,15 @@ const user = {
     },
     SET_INFO: (state, info) => {
       state.info = info;
+    },
+    SET_OWNGROUPS: (state, groups) => {
+      state.ownGroups = groups;
+    },
+    SET_JOINGROUPS: (state, groups) => {
+      state.joinGroups = groups;
+    },
+    SET_ALLGROUPS: (state, groups) => {
+      state.allGroups = groups;
     }
   },
 
@@ -107,6 +120,20 @@ const user = {
         commit("SET_ACCOUNT", "");
         removeToken();
         resolve();
+      });
+    },
+    getOwnGroups({ commit }, userId) {
+      return new Promise((resolve, reject) => {
+        getOwnGroupsByUserId(userId)
+          .then(function(res) {
+            commit("SET_OWNGROUPS", res.data);
+            commit("SET_ALLGROUPS", res.data);
+            resolve();
+          })
+          .catch(function(err) {
+            console.info("err:" + err);
+            reject();
+          });
       });
     }
   }

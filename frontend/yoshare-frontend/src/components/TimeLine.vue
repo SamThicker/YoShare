@@ -1,19 +1,21 @@
 <template>
-  <div class="time-line animation">
+  <div class="time-line">
     <div
       class="item"
       v-for="(item, index) in items"
       :key="index"
-      @click="onClick(item.index, item.content)"
+      @click="onClick(item.id, item.index, item.content)"
     >
-      <div class="item-index animation">{{ item.index }}</div>
+      <div class="item-index">{{ item.index }}</div>
       <div class="item-content">{{ item.content }}</div>
     </div>
     <div
-      class="item-tail animation"
-      @click="endItem ? onClick(endItem.index, endItem.content) : null"
+      class="item-tail"
+      @click="
+        endItem ? onClick(endItem.id, endItem.index, endItem.content) : null
+      "
     >
-      <div class="item-index animation">
+      <div class="item-index">
         {{ endItem ? endItem.index : "Current" }}
       </div>
       <div class="item-content">
@@ -35,9 +37,9 @@ export default {
     return {};
   },
   methods: {
-    onClick(index, content) {
+    onClick(id, index, content) {
       if (this.callBack) {
-        this.callBack(index, content);
+        this.callBack(id, index, content);
       }
     }
   },
@@ -46,6 +48,14 @@ export default {
 </script>
 
 <style scoped>
+.time-line {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 15px;
+}
+
 .item,
 .item-tail {
   width: calc(100% - 30px);
@@ -103,15 +113,12 @@ export default {
 }
 
 .item-content {
+  font-size: 14px;
   width: 100%;
   height: auto;
   position: relative;
   text-align: left;
   white-space: pre-wrap;
   word-wrap: break-word;
-}
-
-.animation {
-  transition: 0.3s cubic-bezier(0.37, 1.44, 0.57, 0.77);
 }
 </style>

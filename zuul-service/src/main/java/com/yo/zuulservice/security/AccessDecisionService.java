@@ -26,7 +26,6 @@ public class AccessDecisionService {
     private List<String> personalRestUrl = new ArrayList<>();
 
     public boolean hasPermission(HttpServletRequest request, Authentication auth) {
-
         //Adapter已经过滤了可匿名访问的路径，余下的所有路劲需要进行过滤
         //auth是AnonymousAuthenticationToken子类，说明当前用户未登录，对该请求进行拦截
         if (auth instanceof AnonymousAuthenticationToken) {
@@ -64,6 +63,7 @@ public class AccessDecisionService {
         for (String temp : this.personalRestUrl){
             list.add( temp.replace("{id}",id) );
         }
+        System.out.println(list);
         return list;
     }
 

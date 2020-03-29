@@ -110,6 +110,7 @@ export default {
         location: this.infoContainer.location
       };
       let _this = this;
+      console.info("id:" + this.infoContainer.id);
       updateInfo(this.infoContainer.id, info)
         .then(function(res) {
           _this.$elementMessage(res.message, "success", 3000);
@@ -118,6 +119,7 @@ export default {
         })
         .catch(function(err) {
           _this.$elementMessage(err.message, "error", 3000);
+          console.info("err:" + err);
           Promise.reject(err);
         });
     },
@@ -150,5 +152,9 @@ export default {
 }
 .el-radio-group.info-gender {
   width: 100%;
+}
+
+.user-icon {
+  object-fit: cover;
 }
 </style>

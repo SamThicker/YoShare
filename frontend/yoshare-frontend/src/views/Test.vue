@@ -1,5 +1,8 @@
 <template>
-  <div>123</div>
+  <div>
+    123<router-link to="groupPanel">1</router-link>
+    <router-view />
+  </div>
 </template>
 
 <script>
