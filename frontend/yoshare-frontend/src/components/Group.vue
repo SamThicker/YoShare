@@ -125,8 +125,6 @@ export default {
     },
     createGroup() {
       this.refreshOwnGroups();
-      let a = null;
-      if (a) return;
       if (this.ownGroups.length >= 3) {
         this.$elementMessage("每人只能创建3个小组", "error", 1500);
         this.createBar = false;

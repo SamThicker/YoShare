@@ -42,5 +42,10 @@ public class GroupController {
         return groupService.getAvatarUploadUrl(id, groupId, type);
     }
 
+    @GetMapping(value = "/{id}/allGroups")
+    public CommonResult getMemberAllGroup(@PathVariable(value = "id") Long id){
+        return CommonResult.success(groupService.getMemberGroups(id),"操作成功");
+    }
+
 
 }

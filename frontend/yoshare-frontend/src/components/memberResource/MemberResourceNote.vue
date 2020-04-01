@@ -1,7 +1,7 @@
 <template>
   <div class="category-note-wrap" v-loading="deleteLoading">
     <resource-panel
-      class="resource-note"
+      class="resource-panel"
       :resources="resources"
       :previewItemClickCallback="noteItemClicked"
       :itemStarCallback="itemStarClicked"
@@ -108,7 +108,7 @@ export default {
   display: -webkit-box;
 }
 
-.resource-note {
+.resource-panel {
   width: 500px;
   height: 100%;
 }

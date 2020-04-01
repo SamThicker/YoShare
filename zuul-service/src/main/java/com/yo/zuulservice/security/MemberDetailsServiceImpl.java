@@ -5,10 +5,8 @@ import com.yo.yoshare.mbg.model.UmsMemberSecurity;
 import com.yo.yoshare.mbg.model.UmsMemberSecurityExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @Component
 public class MemberDetailsServiceImpl implements MemberDetailsService {

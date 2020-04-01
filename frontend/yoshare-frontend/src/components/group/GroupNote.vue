@@ -1,27 +1,46 @@
 <template>
-  <div class="group-category-note-wrap">
-    <resource-panel></resource-panel>
-    <group-note-reading>
-      <div class="note-content" v-loading="noteLoading">
-        <router-view/>
-      </div>
-    </group-note-reading>
+  <div class="group-resource-note-wrap">
+    <resource-panel
+      class="resource-panel"
+    ></resource-panel>
+    <div class="note-content" v-loading="noteLoading">
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script>
 import ResourcePanel from "@/components/ResourcePanel";
-import GroupNoteReading from "./GroupNoteReading";
 export default {
-  name: "Note",
-  components: { GroupNoteReading, ResourcePanel }
+  name: "GroupNote",
+  components: { ResourcePanel },
+  data() {
+    return {
+      noteLoading: false
+    };
+  }
 };
 </script>
 
 <style scoped>
-.group-category-note-wrap {
+.group-resource-note-wrap {
   width: 100%;
   height: 100%;
   position: relative;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+}
+
+.resource-panel {
+  width: 500px;
+  height: 100%;
+}
+
+.note-content {
+  height: 100%;
+  flex: 1;
+  width: 100%;
+  border: 1px solid #eee;
+  box-sizing: border-box;
 }
 </style>

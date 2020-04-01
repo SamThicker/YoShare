@@ -61,7 +61,7 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
         //配置需要对应用户权限的restFul url
         accessDecisionService.setPersonalRestUrl("/member/{id}/icon","/member/{id}/info","/member/{id}/avatarUploadUrl",
                 "/note/addNote/{id}","/note/getNotes/{id}","/note/updateNote/{id}","/note/ownNote/{id}/*",
-                "/group/{id}/group", "/group/{id}/createdGroups","/{id}/*/avatarUploadUrl",
+                "/group/{id}/group", "/group/{id}/createdGroups","/group/{id}/*/avatarUploadUrl","/group/{id}/allGroups",
                 "/resource/{id}/ownResource",
                 "/file/blogFilePutUrl/{id}/*"
         );

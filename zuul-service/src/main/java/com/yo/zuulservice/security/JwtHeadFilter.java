@@ -1,13 +1,10 @@
 package com.yo.zuulservice.security;
 
 import com.alibaba.fastjson.JSON;
-import com.yo.yoshare.mbg.mapper.UmsMemberSecurityMapper;
 import com.yo.yoshare.mbg.model.UmsMemberSecurity;
 import com.yo.yoshare.mbg.model.UmsMemberSecurityExample;
-import com.yo.zuulservice.bo.MemberDetails;
 import com.yo.zuulservice.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.jwt.Jwt;
@@ -21,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**拦截请求进行token验证
  * @author niXueChao

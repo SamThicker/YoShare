@@ -1,12 +1,16 @@
 package com.yo.groupservice.service.groupServiceImpl;
 
+import com.yo.groupservice.dao.GmsGroupDao;
 import com.yo.groupservice.exception.GlobalException;
 import com.yo.groupservice.feign.FileService;
 import com.yo.groupservice.service.GroupService;
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.mbg.mapper.GmsGroupMapper;
 import com.yo.yoshare.mbg.mapper.GmsGroupMemberRelationshipMapper;
-import com.yo.yoshare.mbg.model.*;
+import com.yo.yoshare.mbg.model.GmsGroup;
+import com.yo.yoshare.mbg.model.GmsGroupExample;
+import com.yo.yoshare.mbg.model.GmsGroupMemberRelationship;
+import com.yo.yoshare.mbg.model.GmsGroupMemberRelationshipExample;
 import io.minio.errors.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,8 @@ public class GroupServiceImpl implements GroupService {
     private final int MAX_CREATE_NUM = 3;
     @Autowired(required = false)
     private FileService fileService;
+    @Autowired(required = false)
+    private GmsGroupDao groupDao;
 
     @Override
     public CommonResult createGroup(String id, GmsGroup group) throws GlobalException.GroupTooMuchException {
@@ -37,19 +43,20 @@ public class GroupServiceImpl implements GroupService {
         if (list == null || list.size() >= MAX_CREATE_NUM){
            throw new GlobalException.GroupTooMuchException("每个用户只能创建3个小组");
         }
-        GmsGroup result;
         group.setMemberNum(1);
         group.setCreatedTime(new Date());
         group.setCreatedBy(id);
-        result = groupMapper.selectByPrimaryKey(group.getId());
+        //插入记录并返回id
+        groupMapper.insertSelective(group);
         Long groupId = group.getId();
+        //添加用户与小组的关联记录
         GmsGroupMemberRelationship relationship = new GmsGroupMemberRelationship();
         relationship.setGroupId(groupId);
         relationship.setJoinedTime(new Date());
         relationship.setMemberId(Long.parseLong(id));
         relationship.setUpdatedTime(new Date());
         memberRelationshipMapper.insertSelective(relationship);
-        return CommonResult.success(result, "操作成功");
+        return CommonResult.success(group, "操作成功");
     }
 
     @Override
@@ -70,5 +77,10 @@ public class GroupServiceImpl implements GroupService {
         }
         String fileName = groupId + "_ORIGINAL." + type;
         return fileService.getGroupAvatarUploadUrl("groupAvatar/" + fileName);
+    }
+
+    @Override
+    public List<GmsGroup> getMemberGroups(Long id) {
+        return groupDao.selectMemberGroup(id);
     }
 }

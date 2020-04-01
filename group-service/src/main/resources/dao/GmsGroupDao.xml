@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yo.groupservice.dao.GmsGroupDao">
+    <select id="selectMemberGroup" parameterType="java.lang.Long"
+            resultMap="com.yo.yoshare.mbg.mapper.GmsGroupMapper.BaseResultMap">
+        SELECT
+            *
+        FROM
+            gms_group
+        WHERE
+            gms_group.id
+        IN(
+            SELECT
+                gms_group_member_relationship.group_id
+            FROM
+                gms_group_member_relationship
+            WHERE
+                gms_group_member_relationship.member_id = #{userId}
+        )
+    </select>
+</mapper>
