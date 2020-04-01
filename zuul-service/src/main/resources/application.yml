@@ -1,0 +1,71 @@
+server:
+  port: 9012
+
+spring:
+  application:
+    name: zuul-service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+#配置日志
+logging:
+  #此处存放日志的路径
+  path:
+    config: classpath:config/logback-spring.xml
+  #指定不同目录下的日志的级别
+  level:
+    com.shimain.springboot.mapper: DEBUG
+
+zuul:
+  routes:
+    service-member:
+      path: /member/**
+      serviceId: service-member
+    service-security:
+      path: /security/**
+      serviceId: service-security
+    service-file:
+      path: /file/**
+      serviceId: service-file
+    service-note:
+      path: /note/**
+      serviceId: service-note
+    service-group:
+      path: /group/**
+      serviceId: service-group
+    service-resource:
+      path: /resource/**
+      serviceId: service-resource
+  retryable: true
+  sensitive-headers:
+
+ribbon:
+  ConnectTimeout: 250 # 连接超时时间(ms)
+  ReadTimeout: 2000 # 通信超时时间(ms)
+  OkToRetryOnAllOperations: true # 是否对所有操作重试
+  MaxAutoRetriesNextServer: 2 # 同一服务不同实例的重试次数
+  MaxAutoRetries: 1 # 同一实例的重试次数
+  #ribbon总超时时间为ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) *
+                                #(maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 13500 # 熔断超时时长：13500ms，不能少于ribbon总超时时间
+
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: yoshare-secret #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24)
+  tokenHead: yoshare  #JWT负载中拿到开头
+
+
+
+
+

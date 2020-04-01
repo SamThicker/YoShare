@@ -1,0 +1,20 @@
+server:
+  port: 9011
+
+
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: yoshare-secret #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24)
+  tokenHead: yoshare  #JWT负载中拿到开头
+
+spring:
+  application:
+    name: service-security
+  profiles:
+    active: dev
+
+mybatis:
+  mapper-locations:
+    - classpath:dao/*.xml
+    - classpath*:com/**/mapper/*.xml

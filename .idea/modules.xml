@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/file-service/file-service.iml" filepath="$PROJECT_DIR$/file-service/file-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend/frontend.iml" filepath="$PROJECT_DIR$/frontend/frontend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/group-service/group-service.iml" filepath="$PROJECT_DIR$/group-service/group-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/member-service/member-service.iml" filepath="$PROJECT_DIR$/member-service/member-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/note-service/note-service.iml" filepath="$PROJECT_DIR$/note-service/note-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/notification-service/notification-service.iml" filepath="$PROJECT_DIR$/notification-service/notification-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/resource-service/resource-service.iml" filepath="$PROJECT_DIR$/resource-service/resource-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/security-service/security-service.iml" filepath="$PROJECT_DIR$/security-service/security-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yoshare.iml" filepath="$PROJECT_DIR$/yoshare.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yoshare-common/yoshare-common.iml" filepath="$PROJECT_DIR$/yoshare-common/yoshare-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yoshare-mbg/yoshare-mbg.iml" filepath="$PROJECT_DIR$/yoshare-mbg/yoshare-mbg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zuul-service/zuul-service.iml" filepath="$PROJECT_DIR$/zuul-service/zuul-service.iml" />
+    </modules>
+  </component>
+</project>
