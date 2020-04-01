@@ -32,15 +32,13 @@
       </transition-group>
 
       <!--创建小组-->
-      <transition name="el-fade-in">
-        <div
-          class="group"
-          @click.stop="showCreateBar"
-          v-show="ownGroups.length < 3"
-        >
-          <div class="add">+</div>
-        </div>
-      </transition>
+      <div
+        class="group"
+        @click.stop="showCreateBar"
+        v-show="ownGroups.length < 3"
+      >
+        <div class="add">+</div>
+      </div>
     </div>
 
     <!-- 添加新的小组 -->
@@ -73,7 +71,7 @@
 </template>
 
 <script>
-import { createGroup, getOwnGroupsByUserId } from "../api/group";
+import { createGroup } from "../api/group";
 
 export default {
   name: "Group",
@@ -88,17 +86,32 @@ export default {
     };
   },
   watch: {
-    deep: true
+    deep: true,
+    userOwnGroups: function(val) {
+      this.ownGroups = val;
+    },
+    userId: function() {}
   },
   mounted() {
-    this.getOwnGroups();
-    this.$store.dispatch("getOwnGroups", this.$store.state.user.info.id);
+    this.ownGroups = this.userOwnGroups;
   },
-  computed: {},
+  computed: {
+    userId: function() {
+      return this.$store.state.user.info.id;
+    },
+    userOwnGroups: function() {
+      return this.$store.state.user.ownGroups;
+    }
+  },
   methods: {
+    refreshOwnGroups() {
+      let userId = this.$store.state.user.info.id;
+      this.$store.dispatch("getOwnGroups", userId);
+    },
     showCreateBar: function() {
       if (this.ownGroups.length >= 3) {
-        this.$elementMessage("每人只能创建3个小组", "error", 3000);
+        this.$elementMessage("每人只能创建3个小组", "error", 1500);
+        this.createBar = false;
         return;
       }
       this.createBar = true;
@@ -111,8 +124,12 @@ export default {
       document.removeEventListener("click", this.clickListener);
     },
     createGroup() {
+      this.refreshOwnGroups();
+      let a = null;
+      if (a) return;
       if (this.ownGroups.length >= 3) {
-        this.$elementMessage("每人只能创建3个小组", "error", 3000);
+        this.$elementMessage("每人只能创建3个小组", "error", 1500);
+        this.createBar = false;
         return;
       }
       let _this = this;
@@ -123,22 +140,10 @@ export default {
         introduction: this.newGroup.introduction,
         icon: this.$store.state.user.info.icon
       };
+      this.createBar = false;
       createGroup(data, userId)
-        .then(function(res) {
-          console.info("res:" + res);
-          _this.getOwnGroups();
-          _this.createBar = false;
-        })
-        .catch(function(err) {
-          console.info("err:" + err);
-        });
-    },
-    getOwnGroups() {
-      let userId = this.$store.state.user.info.id;
-      let _this = this;
-      getOwnGroupsByUserId(userId)
-        .then(function(res) {
-          _this.ownGroups = res.data;
+        .then(function() {
+          _this.refreshOwnGroups();
         })
         .catch(function(err) {
           console.info("err:" + err);
@@ -331,7 +336,7 @@ export default {
   margin-bottom: 20px;
 }
 
-.create-introduction imput {
+.create-introduction input {
   height: 500px;
 }
 </style>

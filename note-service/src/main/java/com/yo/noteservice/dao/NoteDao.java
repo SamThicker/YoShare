@@ -25,10 +25,16 @@ public class NoteDao {
     }
 
     /**
-     * 删除文章
+     * 根据笔记对象删除笔记
      * */
-    public DeleteResult reMove(Note note) {
+    public DeleteResult remove(Note note) {
         return mongoTemplate.remove(note, "note");
+    }
+
+    public DeleteResult remove(String userId, String noteId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(noteId).and("by").is(userId));
+        return mongoTemplate.remove(query, Note.class, "note");
     }
 
     /**

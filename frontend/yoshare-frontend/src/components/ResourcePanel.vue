@@ -46,7 +46,11 @@
           <li
             v-for="resource in resources"
             :key="resource.id"
-            @click="previewItemClicked(resource.id)"
+            @click.stop="
+              previewItemClickCallback
+                ? previewItemClickCallback(resource)
+                : null
+            "
           >
             <div class="preview-list-item">
               <div class="preview-list-item-header">
@@ -55,13 +59,28 @@
                   <i
                     class="el-icon-star-on preview-item-btn"
                     v-show="false"
+                    style="color: yellow; font-size: 23px"
+                    @click.stop="
+                      itemUnstarCallback ? itemUnstarCallback(resource) : null
+                    "
                   ></i>
                   <i
                     class="el-icon-star-off preview-item-btn"
                     v-show="true"
+                    @click.stop="
+                      itemStarCallback ? itemStarCallback(resource) : null
+                    "
                   ></i>
-                  <i class="el-icon-share preview-item-btn"></i>
-                  <i class="el-icon-delete preview-item-btn"></i>
+                  <i
+                    class="el-icon-share preview-item-btn"
+                    @click.stop="
+                      itemShareCallback ? itemShareCallback(resource) : null
+                    "
+                  ></i>
+                  <i
+                    class="el-icon-delete preview-item-btn"
+                    @click.stop="itemDelCallback ? itemDelCallback(resource) : null"
+                  ></i>
                 </span>
               </div>
               <div class="preview-list-item-description">
@@ -76,7 +95,6 @@
         </ul>
       </div>
     </div>
-    <!--    <div class="category-content"></div>-->
   </div>
 </template>
 
@@ -85,7 +103,11 @@ export default {
   name: "ResourcePanel",
   props: {
     previewItemClickCallback: Function,
-    resources: Array
+    resources: Array,
+    itemStarCallback: Function,
+    itemUnstarCallback: Function,
+    itemShareCallback: Function,
+    itemDelCallback: Function
   },
   data() {
     return {
@@ -109,13 +131,7 @@ export default {
     resourceData: function() {},
     deep: true
   },
-  methods: {
-    previewItemClicked(index) {
-      if (this.previewItemClickCallback) {
-        this.previewItemClickCallback(index);
-      }
-    }
-  }
+  methods: {}
 };
 </script>
 
@@ -263,6 +279,7 @@ li {
 }
 
 .preview-list-item {
+  position: relative;
   padding: 5px 10px;
   box-sizing: border-box;
   margin: 5px;
@@ -270,7 +287,7 @@ li {
   border-radius: 5px;
   height: 125px;
   text-align: left;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .preview-item-title {
@@ -280,11 +297,17 @@ li {
 }
 
 .preview-item-menu {
-  float: right;
+  position: absolute;
+  right: 5px;
+  top: 5px;
   z-index: 100;
-  width: 70px;
+  width: 86px;
   display: none;
   font-size: 18px;
+  height: 22px;
+  padding-left: 10px;
+  box-sizing: border-box;
+  background-color: #e8f2fe;
 }
 
 .preview-list-item:hover .preview-item-menu {
@@ -302,11 +325,14 @@ li {
 
 .preview-list-item-description {
   width: 100%;
-  height: calc(100% - 41px);
+  height: calc(100% - 54px);
   font-size: 14px;
   box-sizing: border-box;
-  padding-top: 3px;
   color: #888890;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: hidden;
+  margin-top: 2px;
 }
 
 .preview-list-item-tag {

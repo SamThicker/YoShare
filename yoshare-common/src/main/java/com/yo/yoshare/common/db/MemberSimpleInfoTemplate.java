@@ -38,6 +38,6 @@ public class MemberSimpleInfoTemplate extends TableModelTemplate {
         birthday = new SimpleDateFormat("yyyy-MM-dd").parse("2000-01-01");
         gender = "0";
         introduction = "这个人太懒了，什么都没留下";
-        location = "广东-江门";
+        location = "广东省-江门市-蓬江区";
     }
 }

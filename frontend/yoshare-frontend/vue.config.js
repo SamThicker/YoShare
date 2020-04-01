@@ -20,6 +20,14 @@ module.exports = {
         pathRewrite: {
           "^/res": ""
         }
+      },
+      "/raw": {
+        target: "http://127.0.0.1", //对应自己的接口
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          "^/raw": ""
+        }
       }
     }
   }

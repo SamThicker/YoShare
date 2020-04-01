@@ -1,14 +1,15 @@
 package com.yo.noteservice.service.impl;
 
+import com.mongodb.client.result.DeleteResult;
 import com.yo.noteservice.dao.NoteDao;
 import com.yo.noteservice.model.Content;
 import com.yo.noteservice.mongoModel.Note;
 import com.yo.noteservice.service.NoteService;
+import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.mbg.mapper.CmsMemberResourceMapper;
 import com.yo.yoshare.mbg.model.CmsMemberResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +39,8 @@ public class NoteServiceImpl implements NoteService {
             memberResource.setType("NOTE");
             memberResource.setDatetime(new Date());
             memberResource.setTitle(note.getTitle());
-            memberResource.setTitle("这是笔记来的");
+            String str = content.getContent();
+            memberResource.setDescription(str.substring(0, str.length()<101 ? str.length() : 100));
             cmsMemberResourceMapper.insertSelective(memberResource);
         }
         return result;
@@ -71,6 +73,15 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public Note getUserNoteById(String userId, String noteId) {
         return  noteDao.getUserNoteById(userId, noteId);
+    }
+
+    @Override
+    public CommonResult deleteUserNote(String userId, String noteId) {
+        DeleteResult result = noteDao.remove(userId, noteId);
+        if (result.wasAcknowledged()){
+            return CommonResult.success("操作成功");
+        }
+        return CommonResult.failed("操作失败，请重试");
     }
 
 

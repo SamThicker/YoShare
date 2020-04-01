@@ -50,6 +50,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public MailVo sendMail(MailVo mailVo, String operation, String verifycode){
         try{
+            System.out.println(":"+verifycode);
             if (StringUtils.isEmpty(mailVo.getText())){
                 mailVo.setText(htmlTemplate);
             }
@@ -57,7 +58,6 @@ public class EmailServiceImpl implements EmailService {
             sendMimeMail(mailVo,operation,verifycode);
             return saveMail(mailVo);
         } catch (Exception e){
-            System.out.println("error");
             e.printStackTrace();
             mailVo.setStatus("failed");
             mailVo.setError(e.getMessage());
@@ -79,16 +79,15 @@ public class EmailServiceImpl implements EmailService {
 
     private void sendMimeMail(MailVo mailVo, String operatinon, String verifycode){
         try{
-            htmlTemplate = htmlTemplate.replace("{operation}",operatinon);
-            htmlTemplate = htmlTemplate.replace("{verifycode}",verifycode);
-            textTemplate = textTemplate.replace("{operation}",operatinon);
-            textTemplate = textTemplate.replace("{verifycode}",verifycode);
+            String htmlStr, textStr;
+            htmlStr = htmlTemplate.replace("{operation}",operatinon).replace("{verifycode}",verifycode);
+            System.out.println(htmlTemplate);
+            textStr = textTemplate.replace("{operation}",operatinon).replace("{verifycode}",verifycode);
             MimeMessageHelper messageHelper = new MimeMessageHelper(mailSender.createMimeMessage(), true);
             messageHelper.setFrom(mailVo.getFrom(),"YoTech");
             messageHelper.setTo(mailVo.getTo());
             messageHelper.setSubject(mailVo.getSubject());
-            //messageHelper.setText(mailVo.getText());
-            messageHelper.setText(textTemplate, htmlTemplate);
+            messageHelper.setText(textStr, htmlStr);
             if (!StringUtils.isEmpty(mailVo.getCc())){
                 messageHelper.setCc(mailVo.getCc().split(","));
             }

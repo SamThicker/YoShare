@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "SERVICE-NOTIFICATION")
 public interface NotificationService {
-
     @RequestMapping(value = "/mail/send", method = RequestMethod.POST)
     void sendMail(@RequestParam String to, @RequestParam String subject,
                   @RequestParam String content, @RequestParam String operation, @RequestParam String verifycode);

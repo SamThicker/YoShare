@@ -10,7 +10,6 @@ import io.minio.messages.Upload;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;

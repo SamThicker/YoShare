@@ -2,6 +2,7 @@ package com.yo.noteservice.service;
 
 import com.yo.noteservice.model.Content;
 import com.yo.noteservice.mongoModel.Note;
+import com.yo.yoshare.common.api.CommonResult;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface NoteService {
     List<Note> getNotesById(String id);
 
     Note getUserNoteById(String userId, String noteId);
+
+    CommonResult deleteUserNote(String userId, String noteId);
 }

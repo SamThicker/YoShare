@@ -73,7 +73,7 @@ export default {
   computed: {
     ...mapState({
       icon: function(state) {
-        let icon = state.user.icon;
+        let icon = state.user.info.icon;
         if (!icon) {
           icon = "http://localhost/static/icon/DEFAULT.png";
         } else {
@@ -288,7 +288,7 @@ export default {
   background-color: #fff;
   margin-top: 0;
   border-color: transparent;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.1);
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
   -webkit-filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
 }

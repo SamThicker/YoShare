@@ -6,7 +6,7 @@
     :label-position="formLabelAlign"
   >
     <el-form-item label="头像">
-      <el-avatar class="user-icon" :size="size" :src="icon"></el-avatar>
+      <avatar :options="options" :funcs="funcs"></avatar>
     </el-form-item>
     <el-form-item label="用户ID">{{ info.id }} </el-form-item>
     <el-form-item label="注册时间">{{ info.registeredTime }} </el-form-item>
@@ -50,15 +50,21 @@
 
 <script>
 import { deepClone } from "../../static/utils/deepClone";
-import { updateInfo } from "../api/user";
+import { updateInfo, getAvatarUploadUrl, refreshAvatarNew } from "../api/user";
+import Avatar from "./Avatar";
+import { uploadFile } from "../api/file";
 
 export default {
   name: "SimpleInfo",
+  components: { Avatar },
   mounted() {},
   created() {
     this.infoContainer = deepClone(this.$store.state.user.info);
   },
   watch: {
+    icon: function(icon) {
+      this.options.src = icon;
+    },
     storeInfo: function() {
       this.infoContainer = deepClone(this.$store.state.user.info);
     }
@@ -93,7 +99,22 @@ export default {
       size: 100,
       formLabelAlign: "left",
       infoContainer: Object,
-      update: true
+      update: true,
+      options: {
+        src: this.icon,
+        size: 100,
+        alt: "http://localhost/static/icon/DEFAULT.png",
+        accept: "image/jpeg,image/png",
+        serverUrl: "",
+        header: null,
+        reload: false
+      },
+      funcs: {
+        doUpload: this.uploadAvatar,
+        uploadSuccess: this.uploadSuccess,
+        uploadError: this.uploadError,
+        beforeUpload: this.beforeUpload
+      }
     };
   },
   methods: {
@@ -110,15 +131,14 @@ export default {
         location: this.infoContainer.location
       };
       let _this = this;
-      console.info("id:" + this.infoContainer.id);
       updateInfo(this.infoContainer.id, info)
         .then(function(res) {
-          _this.$elementMessage(res.message, "success", 3000);
+          _this.$elementMessage(res.message, "success", 1500);
           _this.$store.dispatch("GetInfoByToken");
           Promise.resolve(res);
         })
         .catch(function(err) {
-          _this.$elementMessage(err.message, "error", 3000);
+          _this.$elementMessage(err.message, "error", 1500);
           console.info("err:" + err);
           Promise.reject(err);
         });
@@ -138,7 +158,41 @@ export default {
       setTimeout(function() {
         _this.update = true;
       }, 0);
-    }
+    },
+    uploadAvatar(content) {
+      let _this = this;
+      let userId = this.$store.state.user.info.id;
+      let file = content.file;
+      let type = file.type.replace("image/", "");
+      getAvatarUploadUrl(userId, type)
+        .then(function(res) {
+          let url = res.data;
+          uploadFile(url, file).then(function(res) {
+            _this.uploadSuccess(res);
+            let userId = _this.infoContainer.id;
+            _this.$store.commit(
+              "SET_ICON",
+              "/static/icon/" + userId + "_ORIGINAL." + type
+            );
+          });
+        })
+        .catch(function(err) {
+          console.info("err:" + JSON.stringify(err));
+          _this.uploadError(err);
+        });
+    },
+    uploadSuccess() {
+      // this.$router.go(0);
+      let _this = this;
+      this.options.reload = true;
+      setTimeout(function() {
+        _this.options.reload = false;
+      }, 50);
+      // refreshAvatar(this.info.icon);
+      refreshAvatarNew(this.icon).catch();
+    },
+    uploadError() {},
+    beforeUpload() {}
   }
 };
 </script>
@@ -154,7 +208,21 @@ export default {
   width: 100%;
 }
 
-.user-icon {
+.avatar-wrap {
+  position: relative;
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.avatar-wrap img {
   object-fit: cover;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
 }
 </style>

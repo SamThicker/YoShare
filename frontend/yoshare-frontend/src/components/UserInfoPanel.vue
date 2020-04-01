@@ -1,5 +1,5 @@
 <template>
-  <div class="info-panel">
+  <div class="info-panel-wrap">
     <div class="sidebar">
       <UserInfoPanelSideBar></UserInfoPanelSideBar>
     </div>
@@ -20,13 +20,24 @@ export default {
   position: relative;
   width: 220px;
   float: left;
+  margin: 10px;
 }
 
 .content {
   position: relative;
   float: left;
   width: calc(100% - 220);
-  min-width: 600px;
+  min-width: 500px;
   overflow: hidden;
+  margin: 10px;
+  flex: 1;
+  max-width: 700px;
+}
+
+.info-panel-wrap {
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
 }
 </style>

@@ -2,13 +2,19 @@ package com.yo.groupservice.service;
 
 import com.yo.groupservice.exception.GlobalException;
 import com.yo.yoshare.common.api.CommonResult;
-import com.yo.yoshare.mbg.mapper.GmsGroupMapper;
 import com.yo.yoshare.mbg.model.GmsGroup;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.minio.errors.*;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 public interface GroupService {
 
     CommonResult createGroup(String id, GmsGroup group) throws GlobalException.GroupTooMuchException;
 
     CommonResult getGroupsByUserId(String id);
+
+    CommonResult getAvatarUploadUrl(String id, String groupId, String type) throws IOException, InvalidKeyException, NoSuchAlgorithmException, XmlPullParserException, InvalidPortException, InvalidExpiresRangeException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InvalidEndpointException, ErrorResponseException;
 }

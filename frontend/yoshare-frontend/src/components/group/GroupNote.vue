@@ -1,14 +1,20 @@
 <template>
   <div class="group-category-note-wrap">
     <resource-panel></resource-panel>
+    <group-note-reading>
+      <div class="note-content" v-loading="noteLoading">
+        <router-view/>
+      </div>
+    </group-note-reading>
   </div>
 </template>
 
 <script>
 import ResourcePanel from "@/components/ResourcePanel";
+import GroupNoteReading from "./GroupNoteReading";
 export default {
   name: "Note",
-  components: { ResourcePanel }
+  components: { GroupNoteReading, ResourcePanel }
 };
 </script>
 

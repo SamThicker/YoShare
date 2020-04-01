@@ -1,4 +1,5 @@
 import request from "../../static/utils/request";
+import rawRequest from "../../static/utils/rawRequest";
 
 export function login(account, password) {
   return request({
@@ -49,5 +50,35 @@ export function getVerificationCode(mail) {
     url: "/member/mailVerificationCode",
     method: "post",
     params: { mail: mail }
+  });
+}
+
+export function getAvatarUploadUrl(userId, type) {
+  return request({
+    url: "/member/" + userId + "/avatarUploadUrl",
+    method: "get",
+    params: {
+      type: type
+    }
+  });
+}
+
+export function refreshAvatar(url) {
+  return rawRequest({
+    url: url,
+    method: "get",
+    headers: {
+      "Cache-Control": "no-cache"
+    }
+  });
+}
+
+export function refreshAvatarNew(url) {
+  return request({
+    url: url,
+    method: "get",
+    headers: {
+      "Cache-Control": "no-cache"
+    }
   });
 }

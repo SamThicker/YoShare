@@ -5,7 +5,9 @@
         <header-menu></header-menu>
       </template>
     </header-bar-Pro>
-    <UserInfoPanel class="info-panel"></UserInfoPanel>
+    <div class="user-info-wrap">
+      <UserInfoPanel class="info-panel"></UserInfoPanel>
+    </div>
   </div>
 </template>
 
@@ -36,10 +38,12 @@ export default {
 </script>
 
 <style scoped>
-html,
-body,
-#app {
+.user-info {
+  position: relative;
+  width: 100%;
   height: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
 
 #header-bar {
@@ -47,28 +51,18 @@ body,
   box-sizing: border-box;
 }
 
-.user-info {
+.user-info-wrap {
   width: 100%;
+  box-sizing: border-box;
+  flex: 1;
   height: 100%;
 }
 
 .info-panel {
   position: relative;
-  top: 0;
-  height: 700px;
+  box-sizing: border-box;
+  /*flex: 1;*/
+  height: 100%;
   width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.content {
-  position: relative;
-  top: 5px;
-  width: 100%;
-  height: 2000px;
-  font-size: 300px;
-  text-align: center;
 }
 </style>

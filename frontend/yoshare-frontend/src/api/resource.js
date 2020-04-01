@@ -6,3 +6,11 @@ export function getOwnResource(id) {
     method: "get"
   });
 }
+
+export function delResourceNote(userId, resource) {
+  return request({
+    url: "resource/" + userId + "/ownResource",
+    method: "delete",
+    data: resource
+  });
+}

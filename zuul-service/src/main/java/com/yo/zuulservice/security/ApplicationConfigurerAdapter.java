@@ -59,10 +59,11 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
         provider.setUserDetailsService(memberDetailsService);
 
         //配置需要对应用户权限的restFul url
-        accessDecisionService.setPersonalRestUrl("/member/{id}/icon","/member/{id}/info","/file/blogFilePutUrl/{id}/*",
-                "/note/addNote/{id}","/note/getNotes/{id}","/note/updateNote/{id}",
-                "/group/{id}/group", "/group/{id}/createdGroups",
-                "/resource/{id}/ownResource"
+        accessDecisionService.setPersonalRestUrl("/member/{id}/icon","/member/{id}/info","/member/{id}/avatarUploadUrl",
+                "/note/addNote/{id}","/note/getNotes/{id}","/note/updateNote/{id}","/note/ownNote/{id}/*",
+                "/group/{id}/group", "/group/{id}/createdGroups","/{id}/*/avatarUploadUrl",
+                "/resource/{id}/ownResource",
+                "/file/blogFilePutUrl/{id}/*"
         );
 
 
@@ -89,11 +90,11 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/member/*/info/*","/member/*/icon").permitAll()
-                .antMatchers("/file/presignedUrl","/file/uploadUrl/*","/file/uploadResource",
-                        "/member/area/*","/member/register","/login.html",
-                        "/member/info/exist","/member/mailVerificationCode","/member/*/info",
-                        "/note/getNote/*/*","/group/*/group","/group/*/createdGroups",
-                        "/note/updateNote/*").permitAll()
+                .antMatchers("/file/presignedUrl","/file/uploadUrl/*","/file/uploadResource","/file/iconUploadUrl","/file/groupAvatarUploadUrl",
+                        "/member/area/*","/member/register","/member/info/exist","/member/mailVerificationCode","/member/*/info",
+                        "/note/getNote/*/*","/note/updateNote/*",
+                        "/group/*/group","/group/*/createdGroups",
+                        "/login.html").permitAll()
                 .anyRequest().access("@accessDecisionService.hasPermission(request , authentication)")
                 .and()
                 //将授权提供者注册到授权管理器中(AuthenticationManager)

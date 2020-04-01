@@ -3,8 +3,8 @@
     <!-- 侧边栏 -->
     <div class="nav-sidebar">
       <!--顶部区域-->
-      <div class="top-area">
-        <i class="el-icon-s-home home" @click="backHome()"></i>
+      <div class="top-area" @click="backHome()">
+        <i class="el-icon-s-home home"></i>
       </div>
       <!--中部区域-->
       <div class="middle-area">
@@ -60,10 +60,7 @@
       </div>
 
       <!--底部区域-->
-      <div
-        class="bottom-area"
-        @click="console.info(JSON.stringify(this.currentGroup))"
-      >
+      <div class="bottom-area">
         <el-tooltip
           class="item"
           effect="dark"
@@ -115,31 +112,16 @@
 export default {
   name: "GroupManage",
   mounted() {
-    this.$store.dispatch("getOwnGroups", this.userId);
-    //根据url设置当前选中的选项，提高用户刷新页面时的体验
-    let pathParts = this.$route.path.split("/");
-    let option = pathParts[pathParts.length - 1];
-    let tab = ["note", "resource", "favorite", "member", "setting"];
-    tab.forEach((val, index) => {
-      if (val === option) {
-        this.select(index, option);
-      }
-    });
+    this.initializeSideBar();
+    this.setCurrentGroup();
   },
   destroyed() {
     document.removeEventListener("click", this.clickListener);
   },
   watch: {
-    currentGroup: function() {},
-    userId: function(val) {
-      this.$store.dispatch("getOwnGroups", val);
-    },
     groups: function(groups) {
-      //为了通过eslint的操作符号检查，把两个值改为int，使用"==="严格判断
-      let groupId = parseInt(this.currentGroupId);
       groups.forEach(group => {
-        let expected = parseInt(group.id);
-        if (expected === groupId) {
+        if (parseInt(group.id) === parseInt(this.currentGroupId)) {
           this.currentGroup = group;
         }
       });
@@ -194,6 +176,7 @@ export default {
       }
     },
     clickListener(e) {
+      console.info("clicked");
       let el = document.querySelector(".group-list");
       if (!el.contains(e.target)) {
         this.groupList = false;
@@ -222,6 +205,26 @@ export default {
       );
       this.currentGroup = this.currentGroup[0];
       this.$router.push(path);
+    },
+    //设置当前小组
+    setCurrentGroup() {
+      this.groups.forEach(group => {
+        if (parseInt(group.id) === parseInt(this.currentGroupId)) {
+          this.currentGroup = group;
+        }
+      });
+    },
+    //初始化侧边栏
+    initializeSideBar() {
+      //根据url设置左边菜单栏当前选中的选项，提高用户刷新页面时的体验
+      let pathParts = this.$route.path.split("/");
+      let option = pathParts[pathParts.length - 1];
+      let tab = ["note", "file", "favorite", "member", "setting"];
+      tab.forEach((val, index) => {
+        if (val === option) {
+          this.select(index, option);
+        }
+      });
     }
   }
 };
@@ -365,6 +368,11 @@ li {
   left: 50%;
   transform: translate3d(-50%, 0, 0);
   cursor: pointer;
+  transition: 1s all;
+}
+
+.avatar-wrap.changed {
+  transform: translate3d(-50%, 0, 0) rotate3d(0, 0, 1, 360deg);
 }
 
 .group-avatar {

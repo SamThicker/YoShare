@@ -1,11 +1,11 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <!--  workbench  -->
-  <div class="workbench">
+  <div class="workbench" v-loading="onSaveLoading">
     <!--  菜单  -->
     <div class="workbench-menu">
       <div class="back-link" @click="backHome()">
         <i class="el-icon-arrow-left"></i>
-        <span class="back-link-label">回首页</span>
+        <span class="back-link-label">Back</span>
       </div>
       <el-input
         class="title"
@@ -36,7 +36,7 @@
             <el-switch
               v-bind:disabled="!!content"
               class="switcher-btn"
-              v-model="style"
+              v-model="isMavon"
               active-color="#13ce66"
               inactive-color="#ff4949"
             >
@@ -75,7 +75,7 @@
       <!-- 编辑器面板 -->
       <div class="editor-panel">
         <Editor
-          v-if="!style"
+          v-if="!isMavon"
           v-model="content"
           ref="myQuillEditor"
           :options="editorOption"
@@ -158,7 +158,7 @@ export default {
       content: "",
       editingBackup: "",
       editorOption: {},
-      style: true,
+      isMavon: true,
       timeLineCallback: null,
       items: [],
       endItem: {
@@ -175,7 +175,8 @@ export default {
       noteId: null,
       saveOption: false,
       editing: true,
-      markdownEditable: true
+      markdownEditable: true,
+      onSaveLoading: false
     };
   },
   computed: {
@@ -215,7 +216,8 @@ export default {
       );
     },
     backHome() {
-      this.$router.push("/");
+      this.$router.back();
+      // this.$router.push("/");
     },
     showSettingBar() {
       this.settingBar = !this.settingBar;
@@ -232,7 +234,7 @@ export default {
       document.removeEventListener("click", this.clickListener);
     },
     refreshContainerHeight() {
-      if (!this.style) {
+      if (!this.isMavon) {
         this.quillContainerHeight =
           document.documentElement.offsetHeight -
           document.querySelector(".ql-toolbar.ql-snow").offsetHeight -
@@ -279,10 +281,9 @@ export default {
     },
     //保存笔记，如果是新的笔记则新建笔记
     saveNote() {
-      this.saveOption = false;
       let content = {
         content: this.content,
-        editor: this.type ? "Quill" : "Mavon",
+        editor: this.isMavon ? "MAVON" : "QUILL",
         tag: this.currentTag
       };
       let data = {
@@ -292,8 +293,11 @@ export default {
         by: this.userId
       };
       let _this = this;
+      this.onSaveLoading = true;
       saveNote(this.userId, data)
         .then(function(res) {
+          _this.$elementMessage("保存成功", "success", 1000);
+          _this.onSaveLoading = false;
           if (!_this.$route.params.noteId) {
             let id = res.data.id;
             _this.$router.push("/workBench/" + _this.userId + "/" + id);
@@ -302,12 +306,20 @@ export default {
           _this.setData();
         })
         .catch(function(err) {
+          _this.$elementMessage("操作失败", "error", 1000);
+          _this.onSaveLoading = false;
           console.info("er:" + err);
         });
+      this.saveOption = false;
     },
     //显示保存选项
     showSaveOption() {
-      this.timeLineItemClick(null);
+      //如果当前笔记包含历史版本，则显示当前最新版本
+      if (this.noteId) {
+        this.content = this.editingBackup;
+      }
+      this.editing = true;
+      this.markdownEditable = true;
       this.saveOption = true;
       document.addEventListener("click", this.saveOptionBarListener);
     },
@@ -319,6 +331,7 @@ export default {
     },
     //点击时间线更改内容
     timeLineItemClick(id) {
+      //id不为空则表示点击历史记录
       if (id) {
         this.markdownEditable = false;
         //如果当前是编辑状态，则保存内容
@@ -332,7 +345,11 @@ export default {
         this.content = contents[contents.length - 1].content;
         return;
       }
-      this.content = this.editingBackup;
+      //如果id为空，表示点击当前编辑状态
+      //如果noteId为空，则表示新笔记，没有历史版本不需要备份
+      if (this.noteId) {
+        this.content = this.editingBackup;
+      }
       this.editing = true;
       this.markdownEditable = true;
     }
@@ -347,7 +364,7 @@ html body {
 
 /*总体*/
 .workbench {
-  display: flex;
+  display: -webkit-box;
   flex-direction: column;
   height: 100%;
 }

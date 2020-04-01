@@ -5,9 +5,6 @@ import { getOwnGroupsByUserId } from "../../api/group";
 const user = {
   state: {
     token: getToken(),
-    nickname: "",
-    username: "",
-    icon: "",
     account: "",
     info: {
       id: "",
@@ -22,7 +19,7 @@ const user = {
     },
     ownGroups: [],
     joinGroups: [],
-    allGroups: new Set()
+    allGroups: []
   },
 
   mutations: {
@@ -30,13 +27,10 @@ const user = {
       state.token = token;
     },
     SET_NICKNAME: (state, nickname) => {
-      state.nickname = nickname;
+      state.info.nickname = nickname;
     },
     SET_ICON: (state, icon) => {
-      state.icon = icon;
-    },
-    SET_USERNAME: (state, username) => {
-      state.username = username;
+      state.info.icon = icon;
     },
     SET_ACCOUNT: (state, account) => {
       state.account = account;
@@ -52,6 +46,10 @@ const user = {
     },
     SET_ALLGROUPS: (state, groups) => {
       state.allGroups = groups;
+    },
+    ADD_ALLGROUPS: (state, groups) => {
+      if (!groups || groups.length <= 0) return;
+      state.allGroups.push(...groups);
     }
   },
 
@@ -75,24 +73,7 @@ const user = {
     },
 
     // //获取用户数据
-    // GetInfo({ commit }, params) {
-    //   return new Promise((resolve, reject) => {
-    //     getInfo(params.param, params.option)
-    //       .then(response => {
-    //         const data = response.data;
-    //         commit("SET_NICKNAME", data.nickname);
-    //         commit("SET_USERNAME", data.username);
-    //         commit("SET_ICON", data.icon);
-    //         resolve(response);
-    //       })
-    //       .catch(error => {
-    //         reject(error);
-    //       });
-    //   });
-    // },
-
-    // //获取用户数据
-    GetInfoByToken({ commit }) {
+    GetInfoByToken({ dispatch, commit, state }) {
       if (!this.state.user.token) return;
       return new Promise((resolve, reject) => {
         getInfoByToken()
@@ -100,10 +81,9 @@ const user = {
             const data = response.data;
             commit("SET_ACCOUNT", data.username);
             commit("SET_NICKNAME", data.nickname);
-            commit("SET_USERNAME", data.username);
             commit("SET_ICON", data.icon);
             commit("SET_INFO", data);
-            resolve(response);
+            return dispatch("getOwnGroups", state.info.id);
           })
           .catch(error => {
             reject(error);
@@ -118,16 +98,21 @@ const user = {
         commit("SET_USERNAME", "");
         commit("SET_ICON", "");
         commit("SET_ACCOUNT", "");
+        commit("SET_INFO", "");
+        commit("SET_ALLGROUPS", "");
+        commit("SET_JOINGROUPS", "");
         removeToken();
         resolve();
       });
     },
-    getOwnGroups({ commit }, userId) {
+    getOwnGroups({ commit, state }, userId) {
       return new Promise((resolve, reject) => {
         getOwnGroupsByUserId(userId)
           .then(function(res) {
             commit("SET_OWNGROUPS", res.data);
-            commit("SET_ALLGROUPS", res.data);
+            commit("SET_ALLGROUPS", []);
+            commit("ADD_ALLGROUPS", state.joinGroups);
+            commit("ADD_ALLGROUPS", state.ownGroups);
             resolve();
           })
           .catch(function(err) {

@@ -87,7 +87,7 @@ export default {
   computed: {
     ...mapState({
       icon: function(state) {
-        let icon = state.user.icon;
+        let icon = state.user.info.icon;
         if (!icon) {
           icon = "http://localhost/static/icon/DEFAULT.png";
         } else {
@@ -134,7 +134,6 @@ export default {
       this.$router.push("/workBench/" + userId);
     },
     toResource() {
-      console.info("aa")
       this.$router.push("/resource");
     },
     selectTab(option) {
@@ -168,6 +167,7 @@ export default {
 .header-menu {
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
 }
 
 .nav {

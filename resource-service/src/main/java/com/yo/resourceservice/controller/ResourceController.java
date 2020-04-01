@@ -4,9 +4,7 @@ import com.yo.resourceservice.service.ResourceService;
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.mbg.model.CmsMemberResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +18,13 @@ public class ResourceController {
     public CommonResult getResourcesForSelf(@PathVariable("id") Long id) {
         List<CmsMemberResource> list = resourceService.getResourcesForSelf(id);
         return CommonResult.success(list, "操作成功");
+    }
+
+    @DeleteMapping("/{id}/ownResource")
+    public CommonResult delResourceForSelf(@PathVariable("id") Long id, @RequestBody CmsMemberResource resource) {
+        if (!resource.getByUserId().equals(id)){
+            return CommonResult.forbidden(null);
+        }
+        return resourceService.delResourceForSelf(resource);
     }
 }

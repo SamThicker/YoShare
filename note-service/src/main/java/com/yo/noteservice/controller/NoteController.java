@@ -3,6 +3,7 @@ package com.yo.noteservice.controller;
 import com.yo.noteservice.mongoModel.Note;
 import com.yo.noteservice.service.NoteService;
 import com.yo.yoshare.common.api.CommonResult;
+import feign.RequestLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,17 +37,34 @@ public class NoteController {
         return CommonResult.success("操作成功");
     }
 
+    /**
+     * 获取用户所有笔记
+     * */
     @GetMapping(value = "/getNotes/{id}")
     public CommonResult<List> getNotes(@PathVariable(value = "id") String id) {
         List<Note> noteList =  noteService.getNotesById(id);
         return CommonResult.success(noteList, "操作成功");
     }
 
+    /**
+     * 获取特定用户特定笔记
+     * */
     @GetMapping(value = "/getNote/{userId}/{noteId}")
+    @ResponseBody
     public CommonResult<Note> getNotes(@PathVariable(value = "userId") String userId,
                                        @PathVariable(value = "noteId") String noteId) {
         Note note =  noteService.getUserNoteById(userId, noteId);
         return CommonResult.success(note, "操作成功");
+    }
+
+    /**
+     * 删除特定用户特定笔记
+     * */
+    @RequestMapping(value = "/ownNote/{userId}/{noteId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public CommonResult delNote(@PathVariable(value = "userId") String userId,
+                                @PathVariable(value = "noteId") String noteId) {
+        return noteService.deleteUserNote(userId, noteId);
     }
 
 
