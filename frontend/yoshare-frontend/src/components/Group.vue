@@ -106,7 +106,7 @@ export default {
   methods: {
     refreshOwnGroups() {
       let userId = this.$store.state.user.info.id;
-      this.$store.dispatch("getOwnGroups", userId);
+      this.$store.dispatch("getAllGroups", userId);
     },
     showCreateBar: function() {
       if (this.ownGroups.length >= 3) {

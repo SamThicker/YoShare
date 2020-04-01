@@ -47,5 +47,11 @@ public class GroupController {
         return CommonResult.success(groupService.getMemberGroups(id),"操作成功");
     }
 
+    @GetMapping(value = "/{id}/members/{groupId}")
+    public CommonResult lietAllGroupMember(@PathVariable(value = "id") Long userId,
+                                           @PathVariable(value = "groupId") Long groupId){
+        return groupService.listAllGroupMember(userId, groupId);
+    }
+
 
 }

@@ -7,10 +7,7 @@ import com.yo.groupservice.service.GroupService;
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.mbg.mapper.GmsGroupMapper;
 import com.yo.yoshare.mbg.mapper.GmsGroupMemberRelationshipMapper;
-import com.yo.yoshare.mbg.model.GmsGroup;
-import com.yo.yoshare.mbg.model.GmsGroupExample;
-import com.yo.yoshare.mbg.model.GmsGroupMemberRelationship;
-import com.yo.yoshare.mbg.model.GmsGroupMemberRelationshipExample;
+import com.yo.yoshare.mbg.model.*;
 import io.minio.errors.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +27,7 @@ public class GroupServiceImpl implements GroupService {
     private GmsGroupMemberRelationshipMapper memberRelationshipMapper;
     /**用户创建小组数限制*/
     private final int MAX_CREATE_NUM = 3;
-    @Autowired(required = false)
+    @Autowired
     private FileService fileService;
     @Autowired(required = false)
     private GmsGroupDao groupDao;
@@ -76,11 +73,27 @@ public class GroupServiceImpl implements GroupService {
             return CommonResult.forbidden("无权限");
         }
         String fileName = groupId + "_ORIGINAL." + type;
+        GmsGroup group = new GmsGroup();
+        group.setId(Long.parseLong(groupId));
+        group.setIcon("/static/groupAvatar/" + fileName);
+        groupMapper.updateByPrimaryKeySelective(group);
         return fileService.getGroupAvatarUploadUrl("groupAvatar/" + fileName);
     }
 
     @Override
     public List<GmsGroup> getMemberGroups(Long id) {
         return groupDao.selectMemberGroup(id);
+    }
+
+    @Override
+    public CommonResult listAllGroupMember(Long userId, Long groupId) {
+        GmsGroupMemberRelationshipExample example = new GmsGroupMemberRelationshipExample();
+        example.createCriteria().andMemberIdEqualTo(userId).andGroupIdEqualTo(groupId);
+        List result = memberRelationshipMapper.selectByExample(example);
+        if (null == result || result.size() <= 0){
+            return CommonResult.forbidden("无权限");
+        }
+        List<UmsMemberInfo> resultList = groupDao.listGroupMember(groupId);
+        return CommonResult.success(resultList, "操作成功");
     }
 }

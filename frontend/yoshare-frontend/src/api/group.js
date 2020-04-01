@@ -14,3 +14,20 @@ export function getOwnGroupsByUserId(userId) {
     method: "get"
   });
 }
+
+export function getAllGroupsByUserId(userId) {
+  return request({
+    url: "/group/" + userId + "/allGroups",
+    method: "get"
+  });
+}
+
+export function getAvatarUploadUrl(userId, groupId, type) {
+  return request({
+    url: "/group/" + userId + "/" + groupId + "/avatarUploadUrl",
+    method: "get",
+    params: {
+      type: type
+    }
+  });
+}

@@ -20,4 +20,6 @@ public interface GroupService {
     CommonResult getAvatarUploadUrl(String id, String groupId, String type) throws IOException, InvalidKeyException, NoSuchAlgorithmException, XmlPullParserException, InvalidPortException, InvalidExpiresRangeException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InvalidEndpointException, ErrorResponseException;
 
     List<GmsGroup> getMemberGroups(Long id);
+
+    CommonResult listAllGroupMember(Long userId, Long groupId);
 }

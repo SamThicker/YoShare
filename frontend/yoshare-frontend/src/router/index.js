@@ -123,7 +123,7 @@ const routes = [
   },
   //小组管理
   {
-    path: "/group/:id",
+    path: "/group/:groupId",
     name: "GroupManage",
     meta: {
       requireAuth: true
@@ -160,7 +160,14 @@ const routes = [
       {
         path: "setting",
         name: "GroupSetting",
-        component: () => import("@/components/group/GroupSetting.vue")
+        component: () => import("@/components/group/GroupSetting.vue"),
+        children: [
+          {
+            path: "simple",
+            name: "GroupSimpleInfo",
+            component: () => import("@/components/group/GroupSimpleInfo.vue")
+          }
+        ]
       }
     ]
   },

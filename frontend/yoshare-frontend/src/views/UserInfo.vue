@@ -44,6 +44,7 @@ export default {
   height: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  background-color: #f9f9f9;
 }
 
 #header-bar {
@@ -61,7 +62,6 @@ export default {
 .info-panel {
   position: relative;
   box-sizing: border-box;
-  /*flex: 1;*/
   height: 100%;
   width: 100%;
 }

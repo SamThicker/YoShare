@@ -298,6 +298,7 @@ export default {
   float: left;
   top: 50%;
   transform: translate3d(0, -50%, 0);
+  overflow: hidden;
 }
 
 .btn-to-top {

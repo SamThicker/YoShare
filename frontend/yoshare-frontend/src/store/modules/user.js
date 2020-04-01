@@ -1,6 +1,6 @@
 import { login, getInfoByToken } from "@/api/user";
 import { getToken, setToken, removeToken } from "../../../static/utils/auth";
-import { getOwnGroupsByUserId } from "../../api/group";
+import { getAllGroupsByUserId } from "../../api/group";
 
 const user = {
   state: {
@@ -83,7 +83,7 @@ const user = {
             commit("SET_NICKNAME", data.nickname);
             commit("SET_ICON", data.icon);
             commit("SET_INFO", data);
-            return dispatch("getOwnGroups", state.info.id);
+            return dispatch("getAllGroups", state.info.id);
           })
           .catch(error => {
             reject(error);
@@ -105,14 +105,24 @@ const user = {
         resolve();
       });
     },
-    getOwnGroups({ commit, state }, userId) {
+    getAllGroups({ commit }, userId) {
       return new Promise((resolve, reject) => {
-        getOwnGroupsByUserId(userId)
+        getAllGroupsByUserId(userId)
           .then(function(res) {
-            commit("SET_OWNGROUPS", res.data);
-            commit("SET_ALLGROUPS", []);
-            commit("ADD_ALLGROUPS", state.joinGroups);
-            commit("ADD_ALLGROUPS", state.ownGroups);
+            let data = res.data;
+            commit("SET_ALLGROUPS", data);
+            commit(
+              "SET_OWNGROUPS",
+              data.filter(group => {
+                return parseInt(group.createdBy) === parseInt(userId);
+              })
+            );
+            commit(
+              "SET_JOINGROUPS",
+              data.filter(group => {
+                return parseInt(group.createdBy) !== parseInt(userId);
+              })
+            );
             resolve();
           })
           .catch(function(err) {

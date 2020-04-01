@@ -106,8 +106,7 @@ export default {
         alt: "http://localhost/static/icon/DEFAULT.png",
         accept: "image/jpeg,image/png",
         serverUrl: "",
-        header: null,
-        reload: false
+        header: null
       },
       funcs: {
         doUpload: this.uploadAvatar,

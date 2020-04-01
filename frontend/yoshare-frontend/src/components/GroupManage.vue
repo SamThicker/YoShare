@@ -149,7 +149,7 @@ export default {
       return this.$store.state.user.info.id;
     },
     currentGroupId() {
-      return this.$route.params.id;
+      return this.$route.params.groupId;
     }
   },
   methods: {
@@ -162,7 +162,7 @@ export default {
         el.classList.remove("active");
       }
       els[index].classList.add("active");
-      let id = this.$route.params.id;
+      let id = this.currentGroupId;
       let path = "/group/" + id + "/" + option;
       if (path === this.$route.path) return;
       this.$router.push(path);
@@ -231,6 +231,13 @@ export default {
 </script>
 
 <style scoped>
+.group-manager-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: -webkit-flex;
+}
+
 ul,
 li {
   padding: 0;
@@ -238,20 +245,13 @@ li {
   list-style: none;
 }
 
-.group-manager-wrap {
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-
 .nav-sidebar {
   position: relative;
-  top: 0;
-  left: 0;
   width: 70px;
   height: 100%;
   background-color: #7bb6fb;
   box-sizing: border-box;
+  -webkit-flex-shrink: 0;
 }
 
 .top-area {
@@ -354,10 +354,11 @@ li {
 
 .bottom-area {
   width: 100%;
-  height: 150px;
+  height: 80px;
   position: absolute;
   display: block;
   bottom: 0;
+  background-color: #7bb6fb;
 }
 
 .avatar-wrap {
@@ -445,7 +446,7 @@ li {
 
 .content {
   width: 100%;
-  flex: 1;
+  -webkit-flex: 1;
   height: 100%;
 }
 </style>

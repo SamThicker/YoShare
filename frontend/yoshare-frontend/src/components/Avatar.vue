@@ -19,7 +19,6 @@
       :src="options ? options.src : null"
       :alt="options ? options.alt : ''"
       @click="selectAvatar()"
-      v-if="!options.reload"
     />
   </div>
 </template>
@@ -52,6 +51,9 @@ export default {
     this.setSize(this.options.size);
   },
   watch: {
+    isReload: function(bool) {
+      if (bool) this.reload();
+    },
     size: function(val) {
       this.setSize(val);
     },
@@ -59,18 +61,30 @@ export default {
       if (bool) {
         this.reload();
       }
-    }
+    },
+    icon: function() {
+      console.info("icon changed");
+      console.info(this.options.src)
+      // this.options.src = this.options.src;
+    },
+    deep: true
   },
   computed: {
+    isReload: function() {
+      return this.options.reload;
+    },
     avatarReload: function() {
       return this.options.reload;
-    }
+    },
+    // icon: function() {
+    //   // return this.options.src;
+    // }
   },
   methods: {
     selectAvatar() {
       document.querySelector(".el-upload__input").click();
     },
-    setSize: function(size) {
+    setSize(size) {
       let el = document.querySelector(".avatar-wrap.myavatar");
       if (this.options.size) {
         el.style.height = el.style.width = size + "px";

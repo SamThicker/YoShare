@@ -16,19 +16,42 @@
 
 <script>
 export default {
-  name: "UserInfoPanelSideBar",
+  name: "GroupInfoPanelSideBar",
   data() {
     return {
       settings: [
-        { name: "基本信息", icon: "", link: "/userInfo/simpleInfo" },
-        { name: "安全信息", icon: "", link: "/userInfo/securityInfo" }
+        {
+          name: "基本信息",
+          icon: "",
+          link: "",
+          label: "simple"
+        }
       ],
-      active: 0
+      active: 0,
+      link: []
     };
+  },
+  watch: {
+    groupId: function() {
+      this.setLink();
+    }
+  },
+  computed: {
+    groupId: function() {
+      return this.$route.params.groupId;
+    }
+  },
+  mounted() {
+    this.setLink();
   },
   methods: {
     activeEl(index) {
       this.active = index;
+    },
+    setLink() {
+      this.settings.forEach(setting => {
+        setting.link = "/group/" + this.groupId + "/setting/" + setting.label;
+      });
     }
   }
 };
@@ -46,6 +69,20 @@ ul {
   padding: 0;
 }
 
+li {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.link {
+  position: relative;
+  user-select: none;
+  display: block;
+  line-height: 50px;
+  box-sizing: border-box;
+}
+
 .setting-item {
   width: 100%;
   height: 50px;
@@ -55,10 +92,7 @@ ul {
   border: 1px solid transparent;
 }
 
-.link {
-  width: 100%;
-  height: 100%;
-  display: block;
+.setting-item a {
 }
 
 .active {
