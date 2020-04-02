@@ -4,13 +4,18 @@
       <el-form-item label="头像">
         <avatar :options="options" :funcs="funcs"></avatar>
       </el-form-item>
-      <el-form-item label="小组ID"></el-form-item>
-      <el-form-item label="创建时间"> </el-form-item>
+      <el-form-item label="小组ID">{{ currentGroupInfo ? currentGroupInfo.id : 'ID'}}</el-form-item>
+      <el-form-item label="创建时间">
+        {{ currentGroupInfo ? currentGroupInfo.createdTime : new Date()}}
+      </el-form-item>
       <el-form-item label="小组名">
-        <el-input></el-input>
+        <el-input v-model="groupName"></el-input>
       </el-form-item>
       <el-form-item label="简介">
-        <el-input type="textarea"></el-input>
+        <el-input
+          type="textarea"
+          v-model="groupIntroduction"
+        ></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">保存</el-button>
@@ -30,7 +35,6 @@ export default {
   name: "GroupSimpleInfo",
   components: { Avatar },
   mounted() {
-    console.info("mounted");
     if (this.groups == null || this.groups.length <= 0) return;
     this.setCurrentGroup();
   },
@@ -41,7 +45,7 @@ export default {
       options: {
         src: this.icon,
         size: 100,
-        alt: "http://localhost/static/icon/DEFAULT.png",
+        alt: "http://localhost/static/groupAvatar/DEFAULT.png",
         accept: "image/jpeg,image/png",
         serverUrl: "",
         header: null,
@@ -53,7 +57,9 @@ export default {
         uploadError: this.uploadError,
         beforeUpload: this.beforeUpload
       },
-      currentGroupInfo: null
+      currentGroupInfo: null,
+      groupName: "",
+      groupIntroduction: ""
     };
   },
   watch: {
@@ -65,7 +71,9 @@ export default {
     currentGroupId: function() {
       this.setCurrentGroup();
     },
-    currentGroupInfo: function() {
+    currentGroupInfo: function(info) {
+      this.groupName = info.name;
+      this.groupIntroduction = info.introduction;
       this.options.src = this.icon;
     }
   },

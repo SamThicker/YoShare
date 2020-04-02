@@ -12,7 +12,29 @@ import GroupInfoPanelSideBar from "@/components/group/GroupInfoPanelSideBar";
 
 export default {
   name: "GroupInfo",
-  components: { GroupInfoPanelSideBar }
+  components: { GroupInfoPanelSideBar },
+  mounted() {
+    let pathParts = this.$route.path.split("/");
+    if (pathParts[pathParts.length - 1] === "setting") {
+      let path = this.$route.path + "/simple";
+      this.$router.push(path);
+    }
+  },
+  watch: {
+    path: function(path) {
+      let pathParts = path.split("/");
+      if (pathParts[pathParts.length - 1] === "setting") {
+        let pathTo = this.$route.path + "/simple";
+        this.$router.push(pathTo);
+      }
+    },
+    deep: true
+  },
+  computed: {
+    path: function() {
+      return this.$route.path;
+    }
+  }
 };
 </script>
 

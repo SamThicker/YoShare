@@ -20,11 +20,31 @@ export default {
   data() {
     return {
       settings: [
-        { name: "基本信息", icon: "", link: "/userInfo/simpleInfo" },
-        { name: "安全信息", icon: "", link: "/userInfo/securityInfo" }
+        {
+          name: "基本信息",
+          icon: "",
+          link: "/userInfo/simpleInfo",
+          label: "simpleInfo"
+        },
+        {
+          name: "安全信息",
+          icon: "",
+          link: "/userInfo/securityInfo",
+          label: "securityInfo"
+        }
       ],
-      active: 0
+      active: -1
     };
+  },
+  mounted() {
+    let pathParts = this.$route.path.split("/");
+    let option = pathParts[pathParts.length - 1];
+    let _this = this;
+    this.settings.forEach(function(setting, index) {
+      if (setting.label === option) {
+        _this.activeEl(index);
+      }
+    });
   },
   methods: {
     activeEl(index) {

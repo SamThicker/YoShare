@@ -16,7 +16,7 @@
     >
     </el-upload>
     <img
-      :src="options ? options.src : null"
+      :src="options ? options.src : defaultAvatar"
       :alt="options ? options.alt : ''"
       @click="selectAvatar()"
     />
@@ -45,7 +45,9 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      defaultAvatar: "http://localhost/static/groupAvatar/DEFAULT.png"
+    };
   },
   mounted() {
     this.setSize(this.options.size);
@@ -62,11 +64,7 @@ export default {
         this.reload();
       }
     },
-    icon: function() {
-      console.info("icon changed");
-      console.info(this.options.src)
-      // this.options.src = this.options.src;
-    },
+    icon: function() {},
     deep: true
   },
   computed: {
@@ -75,7 +73,7 @@ export default {
     },
     avatarReload: function() {
       return this.options.reload;
-    },
+    }
     // icon: function() {
     //   // return this.options.src;
     // }

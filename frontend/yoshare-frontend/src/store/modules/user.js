@@ -1,6 +1,7 @@
 import { login, getInfoByToken } from "@/api/user";
 import { getToken, setToken, removeToken } from "../../../static/utils/auth";
 import { getAllGroupsByUserId } from "../../api/group";
+import { formatDateTime } from "../../../static/utils/dateUtil";
 
 const user = {
   state: {
@@ -19,7 +20,8 @@ const user = {
     },
     ownGroups: [],
     joinGroups: [],
-    allGroups: []
+    allGroups: [],
+    currentGroup: {}
   },
 
   mutations: {
@@ -50,6 +52,13 @@ const user = {
     ADD_ALLGROUPS: (state, groups) => {
       if (!groups || groups.length <= 0) return;
       state.allGroups.push(...groups);
+    },
+    SET_CURRENTGROUP: (state, groupId) => {
+      let groups = state.allGroups.forEach(group => {
+        return parseInt(group.id) === parseInt(groupId);
+      });
+      state.currentGroup =
+        groups && groups.size() > 0 ? groups[0] : state.allGroups[0];
     }
   },
 
@@ -79,6 +88,8 @@ const user = {
         getInfoByToken()
           .then(response => {
             const data = response.data;
+            data.registeredTime = formatDateTime(data.registeredTime);
+            data.birthday = formatDateTime(data.birthday);
             commit("SET_ACCOUNT", data.username);
             commit("SET_NICKNAME", data.nickname);
             commit("SET_ICON", data.icon);
@@ -110,6 +121,9 @@ const user = {
         getAllGroupsByUserId(userId)
           .then(function(res) {
             let data = res.data;
+            data.forEach(info => {
+              info.createdTime = formatDateTime(info.createdTime);
+            });
             commit("SET_ALLGROUPS", data);
             commit(
               "SET_OWNGROUPS",

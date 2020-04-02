@@ -27,21 +27,30 @@ export default {
           label: "simple"
         }
       ],
-      active: 0,
+      active: -1,
       link: []
     };
   },
   watch: {
     groupId: function() {
       this.setLink();
+      this.setActiveEl();
+    },
+    path: function() {
+      this.setActiveEl();
+      this.setLink();
     }
   },
   computed: {
     groupId: function() {
       return this.$route.params.groupId;
+    },
+    path: function() {
+      return this.$route.path;
     }
   },
   mounted() {
+    this.setActiveEl();
     this.setLink();
   },
   methods: {
@@ -51,6 +60,16 @@ export default {
     setLink() {
       this.settings.forEach(setting => {
         setting.link = "/group/" + this.groupId + "/setting/" + setting.label;
+      });
+    },
+    setActiveEl() {
+      let pathParts = this.$route.path.split("/");
+      let option = pathParts[pathParts.length - 1];
+      let _this = this;
+      this.settings.forEach(function(setting, index) {
+        if (setting.label === option) {
+          _this.activeEl(index);
+        }
       });
     }
   }
