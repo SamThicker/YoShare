@@ -4,9 +4,12 @@
       <el-form-item label="头像">
         <avatar :options="options" :funcs="funcs"></avatar>
       </el-form-item>
-      <el-form-item label="小组ID">{{ currentGroupInfo ? currentGroupInfo.id : 'ID'}}</el-form-item>
-      <el-form-item label="创建时间">
-        {{ currentGroupInfo ? currentGroupInfo.createdTime : new Date()}}
+      <el-form-item label="小组ID">{{
+        currentGroupInfo ? currentGroupInfo.id : "ID"
+      }}</el-form-item>
+      <el-form-item label="创建时间">{{
+        currentGroupInfo ? currentGroupInfo.createdTime : new Date()
+      }}
       </el-form-item>
       <el-form-item label="小组名">
         <el-input v-model="groupName"></el-input>

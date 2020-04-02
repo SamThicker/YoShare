@@ -10,7 +10,7 @@
       :itemDelCallback="itemDelClicked"
     ></resource-panel>
     <div class="note-content" v-loading="noteLoading">
-      <router-view/>
+      <router-view />
     </div>
   </div>
 </template>
