@@ -21,7 +21,7 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">保存</el-button>
+        <el-button type="primary" @click="updateInfo()">保存</el-button>
         <el-button>取消</el-button>
       </el-form-item>
     </el-form>
@@ -34,6 +34,7 @@ import Avatar from "@/components/Avatar";
 import { getAvatarUploadUrl } from "@/api/group";
 import { uploadFile } from "../../api/file";
 import { deepClone } from "../../../static/utils/deepClone";
+import { updateGroupInfo } from "../../api/group";
 export default {
   name: "GroupSimpleInfo",
   components: { Avatar },
@@ -132,7 +133,25 @@ export default {
       this.options.reload = false;
     },
     uploadError: function() {},
-    beforeUpload: function() {}
+    beforeUpload: function() {},
+    //更新小组信息
+    updateInfo: function() {
+      let _this = this;
+      let group = {
+        id: this.currentGroupId,
+        name: this.groupName,
+        introduction: this.groupIntroduction
+      };
+      let userId = this.$store.state.user.info.id;
+      updateGroupInfo(userId, group)
+        .then(function() {
+          _this.$store.dispatch("getAllGroups", userId);
+          _this.$elementMessage("操作成功", "success", 1500);
+        })
+        .catch(err => {
+          console.info("err:" + err);
+        });
+    }
   }
 };
 </script>

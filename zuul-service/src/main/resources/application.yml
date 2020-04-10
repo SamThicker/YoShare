@@ -43,7 +43,7 @@ zuul:
   sensitive-headers:
 
 ribbon:
-  ConnectTimeout: 250 # 连接超时时间(ms)
+  ConnectTimeout: 500 # 连接超时时间(ms)
   ReadTimeout: 2000 # 通信超时时间(ms)
   OkToRetryOnAllOperations: true # 是否对所有操作重试
   MaxAutoRetriesNextServer: 2 # 同一服务不同实例的重试次数
@@ -57,7 +57,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 13500 # 熔断超时时长：13500ms，不能少于ribbon总超时时间
+            timeoutInMilliseconds: 15000 # 熔断超时时长：13500ms，不能少于ribbon总超时时间
 
 jwt:
   tokenHeader: Authorization #JWT存储的请求头

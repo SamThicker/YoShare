@@ -58,6 +58,17 @@ public class NoteController {
     }
 
     /**
+     * 获取特定用户特定笔记（阅读视图）
+     * */
+    @GetMapping(value = "/note/{userId}/{noteId}")
+    @ResponseBody
+    public CommonResult<Note> getNotesForReading(@PathVariable(value = "userId") String userId,
+                                       @PathVariable(value = "noteId") String noteId) {
+        Note note =  noteService.getUserNoteByIdForReading(userId, noteId);
+        return CommonResult.success(note, "操作成功");
+    }
+
+    /**
      * 删除特定用户特定笔记
      * */
     @RequestMapping(value = "/ownNote/{userId}/{noteId}", method = RequestMethod.DELETE)

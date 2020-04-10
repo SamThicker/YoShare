@@ -19,6 +19,7 @@ public class GroupController {
     @Autowired
     private GroupService groupService;
 
+    /**创建小组*/
     @PutMapping(value = "/{id}/group")
     public CommonResult createGroup(@RequestBody GmsGroup group, @PathVariable String id){
         group.setCreatedBy(id);
@@ -30,11 +31,20 @@ public class GroupController {
         }
     }
 
+    @PatchMapping(value = "/{id}/info")
+    public CommonResult updateGroupInfo(@PathVariable(value = "id") Long userId,
+                                        @RequestBody GmsGroup group){
+        return groupService.updateGroupInfo(userId, group);
+
+    }
+
+    /**获取用户创建的小组*/
     @GetMapping(value = "/{id}/createdGroups")
     public CommonResult getGroupsByUserId(@PathVariable String id) {
         return groupService.getGroupsByUserId(id);
     }
 
+    /**获取上传头像的url*/
     @GetMapping(value = "/{id}/{groupId}/avatarUploadUrl")
     public CommonResult getAvatarUploadUrl(@PathVariable(value = "id") String id,
                                            @PathVariable(value = "groupId") String groupId,
@@ -42,15 +52,32 @@ public class GroupController {
         return groupService.getAvatarUploadUrl(id, groupId, type);
     }
 
+    /**获取用户所有的小组*/
     @GetMapping(value = "/{id}/allGroups")
     public CommonResult getMemberAllGroup(@PathVariable(value = "id") Long id){
         return CommonResult.success(groupService.getMemberGroups(id),"操作成功");
     }
 
-    @GetMapping(value = "/{id}/members/{groupId}")
-    public CommonResult lietAllGroupMember(@PathVariable(value = "id") Long userId,
-                                           @PathVariable(value = "groupId") Long groupId){
-        return groupService.listAllGroupMember(userId, groupId);
+    /**获取加入小组的验证码*/
+    @GetMapping(value = "/{id}/groupCode")
+    public CommonResult getGroupJoinCode(@PathVariable(value = "id") Long userId,
+                                           @RequestParam Long groupId){
+        return groupService.getGroupJoinCode(userId, groupId);
+    }
+
+    /**通过激活码加入小组*/
+    @PutMapping(value = "/{id}/group/member")
+    public CommonResult joinGroupByCode(@PathVariable(value = "id") Long userId,
+                                         @RequestParam(value = "groupJoinCode") String groupJoinCode,
+                                        @RequestParam(value = "groupId") Long groupId){
+        return groupService.joinGroupByCode(userId, groupId, groupJoinCode);
+    }
+
+    /**获取小组的所有成员信息*/
+    @GetMapping(value = "/{id}/group/member")
+    public CommonResult getGroupMembers(@PathVariable(value = "id") Long userId,
+                                        @RequestParam(value = "groupId") Long groupId){
+        return groupService.listAllGroupMember(userId,groupId);
     }
 
 

@@ -124,7 +124,7 @@ export default {
       }
       let info = {
         nickname: this.infoContainer.nickname,
-        birthday: this.infoContainer.birthday,
+        birthday: new Date(this.infoContainer.birthday),
         gender: this.infoContainer.gender,
         introduction: this.infoContainer.introduction,
         location: this.infoContainer.location

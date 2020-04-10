@@ -8,6 +8,14 @@ export function createGroup(data, userId) {
   });
 }
 
+export function updateGroupInfo(userId, group) {
+  return request({
+    url: "/group/" + userId + "/info",
+    method: "patch",
+    data: group
+  });
+}
+
 export function getOwnGroupsByUserId(userId) {
   return request({
     url: "/group/" + userId + "/createdGroups",
@@ -22,12 +30,43 @@ export function getAllGroupsByUserId(userId) {
   });
 }
 
+export function getAllGroupMember(userId, groupId) {
+  return request({
+    url: "/group/" + userId + "/group/member",
+    method: "get",
+    params: {
+      groupId: groupId
+    }
+  });
+}
+
 export function getAvatarUploadUrl(userId, groupId, type) {
   return request({
     url: "/group/" + userId + "/" + groupId + "/avatarUploadUrl",
     method: "get",
     params: {
       type: type
+    }
+  });
+}
+
+export function getGroupJoinCode(userId, groupId) {
+  return request({
+    url: "/group/" + userId + "/groupCode",
+    method: "get",
+    params: {
+      groupId: groupId
+    }
+  });
+}
+
+export function joinGroupByCode(userId, groupId, groupJoinCode) {
+  return request({
+    url: "/group/" + userId + "/group/member",
+    method: "put",
+    params: {
+      groupId: groupId,
+      groupJoinCode: groupJoinCode
     }
   });
 }

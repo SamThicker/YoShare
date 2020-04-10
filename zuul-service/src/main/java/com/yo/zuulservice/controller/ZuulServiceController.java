@@ -25,8 +25,14 @@ public class ZuulServiceController {
     public CommonResult getMemberInfo(HttpServletRequest request, HttpServletResponse response){
         SecurityContext ctx = SecurityContextHolder.getContext();
         Authentication auth = ctx.getAuthentication();
-        UserDetails user = (UserDetails) auth.getPrincipal();
-        return memberFeign.getMemberInfo(user.getUsername(),"account");
+        String username;
+        if (auth.getPrincipal() instanceof UserDetails) {
+            UserDetails user = (UserDetails) auth.getPrincipal();
+            username = user.getUsername();
+        }else {
+            username = (String)auth.getPrincipal();
+        }
+        return memberFeign.getMemberInfo(username,"account");
     }
 
 }

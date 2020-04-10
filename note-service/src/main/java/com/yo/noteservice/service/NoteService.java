@@ -17,4 +17,6 @@ public interface NoteService {
     Note getUserNoteById(String userId, String noteId);
 
     CommonResult deleteUserNote(String userId, String noteId);
+
+    Note getUserNoteByIdForReading(String userId, String noteId);
 }

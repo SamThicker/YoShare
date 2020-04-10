@@ -10,9 +10,11 @@ import com.yo.yoshare.mbg.mapper.CmsMemberResourceMapper;
 import com.yo.yoshare.mbg.model.CmsMemberResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -82,6 +84,17 @@ public class NoteServiceImpl implements NoteService {
             return CommonResult.success("操作成功");
         }
         return CommonResult.failed("操作失败，请重试");
+    }
+
+    @Override
+    public Note getUserNoteByIdForReading(String userId, String noteId) {
+        Note note = noteDao.getUserNoteById(userId, noteId);
+        Content[] contents = note.getContents();
+        Stream<Content> stream = Arrays.stream(contents).filter(
+                Content::isPublished
+        );
+        note.setContents((Content[]) stream.toArray());
+        return note;
     }
 
 

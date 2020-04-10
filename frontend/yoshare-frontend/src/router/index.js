@@ -36,6 +36,11 @@ const routes = [
           requireAuth: true
         },
         component: () => import("@/components/Notice.vue")
+      },
+      {
+        path: "search",
+        name: "Search",
+        component: () => import("@/components/Search.vue")
       }
     ]
   },

@@ -87,8 +87,10 @@ export default {
 
 /*左边显示面板*/
 .introduction.introduction-bar {
-  width: 500px;
-  height: 600px;
+  width: 45%;
+  min-width: 350px;
+  max-width: 500px;
+  height: 30%;
   margin: 0 auto;
   text-align: left;
   color: rgba(13, 148, 225, 0.9);
@@ -100,6 +102,7 @@ export default {
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.18);
   -webkit-box-shadow: 0 7px 25px rgba(0, 0, 0, 0.18);
   overflow: auto;
+  box-sizing: border-box;
 }
 
 /*开关*/

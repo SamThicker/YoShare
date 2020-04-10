@@ -1,31 +1,50 @@
 <template>
   <div class="category-panel-wrap">
     <div class="note-side-bar-folder">
-      <div class="folders-label">
+      <div
+        class="folders-label"
+        @click="classificationsCallback ? classificationsCallback.add() : null"
+      >
         <span class="add"><h3>+</h3></span>
         <span class="char"><h3>分类</h3></span>
       </div>
       <div class="folders">
         <ul>
-          <li>
-            <i class="el-icon-files"></i>
-            <span>全部</span>
-          </li>
-          <li>
-            <i class="el-icon-user"></i>
-            <span>个人</span>
-          </li>
-          <li>
-            <i class="el-icon-share"></i>
-            <span>共享</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>星标</span>
-          </li>
-          <li>
-            <i class="el-icon-reading"></i>
-            <span>自定义</span>
+          <li
+            v-for="classification in classifications"
+            :key="classification.id"
+            @click="
+              classificationsCallback
+                ? classificationsCallback.click(classification)
+                : null
+            "
+          >
+            <i
+              :class="
+                classification.icon ? classification.icon : 'el-icon-reading'
+              "
+            ></i>
+            <span>{{ classification.classficationName }}</span>
+            <span class="classification-menu">
+              <span
+                class="classification-add"
+                @click="
+                  classificationsCallback
+                    ? classificationsCallback.addRes(classification)
+                    : null
+                "
+                >+</span
+              >
+              <span
+                class="classification-more"
+                @click="
+                  classificationsCallback
+                    ? classificationsCallback.more(classification)
+                    : null
+                "
+                >...</span
+              >
+            </span>
           </li>
         </ul>
       </div>
@@ -43,55 +62,61 @@
       </div>
       <div class="preview-list-wrap">
         <ul class="preview-list">
-          <li
-            v-for="resource in resources"
-            :key="resource.id"
-            @click.stop="
-              previewItemClickCallback
-                ? previewItemClickCallback(resource)
-                : null
-            "
-          >
-            <div class="preview-list-item">
-              <div class="preview-list-item-header">
-                <span class="preview-item-title">{{ resource.title }}</span>
-                <span class="preview-item-menu">
-                  <i
-                    class="el-icon-star-on preview-item-btn"
-                    v-show="false"
-                    style="color: yellow; font-size: 23px"
-                    @click.stop="
-                      itemUnstarCallback ? itemUnstarCallback(resource) : null
-                    "
-                  ></i>
-                  <i
-                    class="el-icon-star-off preview-item-btn"
-                    v-show="true"
-                    @click.stop="
-                      itemStarCallback ? itemStarCallback(resource) : null
-                    "
-                  ></i>
-                  <i
-                    class="el-icon-share preview-item-btn"
-                    @click.stop="
-                      itemShareCallback ? itemShareCallback(resource) : null
-                    "
-                  ></i>
-                  <i
-                    class="el-icon-delete preview-item-btn"
-                    @click.stop="itemDelCallback ? itemDelCallback(resource) : null"
-                  ></i>
-                </span>
+          <transition-group name="el-fade-in">
+            <li
+              v-for="resource in resources"
+              :key="resource.id"
+              @click.stop="
+                previewItemClickCallback
+                  ? previewItemClickCallback(resource)
+                  : null
+              "
+            >
+              <div class="preview-list-item">
+                <div class="preview-list-item-header">
+                  <span class="preview-item-title">{{ resource.title }}</span>
+                  <span class="preview-item-menu">
+                    <i
+                      class="el-icon-star-on preview-item-btn"
+                      v-show="false"
+                      style="color: yellow; font-size: 23px"
+                      @click.stop="
+                        itemUnstarCallback ? itemUnstarCallback(resource) : null
+                      "
+                    ></i>
+                    <i
+                      class="el-icon-star-off preview-item-btn"
+                      v-show="true"
+                      @click.stop="
+                        itemStarCallback ? itemStarCallback(resource) : null
+                      "
+                    ></i>
+                    <i
+                      class="el-icon-share preview-item-btn"
+                      @click.stop="
+                        itemShareCallback ? itemShareCallback(resource) : null
+                      "
+                    ></i>
+                    <i
+                      class="el-icon-delete preview-item-btn"
+                      @click.stop="
+                        itemDelCallback ? itemDelCallback(resource) : null
+                      "
+                    ></i>
+                  </span>
+                </div>
+                <div class="preview-list-item-description">
+                  {{ resource.description }}
+                </div>
+                <div class="preview-list-item-tag">
+                  <span class="item-date">{{ resource.datetime }}</span>
+                  <span class="item-author">{{
+                    "by:" + resource.byUserId
+                  }}</span>
+                </div>
               </div>
-              <div class="preview-list-item-description">
-                {{ resource.description }}
-              </div>
-              <div class="preview-list-item-tag">
-                <span class="item-date">{{ resource.datetime }}</span>
-                <span class="item-author">{{ "by:" + resource.byUserId }}</span>
-              </div>
-            </div>
-          </li>
+            </li>
+          </transition-group>
         </ul>
       </div>
     </div>
@@ -107,7 +132,18 @@ export default {
     itemStarCallback: Function,
     itemUnstarCallback: Function,
     itemShareCallback: Function,
-    itemDelCallback: Function
+    itemDelCallback: Function,
+    ownClassifications: Array,
+    classificationsCallback: {
+      click: Function,
+      add: Function,
+      more: Function,
+      addRes: Function
+    }
+  },
+  mounted() {
+    this.classifications.push(...this.basicClassifications);
+    this.classifications.push(...this.ownClassifications);
   },
   data() {
     return {
@@ -123,12 +159,40 @@ export default {
           datetime: "2020-03-28 16:34:44",
           resourceRef: "5e7f7ca3d7b5f522aa998b60"
         }
+      ],
+      classifications: [],
+      basicClassifications: [
+        {
+          id: "-1",
+          icon: "el-icon-files",
+          classficationName: "全部"
+        },
+        {
+          id: "-2",
+          icon: "el-icon-user",
+          classficationName: "个人"
+        },
+        {
+          id: "-3",
+          icon: "el-icon-share",
+          classficationName: "共享"
+        },
+        {
+          id: "-4",
+          icon: "el-icon-star-off",
+          classficationName: "星标"
+        }
       ]
     };
   },
   computed: {},
   watch: {
     resourceData: function() {},
+    ownClassifications: function(val) {
+      this.classifications.length = 0;
+      this.classifications.push(...this.basicClassifications);
+      this.classifications.push(...val);
+    },
     deep: true
   },
   methods: {}
@@ -174,7 +238,7 @@ li {
   height: calc(100% - 65px);
   width: 100%;
   box-sizing: border-box;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 .folders-label {
@@ -214,7 +278,6 @@ li {
   box-sizing: border-box;
   padding: 0 2px 0 35px;
   background-color: #f2f2f2;
-  cursor: pointer;
   border-radius: 5px;
   text-align: left;
 }
@@ -224,7 +287,7 @@ li {
   position: absolute;
   left: 50%;
   transform: translate3d(-50%, 0, 0);
-  width: 100%;
+  width: 80%;
   height: 1px;
   background-image: linear-gradient(
     to right,
@@ -239,6 +302,10 @@ li {
   background-color: #e8f2fe;
 }
 
+.folders ul li:hover .classification-menu {
+  display: inline-block;
+}
+
 .folders ul li i {
   line-height: 38px;
   font-size: 18px;
@@ -248,7 +315,40 @@ li {
 .folders ul li span {
   margin-left: 25px;
   line-height: 38px;
+  height: 38px;
   font-size: 15px;
+}
+
+.classification-menu {
+  line-height: 36px;
+  height: 38px;
+  position: absolute;
+  z-index: 100;
+  right: 10px;
+  width: 50px;
+  box-sizing: border-box;
+  text-align: left;
+  display: none;
+  background-color: #e8f2fe;
+}
+
+.classification-add {
+  position: absolute;
+  font-size: 23px !important;
+  font-weight: bold;
+  right: 30px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.classification-more {
+  position: absolute;
+  width: 20px;
+  top: -3px;
+  right: 5px;
+  font-size: 18px !important;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .preview-menu {

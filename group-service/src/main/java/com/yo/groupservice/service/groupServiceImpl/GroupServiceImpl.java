@@ -4,12 +4,14 @@ import com.yo.groupservice.dao.GmsGroupDao;
 import com.yo.groupservice.exception.GlobalException;
 import com.yo.groupservice.feign.FileService;
 import com.yo.groupservice.service.GroupService;
+import com.yo.groupservice.service.RedisService;
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.mbg.mapper.GmsGroupMapper;
 import com.yo.yoshare.mbg.mapper.GmsGroupMemberRelationshipMapper;
 import com.yo.yoshare.mbg.model.*;
 import io.minio.errors.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -18,6 +20,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -31,6 +34,17 @@ public class GroupServiceImpl implements GroupService {
     private FileService fileService;
     @Autowired(required = false)
     private GmsGroupDao groupDao;
+    /**加入小组的验证码*/
+    @Value("${redis.key.prefix.groupJoinCode}")
+    private String GROUP_JOIN_CODE_PREFIX;
+    /**加入小组的验证码的超时时间*/
+    @Value("${redis.key.expire.groupJoinCode}")
+    private Long GROUP_JOIN_CODE_EXPIRE;
+    /**小组人数限制*/
+    @Value("${group.member.limit}")
+    private int GROUP_MEMBER_LIMIT;
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public CommonResult createGroup(String id, GmsGroup group) throws GlobalException.GroupTooMuchException {
@@ -95,5 +109,82 @@ public class GroupServiceImpl implements GroupService {
         }
         List<UmsMemberInfo> resultList = groupDao.listGroupMember(groupId);
         return CommonResult.success(resultList, "操作成功");
+    }
+
+    @Override
+    public CommonResult getGroupJoinCode(Long userId, Long groupId) {
+        if (!isMember(userId, groupId)) {
+            return CommonResult.failed("无权限");
+        }
+        GmsGroupMemberRelationshipExample example = new GmsGroupMemberRelationshipExample();
+        example.clear();
+        example.createCriteria().andMemberIdEqualTo(groupId);
+        int num = memberRelationshipMapper.countByExample(example);
+        if (num >= GROUP_MEMBER_LIMIT){
+            return CommonResult.failed("人数已满");
+        }
+        String code = UUID.randomUUID().toString();
+        String key = GROUP_JOIN_CODE_PREFIX + groupId + "";
+        redisService.set(key, code);
+        redisService.expire(key,GROUP_JOIN_CODE_EXPIRE);
+        return CommonResult.success(code, "操作成功");
+    }
+
+    @Override
+    public CommonResult joinGroupByCode(Long userId, Long groupId, String groupJoinCode) {
+        GmsGroupMemberRelationshipExample example = new GmsGroupMemberRelationshipExample();
+        example.createCriteria().andMemberIdEqualTo(userId).andGroupIdEqualTo(groupId);
+        List result = memberRelationshipMapper.selectByExample(example);
+        if (result.size()>0){
+            return CommonResult.failed("您已经在小组中");
+        }
+        groupJoinCode = groupJoinCode.trim();
+        String key = GROUP_JOIN_CODE_PREFIX + groupId;
+        String code = redisService.get(key);
+        if (code == null) {
+            return CommonResult.failed("请联系该小组，重新分发验证码");
+        }
+        if (!code.equals(groupJoinCode)) {
+            return CommonResult.failed("验证码错误");
+        }
+        redisService.remove(key);
+        GmsGroup group = groupMapper.selectByPrimaryKey(groupId);
+        if (group.getMemberNum() >= 5){
+            return CommonResult.failed("人数已满");
+        }
+        group.setUpdatedTime(new Date());
+        group.setUpdatedBy(userId.toString());
+        group.setMemberNum(group.getMemberNum()+1);
+        groupMapper.updateByPrimaryKeySelective(group);
+        GmsGroupMemberRelationship relationship = new GmsGroupMemberRelationship();
+        relationship.setGroupId(groupId);
+        relationship.setJoinedTime(new Date());
+        relationship.setMemberId(userId);
+        memberRelationshipMapper.insertSelective(relationship);
+        return CommonResult.success("操作成功", "操作成功");
+    }
+
+    @Override
+    public CommonResult updateGroupInfo(Long userId, GmsGroup group) {
+        if (!isMember(userId, group.getId())){
+            return CommonResult.failed("无权限");
+        }
+        GmsGroup newGroup = new GmsGroup();
+        newGroup.setId(group.getId());
+        newGroup.setName(group.getName());
+        newGroup.setIntroduction(group.getIntroduction());
+        newGroup.setUpdatedBy(userId.toString());
+        newGroup.setUpdatedTime(new Date());
+        groupMapper.updateByPrimaryKeySelective(newGroup);
+        return CommonResult.success(groupMapper.selectByPrimaryKey(group.getId()),"操作成功");
+    }
+
+
+    /**判断用户是否小组成员*/
+    public boolean isMember(Long userId, Long groupId){
+        GmsGroupMemberRelationshipExample example = new GmsGroupMemberRelationshipExample();
+        example.createCriteria().andMemberIdEqualTo(userId).andGroupIdEqualTo(groupId);
+        List result = memberRelationshipMapper.selectByExample(example);
+        return result.size()>0 ? true : false;
     }
 }

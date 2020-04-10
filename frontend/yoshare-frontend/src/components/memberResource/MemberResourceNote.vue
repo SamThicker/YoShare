@@ -8,6 +8,8 @@
       :itemUnstarCallback="itemUnstarClicked"
       :itemShareCallback="itemShareClicked"
       :itemDelCallback="itemDelClicked"
+      :ownClassifications="classifications"
+      :classificationsCallback="classificationsCallBack"
     ></resource-panel>
     <div class="note-content" v-loading="noteLoading">
       <router-view />
@@ -18,11 +20,14 @@
 <script>
 import ResourcePanel from "@/components/ResourcePanel.vue";
 import { getOwnResource, delResourceNote } from "@/api/resource";
+import { formatDateTime } from "../../../static/utils/dateUtil";
+import { addMemClassification, getMemClassification } from "../../api/resource";
 export default {
   name: "MemberResourceNote",
   components: { ResourcePanel },
   mounted() {
     this.getOwnResource();
+    this.getNoteClassifications();
   },
   data() {
     return {
@@ -31,7 +36,14 @@ export default {
       deleteLoading: false,
       noteLoading: false,
       note: null,
-      toTop: false
+      toTop: false,
+      classifications: [],
+      classificationsCallBack: {
+        click: null,
+        add: this.addClassDialog,
+        more: null,
+        addRes: null
+      }
     };
   },
   computed: {
@@ -43,6 +55,7 @@ export default {
     userId: function(id) {
       if (id) {
         this.getOwnResource();
+        this.getNoteClassifications();
       }
     },
     note: function() {}
@@ -55,6 +68,9 @@ export default {
         .then(function(res) {
           // _this.resources = [];
           _this.resources = res.data;
+          _this.resources.forEach(res => {
+            res.datetime = formatDateTime(res.datetime);
+          });
         })
         .catch(function(err) {
           console.info("err:" + err);
@@ -94,6 +110,44 @@ export default {
         })
         .catch(() => {
           _this.deleteLoading = false;
+        });
+    },
+    getNoteClassifications() {
+      let _this = this;
+      getMemClassification(this.userId, "NOTE")
+        .then(function(res) {
+          let classes = res.data;
+          _this.classifications = classes;
+        })
+        .catch(err => {
+          console.info("出错辣，请稍后再试" + err);
+        });
+    },
+    addClassDialog() {
+      let _this = this;
+      this.$prompt("请输入名称", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        inputErrorMessage: "格式不正确"
+      })
+        .then(({ value }) => {
+          let name = value;
+          let userId = _this.userId;
+          addMemClassification(userId, "NOTE", name)
+            .then(function() {
+              _this.getNoteClassifications();
+              _this.$elementMessage("操作成功", "success", 1500);
+            })
+            .catch(err => {
+              console.info("出错辣" + err);
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入"
+          });
         });
     }
   }

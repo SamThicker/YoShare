@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="group-wrap">
       <transition-group name="el-fade-in">
         <div
           class="group"
-          v-for="group in ownGroups"
+          v-for="group in allGroups"
           :key="group.id"
           @click="toGroupManager(group.id)"
         >
@@ -27,7 +27,6 @@
               {{ group.introduction }}
             </p>
           </div>
-          <div></div>
         </div>
       </transition-group>
 
@@ -38,6 +37,13 @@
         v-show="ownGroups.length < 3"
       >
         <div class="add">+</div>
+      </div>
+
+      <!--加入小组-->
+      <div class="group" @click="joinGroupDialog()">
+        <div class="add">
+          <i class="el-icon-s-custom"></i>
+        </div>
       </div>
     </div>
 
@@ -71,18 +77,20 @@
 </template>
 
 <script>
-import { createGroup } from "../api/group";
+import { createGroup, joinGroupByCode } from "../api/group";
 
 export default {
   name: "Group",
   data() {
     return {
       ownGroups: [],
+      allGroups: [],
       createBar: false,
       newGroup: {
         name: "",
         introduction: ""
-      }
+      },
+      loading: false
     };
   },
   watch: {
@@ -90,10 +98,14 @@ export default {
     userOwnGroups: function(val) {
       this.ownGroups = val;
     },
+    userAllGroups: function(val) {
+      this.allGroups = val;
+    },
     userId: function() {}
   },
   mounted() {
     this.ownGroups = this.userOwnGroups;
+    this.allGroups = this.userAllGroups;
   },
   computed: {
     userId: function() {
@@ -101,10 +113,13 @@ export default {
     },
     userOwnGroups: function() {
       return this.$store.state.user.ownGroups;
+    },
+    userAllGroups: function() {
+      return this.$store.state.user.allGroups;
     }
   },
   methods: {
-    refreshOwnGroups() {
+    refreshGroups() {
       let userId = this.$store.state.user.info.id;
       this.$store.dispatch("getAllGroups", userId);
     },
@@ -124,7 +139,7 @@ export default {
       document.removeEventListener("click", this.clickListener);
     },
     createGroup() {
-      this.refreshOwnGroups();
+      this.refreshGroups();
       if (this.ownGroups.length >= 3) {
         this.$elementMessage("每人只能创建3个小组", "error", 1500);
         this.createBar = false;
@@ -141,7 +156,7 @@ export default {
       this.createBar = false;
       createGroup(data, userId)
         .then(function() {
-          _this.refreshOwnGroups();
+          _this.refreshGroups();
         })
         .catch(function(err) {
           console.info("err:" + err);
@@ -149,6 +164,43 @@ export default {
     },
     toGroupManager(id) {
       this.$router.push("/group/" + id + "/note");
+    },
+    //显示加入小组的消息框
+    joinGroupDialog() {
+      let _this = this;
+      this.$alert(
+        '<label style="display: block;">小组ID</label>' +
+          '<input id="join-groupId" style="display: block; width: 100%; height: 25px; outline: none;"></input>' +
+          '<label style="display: block;">验证码</label>' +
+          '<input id="join-code" style="display: block; width: 100%; height: 25px; outline: none;"></input>',
+        "加入小组",
+        {
+          dangerouslyUseHTMLString: true
+        }
+      )
+        .then(function() {
+          let userId = _this.userId;
+          let groupId = document.getElementById("join-groupId").value;
+          let code = document.getElementById("join-code").value;
+          let idValid = "[0-9]+";
+          if (!groupId.match(idValid)) {
+            _this.$elementMessage("ID输入有误，ID只能是纯数字", "error", 1500);
+            return;
+          }
+          joinGroupByCode(userId, groupId, code)
+            .then(function() {
+              _this.$store.dispatch("getAllGroups", userId);
+              _this.$elementMessage("操作成功", "success", 1500);
+            })
+            .catch(err => {
+              let e = err.message;
+              if (e == null) e = "出错辣~请稍后重试";
+              _this.$elementMessage(e, "error", 1500);
+            });
+        })
+        .catch(function() {
+          _this.$elementMessage("请稍后重试", "error", 1500);
+        });
     }
   }
 };

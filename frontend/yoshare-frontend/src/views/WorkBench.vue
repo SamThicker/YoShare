@@ -119,6 +119,7 @@
 <script>
 import TimeLine from "../components/TimeLine";
 import { getNoteForSelf, saveNote } from "../api/note";
+import { formatDateTime } from "../../static/utils/dateUtil";
 export default {
   name: "WorkBench",
   watch: {
@@ -176,7 +177,8 @@ export default {
       saveOption: false,
       editing: true,
       markdownEditable: true,
-      onSaveLoading: false
+      onSaveLoading: false,
+      currentVersionId: ""
     };
   },
   computed: {
@@ -200,13 +202,20 @@ export default {
     },
     getCurrentTime() {
       let date = new Date();
+      let month = date.getMonth() + 1;
+      let today = date.getDate();
+      if (month < 10) {
+        month = "0" + month;
+      }
+      if (today < 10) {
+        today = "0" + today;
+      }
       return (
         date.getFullYear() +
         "-" +
-        date.getMonth() +
-        1 +
+        month +
         "-" +
-        date.getDate() +
+        today +
         " " +
         date.getHours() +
         ":" +
@@ -256,6 +265,9 @@ export default {
       getNoteForSelf(this.userId, this.noteId)
         .then(function(res) {
           _this.currentNote = res.data;
+          _this.currentNote.contents.forEach(content => {
+            content.time = formatDateTime(content.time);
+          });
         })
         .catch(function(err) {
           console.info("err:" + err);
@@ -316,7 +328,7 @@ export default {
     showSaveOption() {
       //如果当前笔记包含历史版本，则显示当前最新版本
       if (this.noteId) {
-        this.content = this.editingBackup;
+        this.timeLineItemClick("");
       }
       this.editing = true;
       this.markdownEditable = true;
@@ -333,8 +345,9 @@ export default {
     timeLineItemClick(id) {
       //id不为空则表示点击历史记录
       if (id) {
+        this.currentVersionId = id;
         this.markdownEditable = false;
-        //如果当前是编辑状态，则保存内容
+        //如果当前是编辑状态，则备份内容
         if (this.editing) {
           this.editingBackup = this.content;
           this.editing = false;
@@ -342,14 +355,15 @@ export default {
         let contents = this.currentNote.contents.filter(
           content => content.id === id
         );
-        this.content = contents[contents.length - 1].content;
+        this.content = contents[0].content;
         return;
       }
       //如果id为空，表示点击当前编辑状态
       //如果noteId为空，则表示新笔记，没有历史版本不需要备份
-      if (this.noteId) {
+      if (this.noteId && this.currentVersionId != "") {
         this.content = this.editingBackup;
       }
+      this.currentVersionId = "";
       this.editing = true;
       this.markdownEditable = true;
     }

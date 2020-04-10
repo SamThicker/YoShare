@@ -22,4 +22,10 @@ public interface GroupService {
     List<GmsGroup> getMemberGroups(Long id);
 
     CommonResult listAllGroupMember(Long userId, Long groupId);
+
+    CommonResult getGroupJoinCode(Long userId, Long groupId);
+
+    CommonResult joinGroupByCode(Long userId, Long groupId, String groupJoinCode);
+
+    CommonResult updateGroupInfo(Long userId, GmsGroup group);
 }

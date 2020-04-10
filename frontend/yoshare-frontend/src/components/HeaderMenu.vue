@@ -5,6 +5,12 @@
       <a @click="selectTab('follow')">关注</a>
       <a @click="selectTab('notice')">消息</a>
     </div>
+    <div class="search">
+      <input class="search-input" placeholder="搜索" v-model="searchContent" />
+      <div class="search-btn" @click="search()">
+        <i class="el-icon-search"></i>
+      </div>
+    </div>
     <div class="login-register" v-if="!checkLogedIn()">
       <div class="login-btn" @click="toLogin()">
         登录/注册
@@ -106,7 +112,8 @@ export default {
   data() {
     return {
       show: false,
-      size: 40
+      size: 40,
+      searchContent: ""
     };
   },
   methods: {
@@ -134,7 +141,7 @@ export default {
       this.$router.push("/workBench/" + userId);
     },
     toResource() {
-      this.$router.push("/resource");
+      this.$router.push("/resource/note");
     },
     selectTab(option) {
       let tab = ["group", "follow", "notice"];
@@ -145,6 +152,7 @@ export default {
           els[index].classList.add("selected");
         }
       });
+      if (tab.indexOf(option) < 0) return;
       if (this.$route.path === "/" + option) return;
       this.$router.push("/" + option);
     },
@@ -154,6 +162,14 @@ export default {
       option = option[option.length - 1];
       if (tab.indexOf(option) < 0) return;
       this.selectTab(option);
+    },
+    search() {
+      this.selectTab("");
+      this.$store.commit("SET_SEARCHWD", this.searchContent);
+      if (this.$route.path === "/search") {
+        return;
+      }
+      this.$router.push("/search");
     }
   },
   mounted() {
@@ -168,9 +184,12 @@ export default {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  position: relative;
+  min-width: 780px;
 }
 
 .nav {
+  position: relative;
   width: auto;
   height: 100%;
   margin-left: 100px;
@@ -200,9 +219,50 @@ export default {
   color: #4594fa;
 }
 
+.search {
+  display: inline-block;
+  box-sizing: border-box;
+  position: relative;
+  float: left;
+  width: calc(100% - 600px);
+  min-width: 200px;
+  max-width: 350px;
+  height: 38px;
+  margin-top: 10px;
+  background-color: #eaeaea;
+  border-radius: 40px;
+  box-sizing: border-box;
+}
+
+.search-input {
+  float: left;
+  height: 38px;
+  width: calc(100% - 45px);
+  cursor: text;
+  padding-left: 15px;
+  box-sizing: border-box;
+  background: none;
+  outline: none;
+  border: none;
+  color: #929292;
+  font-size: 15px;
+}
+
+.search-btn {
+  float: right;
+  width: 38px;
+  height: 38px;
+  border-radius: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 38px;
+  color: #919191;
+  cursor: pointer;
+}
+
 .func-btn {
   position: relative;
-  width: 180px;
+  width: 120px;
   height: 58px;
   float: right;
   top: 50%;

@@ -39,4 +39,5 @@
                 gms_group_member_relationship.group_id = #{groupId, jdbcType=BIGINT}
         )
     </select>
+
 </mapper>
