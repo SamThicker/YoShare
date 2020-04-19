@@ -1,8 +1,15 @@
 <template>
   <div class="group-resource-note-wrap">
-    <resource-panel
-      class="resource-panel"
-    ></resource-panel>
+
+    <group-resource-panel class="resource-panel"
+      :type="'NOTE'"
+      :previewItemClickCallback="noteItemClicked"
+      :itemStarCallback="itemStarClicked"
+      :itemUnstarCallback="itemUnstarClicked"
+      :itemShareCallback="itemShareClicked"
+      :classificationsCallback="classificationsCallBack"
+      :refresh="refresh"
+    ></group-resource-panel>
     <div class="note-content" v-loading="noteLoading">
       <router-view/>
     </div>
@@ -10,10 +17,10 @@
 </template>
 
 <script>
-import ResourcePanel from "@/components/ResourcePanel";
+import GroupResourcePanel from "./GroupResourcePanel";
 export default {
   name: "GroupNote",
-  components: { ResourcePanel },
+  components: { GroupResourcePanel },
   data() {
     return {
       noteLoading: false

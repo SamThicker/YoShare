@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 @FeignClient(value = "SERVICE-FILE")
 public interface FileService {
 
-    @RequestMapping(value = "/iconUploadUrl", method = RequestMethod.GET)
+    @RequestMapping(value = "/file/iconUploadUrl", method = RequestMethod.GET)
     CommonResult getIconUploadUrl(@RequestParam String name) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidPortException, InvalidExpiresRangeException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InvalidEndpointException, InternalException;
 
 

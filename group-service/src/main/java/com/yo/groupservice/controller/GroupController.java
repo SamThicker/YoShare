@@ -14,6 +14,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
+@RequestMapping("/group")
 public class GroupController {
 
     @Autowired

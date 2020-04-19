@@ -32,6 +32,8 @@ export default {
   background-color: #f9f9f9;
   width: 100%;
   height: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
 
 .content {
@@ -39,8 +41,10 @@ export default {
   box-sizing: border-box;
   position: relative;
   width: 100%;
+  flex: 1;
   height: calc(100% - 56px);
   text-align: center;
   display: block;
+  overflow: hidden;
 }
 </style>

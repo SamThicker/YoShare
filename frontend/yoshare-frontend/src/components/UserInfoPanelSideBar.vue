@@ -31,6 +31,12 @@ export default {
           icon: "",
           link: "/userInfo/securityInfo",
           label: "securityInfo"
+        },
+        {
+          name: "学习记录",
+          icon: "",
+          link: "/userInfo/studyRecord",
+          label: "studyRecord"
         }
       ],
       active: -1

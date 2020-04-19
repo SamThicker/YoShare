@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(value = "service-member")
 public interface MemberFeign {
 
-    @RequestMapping(value = "/{param}/info/{option}", method = RequestMethod.GET)
+    @RequestMapping(value = "/member/{param}/info/{option}", method = RequestMethod.GET)
     CommonResult<UmsMemberSimpleInfo> getMemberInfo(@PathVariable("param") String param,
                                                            @PathVariable("option") String option);
 }

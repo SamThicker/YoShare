@@ -5,16 +5,17 @@ import com.yo.resourceservice.feignInterface.NoteService;
 import com.yo.resourceservice.service.ResourceService;
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.common.api.ResultCode;
-import com.yo.yoshare.mbg.mapper.CmsGroupResourceClassificationMapper;
+import com.yo.yoshare.mbg.mapper.CmsMemberFavoritePageMapper;
+import com.yo.yoshare.mbg.mapper.CmsMemberFileMapper;
 import com.yo.yoshare.mbg.mapper.CmsMemberResourceClassficationMapper;
 import com.yo.yoshare.mbg.mapper.CmsMemberResourceMapper;
-import com.yo.yoshare.mbg.model.CmsMemberResource;
-import com.yo.yoshare.mbg.model.CmsMemberResourceClassfication;
-import com.yo.yoshare.mbg.model.CmsMemberResourceClassficationExample;
-import com.yo.yoshare.mbg.model.CmsMemberResourceExample;
+import com.yo.yoshare.mbg.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,26 +26,70 @@ public class ResourceServiceImpl implements ResourceService {
     CmsMemberResourceClassficationMapper memberClassificationMapper;
     @Autowired
     NoteService noteService;
+    @Autowired(required = false)
+    CmsMemberFavoritePageMapper favoritePageMapper;
+    @Autowired/*(required = false)*/
+    CmsMemberFileMapper memberFileMapper;
+    @Value("${file.rootDir.memberFile}")
+    private  String MEMBER_FILE_DIR;
 
     @Override
-    public List<CmsMemberResource> getResourcesForSelf(Long id) {
+    public List<CmsMemberResource> getResourcesForSelf(Long id, String type) {
         CmsMemberResourceExample example = new CmsMemberResourceExample();
-        example.createCriteria().andByUserIdEqualTo(id);
+        if (!ResourceType.isContain(type)){
+            example.createCriteria().andByUserIdEqualTo(id);
+            return memberResourceMapper.selectByExample(example);
+        }
+        example.createCriteria().andByUserIdEqualTo(id).andTypeEqualTo(type);
         return memberResourceMapper.selectByExample(example);
     }
 
     @Override
     public CommonResult delResourceForSelf(CmsMemberResource resource) {
-        CommonResult result = noteService.delNote(resource.getByUserId().toString(), resource.getResourceRef());
-        if (result.getCode()!= ResultCode.SUCCESS.getCode()) {
-            return CommonResult.failed("操作失败");
+        switch (resource.getType()){
+            case "NOTE":{
+                CommonResult result = noteService.delNote(resource.getByUserId().toString(), resource.getResourceRef());
+                if (result.getCode()!= ResultCode.SUCCESS.getCode()) {
+                    return CommonResult.failed("操作失败");
+                }
+                CmsMemberResourceExample example = new CmsMemberResourceExample();
+                example.createCriteria().andByUserIdEqualTo(resource.getByUserId())
+                        .andTypeEqualTo("NOTE")
+                        .andIdEqualTo(resource.getId());
+                memberResourceMapper.deleteByExample(example);
+                return CommonResult.success("操作成功");
+            }
+            case "FAVORITE": {
+                favoritePageMapper.deleteByPrimaryKey(Long.valueOf(resource.getResourceRef()));
+                memberResourceMapper.deleteByPrimaryKey(resource.getId());
+                return CommonResult.success("操作成功");
+            }
+            case "FILE": {
+                Long id = Long.valueOf(resource.getResourceRef());
+                CmsMemberFile fileInfo = memberFileMapper.selectByPrimaryKey(id);
+                String name = fileInfo.getName();
+                String hashString = fileInfo.getMd5();
+                memberResourceMapper.deleteByPrimaryKey(resource.getId());
+                memberFileMapper.deleteByPrimaryKey(id);
+                CmsMemberFileExample example = new CmsMemberFileExample();
+                example.createCriteria().andMd5EqualTo(hashString);
+                List<CmsMemberFile> files = memberFileMapper.selectByExample(example);
+                if (files.size() != 0){
+                    return CommonResult.success("操作成功");
+                }
+                File fileDir = new File(MEMBER_FILE_DIR + hashString);
+                File file = new File(fileDir + "/" + name);
+                file.delete();
+                if (fileDir.exists() && !fileDir.delete()){
+                    return CommonResult.failed("服务异常");
+                }
+                return CommonResult.success("操作成功");
+            }
+            default: {
+                //TODO
+            }
         }
-        CmsMemberResourceExample example = new CmsMemberResourceExample();
-        example.createCriteria().andByUserIdEqualTo(resource.getByUserId())
-                .andTypeEqualTo("NOTE")
-                .andIdEqualTo(resource.getId());
-        memberResourceMapper.deleteByExample(example);
-        return CommonResult.success("操作成功");
+        return CommonResult.failed("资源类型不正确");
     }
 
     @Override
@@ -53,7 +98,7 @@ public class ResourceServiceImpl implements ResourceService {
             return CommonResult.failed("资源类型错误");
         }
         CmsMemberResourceClassficationExample example = new CmsMemberResourceClassficationExample();
-        example.createCriteria().andMemberIdEqualTo(userId).andClassficationNameEqualTo(classificationName).andTypeEqualTo(type);
+        example.createCriteria().andMemberIdEqualTo(userId).andClassificationNameEqualTo(classificationName).andTypeEqualTo(type);
         List list = memberClassificationMapper.selectByExample(example);
         if (list.size()>0){
             return CommonResult.failed("已经存在该分类，请更换名称");
@@ -66,7 +111,7 @@ public class ResourceServiceImpl implements ResourceService {
         }
         CmsMemberResourceClassfication classfication = new CmsMemberResourceClassfication();
         classfication.setMemberId(userId);
-        classfication.setClassficationName(classificationName);
+        classfication.setClassificationName(classificationName);
         classfication.setType(type);
         memberClassificationMapper.insertSelective(classfication);
         return CommonResult.success("操作成功");
@@ -75,9 +120,12 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public CommonResult getClassification(Long userId, String type) {
         CmsMemberResourceClassficationExample example = new CmsMemberResourceClassficationExample();
-        example.createCriteria().andMemberIdEqualTo(userId);
-        List result = memberClassificationMapper.selectByExample(example);
-        return CommonResult.success(result);
+        if (!ResourceType.isContain(type)) {
+            example.createCriteria().andMemberIdEqualTo(userId);
+            return CommonResult.success(memberClassificationMapper.selectByExample(example), "操作成功");
+        }
+        example.createCriteria().andMemberIdEqualTo(userId).andTypeEqualTo(type);
+        return CommonResult.success(memberClassificationMapper.selectByExample(example));
     }
 
     @Override
@@ -94,6 +142,29 @@ public class ResourceServiceImpl implements ResourceService {
         example.createCriteria().andIdEqualTo(classificationId).andMemberIdEqualTo(userId);
         memberClassificationMapper.deleteByExample(example);
         return CommonResult.success("成功");
+    }
+
+    @Override
+    public CommonResult addFavorite(Long userId, String title, String introduction, String url) {
+        CmsMemberFavoritePage page = new CmsMemberFavoritePage();
+        page.setCreatedTime(new Date());
+        page.setUrl(url);
+        favoritePageMapper.insertSelective(page);
+        CmsMemberResource resource = new CmsMemberResource();
+        resource.setByUserId(userId);
+        resource.setDatetime(new Date());
+        resource.setDescription(introduction);
+        resource.setType("FAVORITE");
+        resource.setResourceRef(page.getId().toString());
+        resource.setTitle(title);
+        memberResourceMapper.insertSelective(resource);
+        return CommonResult.success("操作成功", "操作成功");
+    }
+
+    @Override
+    public CommonResult getWeb(Long userId, Long webId) {
+        CmsMemberFavoritePageExample example = new CmsMemberFavoritePageExample();
+        return CommonResult.success(favoritePageMapper.selectByPrimaryKey(webId), "操作成功");
     }
 
 }

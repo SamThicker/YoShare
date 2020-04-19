@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("resource")
 public class ResourceController {
 
     @Autowired
     ResourceService resourceService;
 
     @GetMapping("/{id}/ownResource")
-    public CommonResult getResourcesForSelf(@PathVariable("id") Long id) {
-        List<CmsMemberResource> list = resourceService.getResourcesForSelf(id);
+    public CommonResult getResourcesForSelf(@RequestParam String type, @PathVariable("id") Long id) {
+        List<CmsMemberResource> list = resourceService.getResourcesForSelf(id, type);
         return CommonResult.success(list, "操作成功");
     }
 
@@ -54,6 +55,17 @@ public class ResourceController {
     @DeleteMapping(value = "/{id}/ownResource/classification")
     public CommonResult deleteClassification(@PathVariable("id") Long userId, @RequestParam Long classificationId){
         return resourceService.deleteClassification(userId, classificationId);
+    }
+
+    @PutMapping(value = "/{id}/ownResource/web")
+    public CommonResult addFavorite(@PathVariable("id") Long userId, @RequestParam String title,
+                                    @RequestParam String introduction, @RequestParam String url){
+        return resourceService.addFavorite(userId, title, introduction, url);
+    }
+
+    @GetMapping(value = "/{id}/ownResource/web")
+    public CommonResult getWeb(@PathVariable(value = "id") Long userId, @RequestParam Long webId){
+        return resourceService.getWeb(userId, webId);
     }
 
 }

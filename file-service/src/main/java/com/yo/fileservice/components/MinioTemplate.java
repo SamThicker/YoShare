@@ -2,6 +2,7 @@ package com.yo.fileservice.components;
 
 import io.minio.MinioClient;
 import io.minio.ObjectStat;
+import io.minio.PutObjectOptions;
 import io.minio.Result;
 import io.minio.errors.*;
 import io.minio.messages.Bucket;
@@ -114,9 +115,9 @@ public class MinioTemplate {
      * @param stream     文件流
      * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#putObject
      */
-    public void putObject(String bucketName, String objectName, InputStream stream) throws Exception {
-        client.putObject(bucketName, objectName, stream, stream.available(), "application/octet-stream");
-    }
+//    public void putObject(String bucketName, String objectName, InputStream stream) throws Exception {
+//        client.putObject(bucketName, objectName, stream, stream.available(), "application/octet-stream");
+//    }
 
     /**
      * 上传文件
@@ -129,7 +130,9 @@ public class MinioTemplate {
      * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#putObject
      */
     public void putObject(String bucketName, String objectName, InputStream stream, long size, String contextType) throws Exception {
-        client.putObject(bucketName, objectName, stream, size, contextType);
+        PutObjectOptions options = new PutObjectOptions(size, 1024 * 1024 * 10);
+        options.setContentType(contextType);
+        client.putObject(bucketName, objectName, stream, options);
     }
 
     /**
@@ -176,7 +179,7 @@ public class MinioTemplate {
     /**
      * 获取浏览器上传url
      * */
-    public String presignedPutObjectUrl(String bucketName, String objectName, Integer expires) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InvalidExpiresRangeException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException {
+    public String presignedPutObjectUrl(String bucketName, String objectName, Integer expires) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InvalidExpiresRangeException, InternalException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, InvalidResponseException, XmlParserException {
         if (null == expires) {
             return client.presignedPutObject(bucketName, objectName);
         }

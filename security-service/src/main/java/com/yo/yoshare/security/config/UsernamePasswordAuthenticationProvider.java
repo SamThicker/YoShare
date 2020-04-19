@@ -1,17 +1,12 @@
 package com.yo.yoshare.security.config;
 
-import com.yo.yoshare.security.service.MemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.Collection;
 
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
 
@@ -32,7 +27,7 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
         //获取用户账号
         String account = authentication.getName();
         //获取用户安全数据
-        UserDetails userDetails = memberDetailsService.loadUserByAccount(account);
+        UserDetails userDetails = memberDetailsService.loadUserByUsername(account);
         if (userDetails == null){
             throw new BadCredentialsException("账号或密码错误");
         }

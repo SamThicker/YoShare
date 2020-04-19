@@ -312,7 +312,7 @@ export default {
           _this.onSaveLoading = false;
           if (!_this.$route.params.noteId) {
             let id = res.data.id;
-            _this.$router.push("/workBench/" + _this.userId + "/" + id);
+            _this.$router.replace("/workBench/" + _this.userId + "/" + id);
           }
           _this.getNote();
           _this.setData();

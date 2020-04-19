@@ -1,51 +1,48 @@
 <template>
   <div class="category-panel-wrap">
     <div class="note-side-bar-folder">
-      <div
-        class="folders-label"
-        @click="classificationsCallback ? classificationsCallback.add() : null"
-      >
+      <div class="folders-label" @click.stop="addClassDialog()">
         <span class="add"><h3>+</h3></span>
         <span class="char"><h3>分类</h3></span>
       </div>
       <div class="folders">
         <ul>
-          <li
-            v-for="classification in classifications"
-            :key="classification.id"
-            @click="
-              classificationsCallback
-                ? classificationsCallback.click(classification)
-                : null
-            "
-          >
-            <i
-              :class="
-                classification.icon ? classification.icon : 'el-icon-reading'
+          <transition-group name="el-fade-in">
+            <li
+              v-for="classification in classifications"
+              :key="classification.id"
+              :class="{
+                unEditable: classification.unEditable,
+                unNameable: classification.unNameable
+              }"
+              @click.stop="
+                classificationsCallback
+                  ? classificationsCallback.click(classification)
+                  : null
               "
-            ></i>
-            <span>{{ classification.classficationName }}</span>
-            <span class="classification-menu">
-              <span
-                class="classification-add"
-                @click="
-                  classificationsCallback
-                    ? classificationsCallback.addRes(classification)
-                    : null
+            >
+              <i
+                :class="
+                  classification.icon ? classification.icon : 'el-icon-reading'
                 "
-                >+</span
-              >
-              <span
-                class="classification-more"
-                @click="
-                  classificationsCallback
-                    ? classificationsCallback.more(classification)
-                    : null
-                "
-                >...</span
-              >
-            </span>
-          </li>
+              ></i>
+              <span>{{
+                classification ? classification.classificationName : null
+              }}</span>
+              <span class="classification-menu">
+                <span
+                  class="classification-add"
+                  @click.stop="classificationsCallback.addRes(classification)"
+                  >+</span
+                >
+                <span
+                  class="classification-more"
+                  @click.stop="moreDialog(classification)"
+                  >...</span
+                >
+              </span>
+            </li>
+          </transition-group>
         </ul>
       </div>
     </div>
@@ -100,7 +97,9 @@
                     <i
                       class="el-icon-delete preview-item-btn"
                       @click.stop="
-                        itemDelCallback ? itemDelCallback(resource) : null
+                        itemDelClicked(resource)
+                          ? itemDelClicked(resource)
+                          : null
                       "
                     ></i>
                   </span>
@@ -124,26 +123,35 @@
 </template>
 
 <script>
+import {
+  addMemClassification,
+  deleteMemClassification,
+  delResourceNote,
+  getMemClassification,
+  updateMemClassification
+} from "@/api/resource";
+import { getOwnResource } from "@/api/resource";
+import { formatDateTime } from "../../static/utils/dateUtil";
+
 export default {
   name: "ResourcePanel",
   props: {
+    type: String,
     previewItemClickCallback: Function,
-    resources: Array,
     itemStarCallback: Function,
     itemUnstarCallback: Function,
     itemShareCallback: Function,
-    itemDelCallback: Function,
-    ownClassifications: Array,
     classificationsCallback: {
       click: Function,
-      add: Function,
       more: Function,
       addRes: Function
-    }
+    },
+    refresh: Boolean
   },
   mounted() {
-    this.classifications.push(...this.basicClassifications);
-    this.classifications.push(...this.ownClassifications);
+    this.init();
+    this.getOwnResource();
+    this.getClassifications();
   },
   data() {
     return {
@@ -160,42 +168,223 @@ export default {
           resourceRef: "5e7f7ca3d7b5f522aa998b60"
         }
       ],
+      resources: [],
       classifications: [],
+      ownClassifications: [],
       basicClassifications: [
         {
           id: "-1",
           icon: "el-icon-files",
-          classficationName: "全部"
+          classificationName: "全部",
+          // unEditable: true,
+          unNameable: true
         },
         {
           id: "-2",
           icon: "el-icon-user",
-          classficationName: "个人"
+          classificationName: "个人",
+          unEditable: true
         },
         {
           id: "-3",
           icon: "el-icon-share",
-          classficationName: "共享"
+          classificationName: "共享",
+          unEditable: true
         },
         {
           id: "-4",
           icon: "el-icon-star-off",
-          classficationName: "星标"
+          classificationName: "星标",
+          unEditable: true
         }
       ]
     };
   },
-  computed: {},
+  computed: {
+    userId: function() {
+      return this.$store.state.user.info.id;
+    }
+  },
   watch: {
+    refresh: function(bool) {
+      if (!bool) return;
+      this.getOwnResource();
+      this.getClassifications();
+    },
     resourceData: function() {},
     ownClassifications: function(val) {
       this.classifications.length = 0;
       this.classifications.push(...this.basicClassifications);
       this.classifications.push(...val);
     },
+    userId: function(id) {
+      if (id) {
+        this.getOwnResource();
+        this.getClassifications();
+      }
+    },
     deep: true
   },
-  methods: {}
+  methods: {
+    init: function() {
+      this.classifications.push(...this.basicClassifications);
+    },
+    getOwnResource: function() {
+      let _this = this;
+      if (!this.userId) return;
+      let type = this.type ? this.type : "all";
+      getOwnResource(_this.userId, type)
+        .then(function(res) {
+          _this.resources = res.data;
+          _this.resources.forEach(res => {
+            res.datetime = formatDateTime(res.datetime);
+          });
+        })
+        .catch(function(err) {
+          console.info("err:" + err);
+        });
+    },
+    itemStarClicked: function() {},
+    itemUnstarClicked: function() {},
+    itemShareClicked: function() {},
+    itemDelClicked(resource) {
+      let _this = this;
+      this.$confirm("此操作将永久删除该资源, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          _this.deleteLoading = true;
+          resource.datetime = new Date(resource.datetime);
+          delResourceNote(_this.$store.state.user.info.id, resource)
+            .then(function() {
+              let res = resource;
+              let index = _this.resources.findIndex(
+                resource => resource.id === res.id
+              );
+              if (index > -1) {
+                _this.resources.splice(index, 1);
+              }
+              _this.deleteLoading = false;
+            })
+            .catch(() => {
+              _this.$elementMessage("操作失败，请重试", "error", 1500);
+              _this.deleteLoading = false;
+            });
+        })
+        .catch(() => {
+          _this.deleteLoading = false;
+        });
+    },
+    getClassifications() {
+      let _this = this;
+      let type = this.type ? this.type : "all";
+      getMemClassification(this.userId, type)
+        .then(function(res) {
+          let classes = res.data;
+          _this.ownClassifications = classes;
+        })
+        .catch(err => {
+          console.info("出错辣，请稍后再试" + err);
+        });
+    },
+    addClassDialog() {
+      let _this = this;
+      this.$prompt("请输入名称", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        inputErrorMessage: "格式不正确"
+      })
+        .then(({ value }) => {
+          if (!value || "" === value) {
+            _this.$elementMessage("输入不能为空", "error", 1500);
+            return;
+          }
+          let name = value;
+          let userId = _this.userId;
+          let type = _this.type ? _this.type : "NOTE";
+          addMemClassification(userId, type, name)
+            .then(function() {
+              _this.getClassifications();
+              _this.$elementMessage("操作成功", "success", 1500);
+            })
+            .catch(err => {
+              _this.$elementMessage("出错辣，" + err.message, "error", 1500);
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入"
+          });
+        });
+    },
+    //显示"分类"编辑框
+    moreDialog(classis) {
+      if (!classis) return;
+      let _this = this;
+      this.$prompt("请输入新名称", "提示", {
+        confirmButtonText: "重命名",
+        cancelButtonText: "删除",
+        inputValue: classis.classificationName,
+        distinguishCancelAndClose: true,
+        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        inputErrorMessage: "格式不正确"
+      })
+        .then(({ value }) => {
+          classis.classificationName = value;
+          _this.uddateClassis(classis);
+        })
+        .catch(action => {
+          if (action === "close") return;
+          _this
+            .$confirm("此操作将永久删除该分类, 是否继续?", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+            .then(function() {
+              _this.deleteClassis(classis);
+            })
+            .catch(() => {
+              _this.$message({
+                type: "info",
+                message: "已取消"
+              });
+            });
+        });
+    },
+    //删除"分类"
+    deleteClassis(classis) {
+      let _this = this;
+      deleteMemClassification(this.userId, classis.id)
+        .then(function() {
+          _this.getClassifications();
+          _this.$elementMessage("操作成功", "success", 1500);
+        })
+        .catch(err => {
+          _this.$elementMessage(err.message, "error", 1500);
+        });
+    },
+    //更新分类的名称
+    updateClassis(classis) {
+      let _this = this;
+      updateMemClassification(_this.userId, classis)
+        .then(function() {
+          _this.$elementMessage("操作成功", "success", 1500);
+          _this.getClassifications();
+        })
+        .catch(err => {
+          _this.$elementMessage(
+            "操作失败，请重试(" + err.message + ")",
+            "error",
+            1500
+          );
+        });
+    }
+  }
 };
 </script>
 
@@ -302,7 +491,7 @@ li {
   background-color: #e8f2fe;
 }
 
-.folders ul li:hover .classification-menu {
+.folders ul li:hover:not(.unEditable) .classification-menu {
   display: inline-block;
 }
 
@@ -321,15 +510,20 @@ li {
 
 .classification-menu {
   line-height: 36px;
-  height: 38px;
+  height: 36px;
   position: absolute;
   z-index: 100;
+  top: 1px;
   right: 10px;
-  width: 50px;
+  width: 56px;
   box-sizing: border-box;
   text-align: left;
   display: none;
   background-color: #e8f2fe;
+}
+
+.unNameable .classification-more {
+  display: none;
 }
 
 .classification-add {
@@ -339,6 +533,7 @@ li {
   right: 30px;
   width: 20px;
   cursor: pointer;
+  user-select: none;
 }
 
 .classification-more {
@@ -349,6 +544,7 @@ li {
   font-size: 18px !important;
   font-weight: bold;
   cursor: pointer;
+  user-select: none;
 }
 
 .preview-menu {

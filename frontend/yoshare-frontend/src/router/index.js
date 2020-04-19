@@ -106,6 +106,13 @@ const routes = [
         meta: {
           requireAuth: true
         }
+      },
+      {
+        path: "studyRecord",
+        component: () => import("@/components/memberResource/StudyRecord"),
+        meta: {
+          requireAuth: true
+        }
       }
     ]
   },

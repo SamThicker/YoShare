@@ -9,13 +9,43 @@ jwt:
   tokenHead: yoshare  #JWT负载中拿到开头
 
 spring:
-  application:
-    name: service-security
   profiles:
     active: dev
+  application:
+    name: service-security
+  datasource:
+    url: jdbc:mysql://localhost:3306/yoshare?characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: root
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 9
+  redis:
+    database: 2
+    host: localhost
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+    timeout: 100ms
 
 
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml
     - classpath*:com/**/mapper/*.xml
+
+
+
+
+
+
+management:
+  endpoint:
+    health:
+      enabled: true

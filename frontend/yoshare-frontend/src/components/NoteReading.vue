@@ -53,6 +53,7 @@
 <script>
 import SimpleHeaderBarPro from "./memberResource/SimpleHeaderBarPro";
 import { getNoteForSelf } from "@/api/note";
+import { addReadNoteLog } from "../api/log";
 
 export default {
   name: "NoteReading",
@@ -85,7 +86,8 @@ export default {
       currentContent: "",
       scrollAble: true,
       note: null,
-      noteLoading: false
+      noteLoading: false,
+      timer: null
     };
   },
   computed: {
@@ -115,6 +117,7 @@ export default {
     }
   },
   destroyed() {
+    clearTimeout(this.timer);
     document.removeEventListener("click", this.fontSizeSliderListener);
   },
   methods: {
@@ -178,6 +181,8 @@ export default {
       this.$router.push("/workBench/" + userId + "/" + noteId);
     },
     getNote() {
+      clearTimeout(this.timer);
+      if (!this.noteId) return;
       this.noteLoading = true;
       let _this = this;
       let userId = this.$store.state.user.info.id;
@@ -185,12 +190,19 @@ export default {
         .then(function(res) {
           _this.note = res.data;
           _this.noteLoading = false;
+          _this.timer = setTimeout(_this.addMemberReadRecord, 1000 * 30);
         })
         .catch(function(err) {
           console.info("err:" + err);
-          _this.$elementMessage("获取笔记失败", "error", 1500);
+          _this.$elementMessage("获取笔记失败", "error", 1000);
           _this.noteLoading = false;
         });
+    },
+    addMemberReadRecord() {
+      let userId = this.$store.state.user.info.id;
+      addReadNoteLog(userId, this.noteId)
+        .then()
+        .catch();
     }
   }
 };

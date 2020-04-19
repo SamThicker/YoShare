@@ -4,6 +4,13 @@ server:
 spring:
   application:
     name: zuul-service
+  servlet:
+    multipart:
+      enabled: true   # 使用http multipart上传处理
+      max-file-size: 200MB # 设置单个文件的最大长度，默认1M，如不限制配置为-1
+      max-request-size: 200MB # 设置最大的请求文件的大小，默认10M，如不限制配置为-1
+      file-size-threshold: 10MB  # 当上传文件达到10MB的时候进行磁盘写入
+      location: /mydata/yoshare/tmp  # 上传的临时目录
 
 eureka:
   client:
@@ -24,23 +31,38 @@ zuul:
     service-member:
       path: /member/**
       serviceId: service-member
+      url: localhost:/9010
+      stripPrefix: false
     service-security:
       path: /security/**
       serviceId: service-security
+      stripPrefix: false
     service-file:
       path: /file/**
       serviceId: service-file
+      stripPrefix: false
     service-note:
       path: /note/**
       serviceId: service-note
+      stripPrefix: false
     service-group:
       path: /group/**
       serviceId: service-group
+      stripPrefix: false
     service-resource:
       path: /resource/**
       serviceId: service-resource
+      stripPrefix: false
+    service-log:
+      path: /log/**
+      serviceId: service-log
+      stripPrefix: false
   retryable: true
   sensitive-headers:
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+
 
 ribbon:
   ConnectTimeout: 500 # 连接超时时间(ms)

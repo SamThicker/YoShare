@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface SecurityFeign {
 
 
-    @RequestMapping(value = "/member/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/security/member/login", method = RequestMethod.POST)
     CommonResult<String> login(@RequestParam("username") String username,
                                @RequestParam("password") String password);
 }

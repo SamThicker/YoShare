@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ResourcePanel from "@/components/ResourcePanel.vue";
+import ResourcePanel from "@/components/group/GroupResourcePanel.vue";
 export default {
   name: "Resource",
   components: { ResourcePanel }

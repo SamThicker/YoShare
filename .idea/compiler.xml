@@ -12,17 +12,18 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="resource-service" />
-        <module name="member-service" />
         <module name="eureka-server" />
         <module name="notification-service" />
+        <module name="yoshare-common" />
         <module name="yoshare-mbg" />
-        <module name="file-service" />
+        <module name="yoshare" />
         <module name="note-service" />
         <module name="security-service" />
         <module name="group-service" />
+        <module name="log-service" />
         <module name="zuul-service" />
-        <module name="yoshare" />
-        <module name="yoshare-common" />
+        <module name="file-service" />
+        <module name="member-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -31,6 +32,7 @@
       <module name="file-service" target="1.8" />
       <module name="group-service" target="1.8" />
       <module name="group-service (1)" target="1.8" />
+      <module name="log-service" target="1.8" />
       <module name="member-service" target="1.8" />
       <module name="note-service" target="1.8" />
       <module name="notification-service" target="1.8" />
@@ -50,6 +52,7 @@
       <module name="file-service" options="-parameters" />
       <module name="group-service" options="-parameters" />
       <module name="group-service (1)" options="-parameters" />
+      <module name="log-service" options="-parameters" />
       <module name="member-service" options="-parameters" />
       <module name="note-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />

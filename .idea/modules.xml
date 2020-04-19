@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/file-service/file-service.iml" filepath="$PROJECT_DIR$/file-service/file-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/frontend/frontend.iml" filepath="$PROJECT_DIR$/frontend/frontend.iml" />
       <module fileurl="file://$PROJECT_DIR$/group-service/group-service.iml" filepath="$PROJECT_DIR$/group-service/group-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/log-service/log-service.iml" filepath="$PROJECT_DIR$/log-service/log-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/member-service/member-service.iml" filepath="$PROJECT_DIR$/member-service/member-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/note-service/note-service.iml" filepath="$PROJECT_DIR$/note-service/note-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/notification-service/notification-service.iml" filepath="$PROJECT_DIR$/notification-service/notification-service.iml" />

@@ -64,7 +64,10 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
                 "/group/{id}/group", "/group/{id}/createdGroups","/group/{id}/*/avatarUploadUrl","/group/{id}/allGroups","/group/{id}/members/*","/group/{id}/groupCode","/group/{id}/group/member",
                 "/group/{id}/info",
                 "/resource/{id}/ownResource","/resource/{id}/ownResource/classification",
-                "/file/blogFilePutUrl/{id}/*"
+                "/resource/{id}/ownResource/web",
+                "/file/blogFilePutUrl/{id}/*","/file/member/{id}/file","/file/member/{id}/existFile",
+                "/zuul/member/{id}/file","/zuul/file/member/{id}/file",
+                "/log/readNoteLog/{id}","/log/readNoteLog/{id}/*"
         );
 
 

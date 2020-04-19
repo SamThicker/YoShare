@@ -1,8 +1,9 @@
 package com.yo.fileservice.controller;
 
+
 import com.yo.yoshare.common.api.CommonResult;
 import io.minio.MinioClient;
-import io.minio.policy.PolicyType;
+import io.minio.PutObjectOptions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -49,14 +50,16 @@ public class MinioController {
             } else {
                 //创建存储桶并设置只读权限
                 minioClient.makeBucket(BUCKET_NAME);
-                minioClient.setBucketPolicy(BUCKET_NAME, "*.*", PolicyType.READ_ONLY);
+                minioClient.setBucketPolicy(BUCKET_NAME, "*.*,read_only");
             }
             String filename = file.getOriginalFilename();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             // 设置存储对象名称
             String objectName = sdf.format(new Date()) + "/" + filename;
             // 使用putObject上传一个文件到存储桶中
-            minioClient.putObject(BUCKET_NAME, objectName, file.getInputStream(), file.getContentType());
+            PutObjectOptions options = new PutObjectOptions(file.getSize(), 1024 * 1024 *10);
+            options.setContentType(file.getContentType());
+            minioClient.putObject(BUCKET_NAME, objectName, file.getInputStream(), options);
 //            LOGGER.info("文件上传成功!");
 //            MinioUploadDto minioUploadDto = new MinioUploadDto();
 //            minioUploadDto.setName(filename);

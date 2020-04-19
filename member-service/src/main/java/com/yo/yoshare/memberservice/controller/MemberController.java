@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 
 @Api(tags = "MemberController", description = "会员管理")
 @RestController
+@RequestMapping(value = "/member")
 public class MemberController {
     @Autowired
     MemberService memberService;
