@@ -9,17 +9,17 @@
         <ul>
           <transition-group name="el-fade-in">
             <li
+              class="classification"
               v-for="classification in classifications"
               :key="classification.id"
               :class="{
                 unEditable: classification.unEditable,
-                unNameable: classification.unNameable
+                unNameable: classification.unNameable,
+                active: currentClassification.id
+                  ? classification.id === currentClassification.id
+                  : false
               }"
-              @click.stop="
-                classificationsCallback
-                  ? classificationsCallback.click(classification)
-                  : null
-              "
+              @click.stop="selectClassis(classification)"
             >
               <i
                 :class="
@@ -64,9 +64,7 @@
               v-for="resource in resources"
               :key="resource.id"
               @click.stop="
-                previewItemClickCallback
-                  ? previewItemClickCallback(resource)
-                  : null
+                previewItemCallback ? previewItemCallback.click(resource) : null
               "
             >
               <div class="preview-list-item">
@@ -78,27 +76,33 @@
                       v-show="false"
                       style="color: yellow; font-size: 23px"
                       @click.stop="
-                        itemUnstarCallback ? itemUnstarCallback(resource) : null
+                        previewItemCallback.unstar
+                          ? previewItemCallback.unstar(resource)
+                          : null
                       "
                     ></i>
                     <i
                       class="el-icon-star-off preview-item-btn"
                       v-show="true"
                       @click.stop="
-                        itemStarCallback ? itemStarCallback(resource) : null
+                        previewItemCallback.star
+                          ? previewItemCallback.star(resource)
+                          : null
                       "
                     ></i>
                     <i
                       class="el-icon-share preview-item-btn"
                       @click.stop="
-                        itemShareCallback ? itemShareCallback(resource) : null
+                        previewItemCallback.share
+                          ? previewItemCallback.share(resource)
+                          : null
                       "
                     ></i>
                     <i
                       class="el-icon-delete preview-item-btn"
                       @click.stop="
-                        itemDelClicked(resource)
-                          ? itemDelClicked(resource)
+                        previewItemCallback.del
+                          ? previewItemCallback.del(resource)
                           : null
                       "
                     ></i>
@@ -123,24 +127,26 @@
 </template>
 
 <script>
-import {
-  addMemClassification,
-  deleteMemClassification,
-  delResourceNote,
-  getMemClassification,
-  updateMemClassification
-} from "@/api/resource";
-import { getOwnResource } from "@/api/resource";
 import { formatDateTime } from "../../../static/utils/dateUtil";
+import {
+  addGroupClassification,
+  deleteGroupClassification,
+  getGroupClassification,
+  updateGroupClassification
+} from "../../api/resource";
+import { getGroupResources } from "../../api/groupResource";
 
 export default {
   name: "GroupResourcePanel",
   props: {
     type: String,
-    previewItemClickCallback: Function,
-    itemStarCallback: Function,
-    itemUnstarCallback: Function,
-    itemShareCallback: Function,
+    previewItemCallback: {
+      click: Function,
+      star: Function,
+      unstar: Function,
+      del: Function,
+      share: Function
+    },
     classificationsCallback: {
       click: Function,
       more: Function,
@@ -150,7 +156,7 @@ export default {
   },
   mounted() {
     this.init();
-    this.getOwnResource();
+    this.getGroupResource();
     this.getClassifications();
   },
   data() {
@@ -197,18 +203,22 @@ export default {
           classificationName: "星标",
           unEditable: true
         }
-      ]
+      ],
+      currentClassification: ""
     };
   },
   computed: {
     userId: function() {
       return this.$store.state.user.info.id;
+    },
+    groupId: function() {
+      return this.$route.params.groupId;
     }
   },
   watch: {
     refresh: function(bool) {
       if (!bool) return;
-      this.getOwnResource();
+      this.getGroupResource();
       this.getClassifications();
     },
     resourceData: function() {},
@@ -217,23 +227,27 @@ export default {
       this.classifications.push(...this.basicClassifications);
       this.classifications.push(...val);
     },
-    userId: function(id) {
+    groupId: function(id) {
       if (id) {
-        this.getOwnResource();
+        this.getGroupResource();
         this.getClassifications();
       }
+    },
+    currentClassification: function() {
+      this.getGroupResource();
     },
     deep: true
   },
   methods: {
     init: function() {
       this.classifications.push(...this.basicClassifications);
+      this.currentClassification = this.classifications[0];
     },
-    getOwnResource: function() {
+    getGroupResource: function() {
       let _this = this;
-      if (!this.userId) return;
+      if (!this.groupId) return;
       let type = this.type ? this.type : "all";
-      getOwnResource(_this.userId, type)
+      getGroupResources(_this.groupId, type, this.currentClassification.id)
         .then(function(res) {
           _this.resources = res.data;
           _this.resources.forEach(res => {
@@ -244,46 +258,12 @@ export default {
           console.info("err:" + err);
         });
     },
-    itemStarClicked: function() {},
-    itemUnstarClicked: function() {},
-    itemShareClicked: function() {},
-    itemDelClicked(resource) {
-      let _this = this;
-      this.$confirm("此操作将永久删除该资源, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          _this.deleteLoading = true;
-          resource.datetime = new Date(resource.datetime);
-          delResourceNote(_this.$store.state.user.info.id, resource)
-            .then(function() {
-              let res = resource;
-              let index = _this.resources.findIndex(
-                resource => resource.id === res.id
-              );
-              if (index > -1) {
-                _this.resources.splice(index, 1);
-              }
-              _this.deleteLoading = false;
-            })
-            .catch(() => {
-              _this.$elementMessage("操作失败，请重试", "error", 1000);
-              _this.deleteLoading = false;
-            });
-        })
-        .catch(() => {
-          _this.deleteLoading = false;
-        });
-    },
     getClassifications() {
       let _this = this;
       let type = this.type ? this.type : "all";
-      getMemClassification(this.userId, type)
+      getGroupClassification(this.groupId, type)
         .then(function(res) {
-          let classes = res.data;
-          _this.ownClassifications = classes;
+          _this.ownClassifications = res.data;
         })
         .catch(err => {
           console.info("出错辣，请稍后再试" + err);
@@ -303,9 +283,8 @@ export default {
             return;
           }
           let name = value;
-          let userId = _this.userId;
           let type = _this.type ? _this.type : "NOTE";
-          addMemClassification(userId, type, name)
+          addGroupClassification(this.groupId, type, name)
             .then(function() {
               _this.getClassifications();
               _this.$elementMessage("操作成功", "success", 1000);
@@ -335,7 +314,7 @@ export default {
       })
         .then(({ value }) => {
           classis.classificationName = value;
-          _this.uddateClassis(classis);
+          _this.updateClassis(classis);
         })
         .catch(action => {
           if (action === "close") return;
@@ -359,7 +338,7 @@ export default {
     //删除"分类"
     deleteClassis(classis) {
       let _this = this;
-      deleteMemClassification(this.userId, classis.id)
+      deleteGroupClassification(this.groupId, classis.type, classis.id)
         .then(function() {
           _this.getClassifications();
           _this.$elementMessage("操作成功", "success", 1000);
@@ -371,7 +350,12 @@ export default {
     //更新分类的名称
     updateClassis(classis) {
       let _this = this;
-      updateMemClassification(_this.userId, classis)
+      updateGroupClassification(
+        this.groupId,
+        classis.type,
+        classis.id,
+        classis.classificationName
+      )
         .then(function() {
           _this.$elementMessage("操作成功", "success", 1000);
           _this.getClassifications();
@@ -383,6 +367,13 @@ export default {
             1000
           );
         });
+    },
+    //选择分类
+    selectClassis(classification) {
+      this.currentClassification = classification;
+      if (this.classificationsCallback && this.classificationsCallback.click) {
+        this.classificationsCallback.click(classification);
+      }
     }
   }
 };
@@ -487,12 +478,24 @@ li {
   );
 }
 
-.folders ul li:hover {
+.classification:hover:not(.active) {
   background-color: #e8f2fe;
 }
 
-.folders ul li:hover:not(.unEditable) .classification-menu {
+.classification.active {
+  background-color: #d1e7fe;
+}
+
+.classification.active::before {
+  display: none;
+}
+
+.classification:hover:not(.unEditable) .classification-menu {
   display: inline-block;
+}
+
+.classification.active .classification-menu {
+  background-color: #d1e7fe;
 }
 
 .folders ul li i {
@@ -553,6 +556,8 @@ li {
   box-sizing: border-box;
   border-bottom: 1px solid #ddd;
 }
+
+
 
 .note-search {
   margin: 11px auto;

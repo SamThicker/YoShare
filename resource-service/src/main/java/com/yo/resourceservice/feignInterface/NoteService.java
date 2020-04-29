@@ -13,7 +13,7 @@ public interface NoteService {
     /**
      * 删除特定用户特定笔记
      * */
-    @RequestMapping(value = "/ownNote/{userId}/{noteId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/note/ownNote/{userId}/{noteId}", method = RequestMethod.DELETE)
     @ResponseBody
     CommonResult delNote(@PathVariable(value = "userId") String userId,
                                 @PathVariable(value = "noteId") String noteId);

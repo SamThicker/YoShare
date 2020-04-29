@@ -3,7 +3,7 @@
     <resource-panel
       class="category-panel"
       :type="'FAVORITE'"
-      :preview-item-click-callback="previewItemClickCallback"
+      :previewItemCallback="previewItemCallback"
       :classificationsCallback="classificationsCallBack"
       :refresh.sync="refresh"
     ></resource-panel>
@@ -53,7 +53,13 @@ export default {
   components: { ResourcePanel },
   data() {
     return {
-      previewItemClickCallback: this.visitFavoritePage,
+      previewItemCallback: {
+        click: this.visitFavoritePage,
+        star: this.itemStarClicked,
+        unstar: this.itemUnstarClicked,
+        share: this.itemShareClicked,
+        del: null
+      },
       classificationsCallBack: {
         click: null,
         addRes: this.addFavoriteWebPageDialog

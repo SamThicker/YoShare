@@ -1,28 +1,51 @@
 <template>
   <div class="group-resource-favorite-wrap">
-    <resource-panel
-      :preview-item-click-callback="previewItemClickCallback"
-    ></resource-panel>
+
+    <group-resource-panel
+      class="resource-panel"
+      :type="'FAVORITE'"
+      :previewItemCallback="previewItemCallback"
+      :classificationsCallback="classificationsCallBack"
+      :refresh="refresh"
+    ></group-resource-panel>
+
   </div>
 </template>
 
 <script>
-import ResourcePanel from "@/components/ResourcePanel";
+import GroupResourcePanel from "@/components/group/GroupResourcePanel.vue";
 export default {
-  name: "Favorite",
-  components: { ResourcePanel },
+  name: "GroupFavorite",
+  components: { GroupResourcePanel },
   mounted() {
-    this.previewItemClickCallback = this.previewItemClicked;
   },
   data() {
     return {
-      previewItemClickCallback: Function
+      noteLoading: false,
+      previewItemCallback: {
+        click: this.itemClick,
+        star: this.itemStar,
+        unstar: this.itemUnstar,
+        share: this.itemShare,
+        del: this.itemDelete
+      },
+      classificationsCallBack: {
+        click: this.classisClick,
+        more: this.classisEdit,
+        addRes: this.classisAddRes
+      },
+      refresh: false
     };
   },
   methods: {
-    previewItemClicked: function(index) {
-      console.info("index:" + index);
-    }
+    itemClick() {},
+    itemStar() {},
+    itemUnstar() {},
+    itemShare() {},
+    itemDelete() {},
+    classisClick() {},
+    classisEdit() {},
+    classisAddRes() {}
   }
 };
 </script>

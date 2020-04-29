@@ -1,15 +1,14 @@
 <template>
   <div class="resource-panel-wrap">
+
     <resource-panel
       class="resource-panel"
       :type="'FILE'"
-      :previewItemClickCallback="noteItemClicked"
-      :itemStarCallback="itemStarClicked"
-      :itemUnstarCallback="itemUnstarClicked"
-      :itemShareCallback="itemShareClicked"
+      :previewItemCallback="previewItemCallback"
       :classificationsCallback="classificationsCallBack"
       :refresh="refresh"
     ></resource-panel>
+
     <div class="resource-content">
       <file-content></file-content>
     </div>
@@ -113,6 +112,13 @@ export default {
       note: null,
       toTop: false,
       classifications: [],
+      previewItemCallback: {
+        click: this.noteItemClicked,
+        star: this.itemStarClicked,
+        unstar: this.itemUnstarClicked,
+        share: this.itemShareClicked,
+        del: null
+      },
       classificationsCallBack: {
         click: null,
         addRes: this.addFileResDialog

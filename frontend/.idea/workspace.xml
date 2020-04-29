@@ -2,129 +2,51 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="401df921-cd91-457a-82c1-db2c6b20a53a" name="Default Changelist" comment="nothing">
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_github_spotbugs_spotbugs_annotations_4_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_google_errorprone_error_prone_annotations_2_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_google_guava_guava_25_1_jre.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_google_j2objc_j2objc_annotations_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_squareup_okio_okio_1_17_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__io_jsonwebtoken_jjwt_0_9_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__io_minio_minio_7_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_bouncycastle_bcpkix_jdk15on_1_56.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_bouncycastle_bcprov_jdk15on_1_56.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_checkerframework_checker_qual_2_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_codehaus_mojo_animal_sniffer_annotations_1_14.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_mongodb_mongo_java_driver_3_11_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_simpleframework_simple_xml_2_7_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_eureka_client_unknown.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_security_spring_security_jwt_1_0_9_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__stax_stax_1_2_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__xpp3_xpp3_1_1_3_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/config/MyBatisConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/config/TransactionAdviceConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/log.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/FileContent.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupResourcePanel.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/StudyRecord.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yoshare-frontend/static/utils/fileUtil" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/config/MyBatisConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/config/Swagger2Config.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/config/TransactionAdviceConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/controller/MemberReadNoteController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/dao/MemberReadNoteDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/service/MemberReadNoteLogService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/service/impl/MemberReadNoteLogServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../log-service/src/main/resources/com/yo/yoshare/logservice/dao/MemberReadNoteDao.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/JWTokenEnhancer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/JwtTokenConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/MemberDetailsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/RedisTokenStoreConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/Swagger2Config.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/WebSecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/controller/MemberSecurityController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/service/SecurityService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/service/impl/SecurityServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_sun_xml_bind_jaxb_core_2_3_0_12.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_sun_xml_bind_jaxb_impl_2_3_0_12.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__javax_activation_javax_activation_api_1_2_02.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__javax_xml_bind_jaxb_api_2_3_12.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_mongodb_bson_3_11_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_mongodb_mongodb_driver_3_11_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_mongodb_mongodb_driver_core_3_11_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_30.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_7.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_data_mongodb_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_oauth2_2_2_0_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_oauth2_2_2_0_RELEASE2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_security_oauth_boot_spring_security_oauth2_autoconfigure_2_1_2_RELEASE2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../eureka-server/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../eureka-server/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/.mvn/wrapper/MavenWrapperDownloader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/components/MinioTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/components/MinioTemplate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/controller/FileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/controller/FileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/controller/MinioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/controller/MinioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/ServiceImpl/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/ServiceImpl/FileServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/yo.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/groupNote.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/groupResource" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/controller/GroupNoteController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/dao/GroupNoteDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/dto/GroupNoteRes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/dto/NoteRes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/mongoModel/GroupNote.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/service/GroupNoteService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/service/impl/GroupNoteServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/controller/GroupResClassisController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/controller/GroupResourceController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/GroupResClassisService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/GroupResourceService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/serviceImpl/GroupResClassisServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/serviceImpl/GroupResourceServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/filter/MerberIdInjectFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/api/file.js" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/file.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/api/group.js" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/group.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/api/note.js" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/note.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/api/resource.js" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/resource.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/NoteReading.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/NoteReading.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/api/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/ResourcePanel.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/ResourcePanel.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/UserInfoPanelSideBar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/UserInfoPanelSideBar.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFavorite.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFavorite.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFile.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNote.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNote.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupResourcePanel.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupResourcePanel.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberReasourceFavorite.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberReasourceFavorite.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceFile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceFile.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceNote.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceNote.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/views/Resource.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/views/Resource.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/views/WorkBench.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/views/WorkBench.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../group-service/.mvn/wrapper/MavenWrapperDownloader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../group-service/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../group-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../group-service/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../group-service/mvnw.cmd" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/controller/GroupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/controller/GroupController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../member-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../member-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/service/GroupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/service/GroupService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/service/groupServiceImpl/GroupServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/service/groupServiceImpl/GroupServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../member-service/src/main/java/com/yo/yoshare/memberservice/controller/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../member-service/src/main/java/com/yo/yoshare/memberservice/controller/MemberController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../member-service/src/main/java/com/yo/yoshare/memberservice/feign/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../member-service/src/main/java/com/yo/yoshare/memberservice/feign/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../member-service/src/main/java/com/yo/yoshare/memberservice/service/impl/RedisServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../member-service/src/main/java/com/yo/yoshare/memberservice/service/impl/RedisServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../member-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../member-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../note-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../note-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/controller/NoteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/controller/NoteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/model/Content.java" beforeDir="false" afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/model/Content.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/service/NoteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/service/NoteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/service/impl/NoteServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/service/impl/NoteServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/controller/ResourceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/controller/ResourceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/feignInterface/NoteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/feignInterface/NoteService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/ResourceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/ResourceService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/serviceImpl/ResourceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/serviceImpl/ResourceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../security-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/SecurityApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/SecurityApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/bo/MemberDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/bo/MemberDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/AuthorizationServerConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/OAuth2Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/PreConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/SecurityConfiguration.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/TokenConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/TokenConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/UsernamePasswordAuthenticationProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/config/UsernamePasswordAuthenticationProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/service/impl/UserServiceDetail.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../security-service/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/resources/static/login.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yoshare-common/yoshare-common.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../yoshare-common/yoshare-common.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yoshare.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../yoshare.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/feignInterface/MemberFeign.java" beforeDir="false" afterPath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/feignInterface/MemberFeign.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/feignInterface/SecurityFeign.java" beforeDir="false" afterPath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/feignInterface/SecurityFeign.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/security/AccessDecisionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/security/AccessDecisionService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/security/ApplicationConfigurerAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/security/ApplicationConfigurerAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../zuul-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../zuul-service/src/main/resources/application.yml" afterDir="false" />
     </list>
@@ -143,48 +65,13 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceNote.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-19">
-              <caret line="10" column="24" lean-forward="true" selection-start-line="3" selection-start-column="6" selection-end-line="10" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNote.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/api/log.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/UserInfoPanelSideBar.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="1" column="6" lean-forward="true" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupResourcePanel.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3103">
-              <caret line="271" column="59" selection-start-line="271" selection-start-column="59" selection-end-line="271" selection-end-column="59" />
+            <state relative-caret-position="384">
+              <caret line="148" column="6" lean-forward="true" selection-start-line="142" selection-start-column="4" selection-end-line="148" selection-end-column="6" />
               <folding>
-                <element signature="e#4308#4461#0" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#li#0;n#transition-group#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#4480#4544#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -193,48 +80,53 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/ResourcePanel.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1465">
-              <caret line="148" column="8" lean-forward="true" selection-start-line="148" selection-start-column="8" selection-end-line="148" selection-end-column="8" />
+            <state relative-caret-position="203">
+              <caret line="142" column="17" selection-start-line="142" selection-start-column="17" selection-end-line="142" selection-end-column="17" />
               <folding>
                 <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#li#0;n#transition-group#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#4308#4461#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFile.vue">
+        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNote.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
+            <state relative-caret-position="252">
+              <caret line="61" column="32" lean-forward="true" selection-start-line="61" selection-start-column="32" selection-end-line="61" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceNote.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="44">
+              <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="8" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceFile.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="173">
+              <caret line="115" column="36" lean-forward="true" selection-start-line="115" selection-start-column="36" selection-end-line="115" selection-end-column="36" />
+              <folding>
+                <element signature="e#2981#3040#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/NoteReading.vue">
+        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberReasourceFavorite.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="55">
-              <caret line="183" column="31" selection-start-line="183" selection-start-column="31" selection-end-line="183" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNoteReading.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-6639" />
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/router/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="151" column="37" lean-forward="true" selection-start-line="151" selection-start-column="37" selection-end-line="151" selection-end-column="37" />
+            <state relative-caret-position="88">
+              <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
               <folding>
-                <element signature="e#0#22#0" expanded="true" />
+                <element signature="n#style#0;n#label#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#1404#1463#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -245,8 +137,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="Vue Single File Component" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -269,20 +161,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/HeaderBarPro.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/SimpleHeaderBarPro.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/UserInfoPanel.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/store/getters.js" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/App.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/vue.config.js" />
         <option value="$PROJECT_DIR$/yoshare-frontend/static/utils/rawRequest.js" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/api/user.js" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/SimpleHeaderBarPro.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNoteReading.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/views/Home.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/views/UserInfo.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupSetting.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/GroupManage.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/Avatar.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/static/utils/dateUtil.js" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/store/modules/user.js" />
@@ -297,29 +183,35 @@
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/Search.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/SimpleInfo.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/HeaderMenu.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/api/group.js" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupSimpleInfo.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupMember.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/Group.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/views/WorkBench.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/api/resource.js" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/views/Resource.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/ResourcePanel.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/static/utils/fileUtil" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/api/file.js" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/FileContent.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFile.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceNote.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceFile.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberReasourceFavorite.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/UserInfoPanelSideBar.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/router/index.js" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/main.js" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/api/log.js" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/StudyRecord.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNote.vue" />
-        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupResourcePanel.vue" />
         <option value="$PROJECT_DIR$/yoshare-frontend/src/components/NoteReading.vue" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/StudyRecord.vue" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/api/note.js" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/api/resource.js" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/GroupManage.vue" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/api/user.js" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/api/group.js" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/api/groupResource" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupResourcePanel.vue" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFile.vue" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFavorite.vue" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNote.vue" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/views/WorkBench.vue" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/api/groupNote.js" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceNote.vue" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/ResourcePanel.vue" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceFile.vue" />
+        <option value="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberReasourceFavorite.vue" />
       </list>
     </option>
   </component>
@@ -335,10 +227,10 @@
     <auto-save>true</auto-save>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="425" />
-    <option name="y" value="259" />
-    <option name="width" value="1553" />
-    <option name="height" value="821" />
+    <option name="x" value="101" />
+    <option name="y" value="175" />
+    <option name="width" value="1370" />
+    <option name="height" value="837" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -346,6 +238,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -383,14 +276,6 @@
               <item name="yoshare-frontend" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="yoshare-frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="group" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="frontend" type="b2602c69:ProjectViewProjectNode" />
@@ -446,7 +331,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -468,7 +352,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
@@ -573,7 +457,23 @@
       <workItem from="1587017354154" duration="1542000" />
       <workItem from="1587022588748" duration="16143000" />
       <workItem from="1587133281191" duration="22529000" />
-      <workItem from="1587285874293" duration="8574000" />
+      <workItem from="1587285874293" duration="16457000" />
+      <workItem from="1587381105045" duration="5145000" />
+      <workItem from="1587450886352" duration="217000" />
+      <workItem from="1587453179703" duration="3939000" />
+      <workItem from="1587528680868" duration="1615000" />
+      <workItem from="1587573826641" duration="587000" />
+      <workItem from="1587633134784" duration="871000" />
+      <workItem from="1587641146322" duration="1197000" />
+      <workItem from="1587647652196" duration="599000" />
+      <workItem from="1587653354343" duration="1467000" />
+      <workItem from="1587720694113" duration="10529000" />
+      <workItem from="1587901510219" duration="1954000" />
+      <workItem from="1588045551532" duration="764000" />
+      <workItem from="1588051041466" duration="589000" />
+      <workItem from="1588054935375" duration="1440000" />
+      <workItem from="1588056820152" duration="11750000" />
+      <workItem from="1588086513993" duration="11490000" />
     </task>
     <task id="LOCAL-00001" summary="nothing">
       <created>1585713962975</created>
@@ -600,15 +500,15 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="922184000" />
+    <option name="totallyTimeSpent" value="984220000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="425" y="259" width="1553" height="821" extended-state="0" />
+    <frame x="101" y="175" width="1370" height="837" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4990619" visible="true" weight="0.23237598" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4965035" visible="true" weight="0.21942179" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" sideWeight="0.50093806" side_tool="true" weight="0.23591782" />
+      <window_info id="Favorites" order="2" sideWeight="0.5034965" side_tool="true" weight="0.23237598" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.35665295" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7661038" weight="0.37196764" />
@@ -618,7 +518,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.87075716" visible="true" weight="0.26474622" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.87075716" visible="true" weight="0.2590604" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.12924282" side_tool="true" weight="0.26474622" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -634,51 +534,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="nothing" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/UserInfoPanel.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-197">
-          <caret line="17" column="14" lean-forward="true" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/api/user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="79" column="14" lean-forward="true" selection-start-line="79" selection-start-column="14" selection-end-line="79" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#49#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/GroupManage.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="226" column="9" lean-forward="true" selection-start-line="226" selection-start-column="9" selection-end-line="226" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupSetting.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="25" column="21" lean-forward="true" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/static/utils/dateUtil.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="30" selection-start-column="16" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupInfoPanelSideBar.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="66" column="48" lean-forward="true" selection-start-line="66" selection-start-column="48" selection-end-line="66" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/yoshare-frontend/static/html/blue.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -714,23 +569,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="453">
           <caret line="94" column="19" selection-start-line="94" selection-start-column="19" selection-end-line="94" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceHeaderMenu.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="46" selection-start-line="5" selection-start-column="46" selection-end-line="5" selection-end-column="46" />
-          <folding>
-            <element signature="e#1222#1268#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupInfo.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="19" column="30" lean-forward="true" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -813,13 +651,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/api/group.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="909">
-          <caret line="67" column="23" lean-forward="true" selection-start-line="67" selection-start-column="23" selection-end-line="67" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupMember.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
@@ -829,13 +660,6 @@
             <element signature="n#style#0;n#i#1;n#p#0;n#div#1;n#div#2;n#div#0;n#transition-group#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#2;n#p#0;n#div#1;n#div#2;n#div#0;n#transition-group#0;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/api/note.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -892,20 +716,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/api/resource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/views/WorkBench.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="288" column="23" selection-start-line="288" selection-start-column="23" selection-end-line="288" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/yoshare-frontend/static/utils/fileUtil">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="335">
@@ -924,16 +734,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="24">
           <caret line="15" column="12" lean-forward="true" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberReasourceFavorite.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1342">
-          <caret line="62" column="22" selection-start-line="62" selection-start-column="22" selection-end-line="62" selection-end-column="22" />
-          <folding>
-            <element signature="n#style#0;n#label#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -959,82 +759,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/StudyRecord.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="60" column="28" selection-start-line="60" selection-start-column="18" selection-end-line="60" selection-end-column="28" />
+        <state relative-caret-position="374">
+          <caret line="17" column="16" lean-forward="true" selection-start-line="17" selection-start-column="16" selection-end-line="17" selection-end-column="16" />
           <folding>
             <element signature="e#102#132#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNoteReading.vue">
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/NoteReading.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6639" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/router/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="151" column="37" lean-forward="true" selection-start-line="151" selection-start-column="37" selection-end-line="151" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceFile.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-283">
-          <caret line="98" column="40" selection-start-line="98" selection-start-column="40" selection-end-line="98" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFile.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/ResourcePanel.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1465">
-          <caret line="148" column="8" lean-forward="true" selection-start-line="148" selection-start-column="8" selection-end-line="148" selection-end-column="8" />
-          <folding>
-            <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#li#0;n#transition-group#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#4308#4461#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceNote.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-19">
-          <caret line="10" column="24" lean-forward="true" selection-start-line="3" selection-start-column="6" selection-end-line="10" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupResourcePanel.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3103">
-          <caret line="271" column="59" selection-start-line="271" selection-start-column="59" selection-end-line="271" selection-end-column="59" />
-          <folding>
-            <element signature="e#4308#4461#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNote.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/UserInfoPanelSideBar.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="6" lean-forward="true" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+        <state relative-caret-position="729">
+          <caret line="194" column="30" lean-forward="true" selection-start-line="194" selection-start-column="30" selection-end-line="194" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -1045,10 +781,180 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/NoteReading.vue">
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/UserInfoPanelSideBar.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="55">
-          <caret line="183" column="31" selection-start-line="183" selection-start-column="31" selection-end-line="183" selection-end-column="31" />
+        <state relative-caret-position="22">
+          <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/router/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3498">
+          <caret line="162" column="25" selection-start-line="162" selection-start-column="25" selection-end-line="162" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/GroupManage.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3652">
+          <caret line="166" column="44" selection-start-line="166" selection-start-column="44" selection-end-line="166" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupInfo.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupInfoPanelSideBar.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1452">
+          <caret line="66" column="48" selection-start-line="66" selection-start-column="48" selection-end-line="66" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNoteReading.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/api/user.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="23" column="27" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/api/group.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/api/resource.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1719">
+          <caret line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFavorite.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFile.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="23" column="30" lean-forward="true" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/api/groupResource">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="8" column="5" lean-forward="true" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/api/note.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="11" column="18" lean-forward="true" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/api/groupNote.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="18" column="48" lean-forward="true" selection-start-line="18" selection-start-column="48" selection-end-line="18" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/views/WorkBench.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="334" column="18" selection-start-line="334" selection-start-column="18" selection-end-line="334" selection-end-column="18" />
+          <folding>
+            <element signature="n#style#0;n#div#2;n#div#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#3527#3573#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupResourcePanel.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="148" column="6" lean-forward="true" selection-start-line="142" selection-start-column="4" selection-end-line="148" selection-end-column="6" />
+          <folding>
+            <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#li#0;n#transition-group#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#4480#4544#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceHeaderMenu.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="94" column="14" lean-forward="true" selection-start-line="94" selection-start-column="14" selection-end-line="94" selection-end-column="14" />
+          <folding>
+            <element signature="e#1222#1268#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNote.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="61" column="32" lean-forward="true" selection-start-line="61" selection-start-column="32" selection-end-line="61" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceNote.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="8" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/ResourcePanel.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="142" column="17" selection-start-line="142" selection-start-column="17" selection-end-line="142" selection-end-column="17" />
+          <folding>
+            <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#li#0;n#transition-group#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberResourceFile.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="115" column="36" lean-forward="true" selection-start-line="115" selection-start-column="36" selection-end-line="115" selection-end-column="36" />
+          <folding>
+            <element signature="e#2981#3040#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberReasourceFavorite.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+          <folding>
+            <element signature="n#style#0;n#label#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#1404#1463#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

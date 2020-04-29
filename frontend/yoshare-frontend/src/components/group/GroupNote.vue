@@ -1,15 +1,14 @@
 <template>
   <div class="group-resource-note-wrap">
 
-    <group-resource-panel class="resource-panel"
+    <group-resource-panel
+      class="resource-panel"
       :type="'NOTE'"
-      :previewItemClickCallback="noteItemClicked"
-      :itemStarCallback="itemStarClicked"
-      :itemUnstarCallback="itemUnstarClicked"
-      :itemShareCallback="itemShareClicked"
+      :previewItemCallback="previewItemCallback"
       :classificationsCallback="classificationsCallBack"
       :refresh="refresh"
     ></group-resource-panel>
+
     <div class="note-content" v-loading="noteLoading">
       <router-view/>
     </div>
@@ -23,8 +22,48 @@ export default {
   components: { GroupResourcePanel },
   data() {
     return {
-      noteLoading: false
+      noteLoading: false,
+      previewItemCallback: {
+        click: this.itemClick,
+        star: this.itemStar,
+        unstar: this.itemUnstar,
+        share: this.itemShare,
+        del: this.itemDelete
+      },
+      classificationsCallBack: {
+        click: this.classisClick,
+        more: this.classisEdit,
+        addRes: this.addNote
+      },
+      refresh: false
     };
+  },
+  computed: {
+    userId: function() {
+      return this.$store.state.user.info.id;
+    },
+    groupId: function() {
+      return this.$route.params.groupId;
+    }
+  },
+  methods: {
+    itemClick() {},
+    itemStar() {},
+    itemUnstar() {},
+    itemShare() {},
+    itemDelete() {},
+    classisClick() {},
+    classisEdit() {},
+    addNote: function(classis) {
+      let classId = classis.id;
+      let path = "/workBench/" + this.userId;
+      let query = {};
+      if (classId > 0) {
+        query.classId = classId;
+      }
+      query.groupId = this.groupId;
+      this.$router.push({ path: path, query: query });
+    }
   }
 };
 </script>

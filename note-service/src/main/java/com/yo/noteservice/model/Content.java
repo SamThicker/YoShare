@@ -17,6 +17,8 @@ public class Content {
     private String tag;
     /**编辑器类型*/
     private String editor;
+    /**用户ID*/
+    private String userId;
     /**该版本的笔记是否已经发布过*/
     private boolean published;
 

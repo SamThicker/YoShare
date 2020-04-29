@@ -18,8 +18,9 @@ public class ResourceController {
     ResourceService resourceService;
 
     @GetMapping("/{id}/ownResource")
-    public CommonResult getResourcesForSelf(@RequestParam String type, @PathVariable("id") Long id) {
-        List<CmsMemberResource> list = resourceService.getResourcesForSelf(id, type);
+    public CommonResult getResourcesForSelf(@RequestParam String classification,
+            @RequestParam String type, @PathVariable("id") Long id) {
+        List<CmsMemberResource> list = resourceService.getResourcesForSelf(id, type, classification);
         return CommonResult.success(list, "操作成功");
     }
 

@@ -3,7 +3,7 @@ import rawRequest from "../../static/utils/rawRequest";
 
 export function login(account, password) {
   return request({
-    url: "/security/member/login",
+    url: "/member-service/security/member/login",
     method: "post",
     data: {
       account: account,
@@ -14,7 +14,7 @@ export function login(account, password) {
 
 export function getInfo(param, option) {
   return request({
-    url: "/member/" + param + "/info/" + option,
+    url: "/member-service/member/" + param + "/info/" + option,
     method: "get"
   });
 }
@@ -28,7 +28,7 @@ export function getInfoByToken() {
 
 export function register(registerInfo) {
   return request({
-    url: "/member/register",
+    url: "/member-service/member/register",
     method: "post",
     data: registerInfo,
     headers: {
@@ -39,7 +39,7 @@ export function register(registerInfo) {
 
 export function updateInfo(id, info) {
   return request({
-    url: "/member/" + id + "/info",
+    url: "/member-service/member/" + id + "/info",
     method: "put",
     data: info
   });
@@ -47,7 +47,7 @@ export function updateInfo(id, info) {
 
 export function getVerificationCode(mail) {
   return request({
-    url: "/member/mailVerificationCode",
+    url: "/member-service/member/mailVerificationCode",
     method: "post",
     params: { mail: mail }
   });
@@ -55,7 +55,7 @@ export function getVerificationCode(mail) {
 
 export function getAvatarUploadUrl(userId, type) {
   return request({
-    url: "/member/" + userId + "/avatarUploadUrl",
+    url: "/member-service/member/" + userId + "/avatarUploadUrl",
     method: "get",
     params: {
       type: type

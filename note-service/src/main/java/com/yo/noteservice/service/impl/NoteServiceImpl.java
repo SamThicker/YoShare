@@ -28,7 +28,7 @@ public class NoteServiceImpl implements NoteService {
      * 添加新笔记
      * */
     @Override
-    public Note addNote(Note note) {
+    public Note addNote(Note note, Long classId) {
         int index = note.getContents().length-1;
         Content content = (Content)note.getContents()[index];
         content.setId(UUID.randomUUID().toString());
@@ -43,6 +43,7 @@ public class NoteServiceImpl implements NoteService {
             memberResource.setTitle(note.getTitle());
             String str = content.getContent();
             memberResource.setDescription(str.substring(0, str.length()<101 ? str.length() : 100));
+            memberResource.setClassification(String.valueOf(classId));
             cmsMemberResourceMapper.insertSelective(memberResource);
         }
         return result;

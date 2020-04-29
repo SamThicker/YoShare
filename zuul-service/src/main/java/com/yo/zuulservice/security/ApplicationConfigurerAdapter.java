@@ -59,16 +59,19 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
         provider.setUserDetailsService(memberDetailsService);
 
         //配置需要对应用户权限的restFul url
-        accessDecisionService.setPersonalRestUrl("/member/{id}/icon","/member/{id}/info","/member/{id}/avatarUploadUrl",
+        accessDecisionService.setPersonalRestUrl("/member-service/member/{id}/icon","/member-service/member/{id}/info","/member-service/member/{id}/avatarUploadUrl",
                 "/note/addNote/{id}","/note/getNotes/{id}","/note/updateNote/{id}","/note/ownNote/{id}/*","/note/note/{userId}/*",
-                "/group/{id}/group", "/group/{id}/createdGroups","/group/{id}/*/avatarUploadUrl","/group/{id}/allGroups","/group/{id}/members/*","/group/{id}/groupCode","/group/{id}/group/member",
-                "/group/{id}/info",
-                "/resource/{id}/ownResource","/resource/{id}/ownResource/classification",
+                "/group-service/group/{id}/group", "/group-service/group/{id}/createdGroups","/group-service/group/{id}/*/avatarUploadUrl","/group-service/group/{id}/allGroups","/group-service/group/{id}/members/*","/group-service/group/{id}/groupCode","/group-service/group/{id}/group/member",
+                "/group-service/group/{id}/info",
+                "/resource/{id}/ownResource","/resource/{id}/ownResource/*",
                 "/resource/{id}/ownResource/web",
                 "/file/blogFilePutUrl/{id}/*","/file/member/{id}/file","/file/member/{id}/existFile",
                 "/zuul/member/{id}/file","/zuul/file/member/{id}/file",
                 "/log/readNoteLog/{id}","/log/readNoteLog/{id}/*"
         );
+
+        accessDecisionService.setPermitAllUrl("/resource/resClassis/group/*", "/resource/resClassis/group/*/*", "/resource/resClassis/group/*/*/*", "/resource/group/*/*/*",
+                "/note/group/*/*", "/note/group/*/*/*");
 
 
         //JWT校验过滤器
@@ -93,11 +96,11 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
                 })
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/member/*/info/*","/member/*/icon").permitAll()
+                .antMatchers(HttpMethod.GET, "/member-service/member/*/info/*","/member-service/member/*/icon").permitAll()
                 .antMatchers("/file/presignedUrl","/file/uploadUrl/*","/file/uploadResource","/file/iconUploadUrl","/file/groupAvatarUploadUrl",
-                        "/member/area/*","/member/register","/member/info/exist","/member/mailVerificationCode","/member/*/info",
+                        "/member-service/member/area/*","/member-service/member/register","/member-service/member/info/exist","/member-service/member/mailVerificationCode","/member-service/member/*/info",
                         "/note/getNote/*/*","/note/updateNote/*",
-                        "/group/*/group","/group/*/createdGroups",
+                        "/group-service/group/*/group","/group-service/group/*/createdGroups",
                         "/login.html").permitAll()
                 .anyRequest().access("@accessDecisionService.hasPermission(request , authentication)")
                 .and()

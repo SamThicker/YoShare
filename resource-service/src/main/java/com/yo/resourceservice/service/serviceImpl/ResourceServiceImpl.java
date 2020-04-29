@@ -34,13 +34,15 @@ public class ResourceServiceImpl implements ResourceService {
     private  String MEMBER_FILE_DIR;
 
     @Override
-    public List<CmsMemberResource> getResourcesForSelf(Long id, String type) {
+    public List<CmsMemberResource> getResourcesForSelf(Long id, String type, String classification) {
         CmsMemberResourceExample example = new CmsMemberResourceExample();
-        if (!ResourceType.isContain(type)){
-            example.createCriteria().andByUserIdEqualTo(id);
-            return memberResourceMapper.selectByExample(example);
+        CmsMemberResourceExample.Criteria cri = example.createCriteria().andByUserIdEqualTo(id);
+        if (ResourceType.isContain(type)){
+            cri.andTypeEqualTo(type);
         }
-        example.createCriteria().andByUserIdEqualTo(id).andTypeEqualTo(type);
+        if (!"".equals(classification) && Integer.valueOf(classification)>0){
+            cri.andClassificationEqualTo(classification);
+        }
         return memberResourceMapper.selectByExample(example);
     }
 

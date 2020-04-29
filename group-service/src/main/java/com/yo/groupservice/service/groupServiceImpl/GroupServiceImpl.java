@@ -179,6 +179,22 @@ public class GroupServiceImpl implements GroupService {
         return CommonResult.success(groupMapper.selectByPrimaryKey(group.getId()),"操作成功");
     }
 
+    @Override
+    public CommonResult isGroupMember(Long groupId, Long userId) {
+        GmsGroupMemberRelationshipExample example = new GmsGroupMemberRelationshipExample();
+        example.createCriteria().andGroupIdEqualTo(groupId).andMemberIdEqualTo(userId);
+        int count = memberRelationshipMapper.countByExample(example);
+        if (0 >= count){
+            return CommonResult.success("false");
+        }
+        return CommonResult.success("true");
+    }
+
+    @Override
+    public CommonResult isGroupAdmin(Long groupId, Long userId) {
+        return null;
+    }
+
 
     /**判断用户是否小组成员*/
     public boolean isMember(Long userId, Long groupId){

@@ -1,12 +1,14 @@
 import request from "../../static/utils/request";
 
-export function getOwnResource(id, type) {
+export function getOwnResource(id, type, classification) {
   if (!type) type = "all";
+  if (!classification) classification = "";
   return request({
     url: "resource/" + id + "/ownResource",
     method: "get",
     params: {
-      type: type
+      type: type,
+      classification
     }
   });
 }
@@ -78,5 +80,39 @@ export function getMemFavPage(userId, webId) {
     params: {
       webId: webId
     }
+  });
+}
+
+export function addGroupClassification(groupId, type, name) {
+  return request({
+    url: "resource/resClassis/group/" + groupId + "/" + type,
+    method: "post",
+    params: {
+      name: name
+    }
+  });
+}
+
+export function getGroupClassification(groupId, type) {
+  return request({
+    url: "resource/resClassis/group/" + groupId + "/" + type,
+    method: "get"
+  });
+}
+
+export function updateGroupClassification(groupId, type, classisId, name) {
+  return request({
+    url: "resource/resClassis/group/" + groupId + "/" + type + "/" + classisId,
+    method: "post",
+    params: {
+      name: name
+    }
+  });
+}
+
+export function deleteGroupClassification(groupId, type, classisId) {
+  return request({
+    url: "resource/resClassis/group/" + groupId + "/" + type + "/" + classisId,
+    method: "delete"
   });
 }

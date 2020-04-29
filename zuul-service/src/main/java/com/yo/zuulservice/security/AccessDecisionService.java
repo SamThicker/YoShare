@@ -1,5 +1,6 @@
 package com.yo.zuulservice.security;
 
+import com.netflix.zuul.context.RequestContext;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,8 @@ public class AccessDecisionService {
 
     private List<String> personalRestUrl = new ArrayList<>();
 
+    private List<String> permitAllUrl = new ArrayList<>();
+
     public boolean hasPermission(HttpServletRequest request, Authentication auth) {
         //Adapter已经过滤了可匿名访问的路径，余下的所有路劲需要进行过滤
         //auth是AnonymousAuthenticationToken子类，说明当前用户未登录，对该请求进行拦截
@@ -37,9 +40,13 @@ public class AccessDecisionService {
         List<String> urls = queryUrlByUserId(user.getMemberid());
         for (String url : urls) {
             if (antPathMatcher.match(url, request.getRequestURI())) {
+                RequestContext context = RequestContext.getCurrentContext();
+                context.addZuulRequestHeader("UserId", String.valueOf(user.getMemberid()));
                 return true;
             }
         }
+
+
         return false;
     }
     
@@ -55,6 +62,7 @@ public class AccessDecisionService {
         ArrayList<String> list = new ArrayList<>();
         list.addAll(getRestPermitedUrl(idstr));
         list.add("/gateway/security/info");
+        list.addAll(this.permitAllUrl);
         return  list;
     }
 
@@ -71,6 +79,8 @@ public class AccessDecisionService {
         this.personalRestUrl.addAll(Arrays.asList(url));
     }
 
-
+    public void setPermitAllUrl(String... url){
+        this.permitAllUrl.addAll(Arrays.asList(url));
+    }
 
 }

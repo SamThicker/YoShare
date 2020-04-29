@@ -3,10 +3,7 @@
     <resource-panel
       class="resource-panel"
       :type="'NOTE'"
-      :previewItemClickCallback="noteItemClicked"
-      :itemStarCallback="itemStarClicked"
-      :itemUnstarCallback="itemUnstarClicked"
-      :itemShareCallback="itemShareClicked"
+      :previewItemCallback="previewItemCallback"
       :classificationsCallback="classificationsCallBack"
       :refresh="refresh"
     ></resource-panel>
@@ -29,9 +26,16 @@ export default {
       noteLoading: false,
       note: null,
       toTop: false,
+      previewItemCallback: {
+        click: this.noteItemClicked,
+        star: this.itemStarClicked,
+        unstar: this.itemUnstarClicked,
+        share: this.itemShareClicked,
+        del: null
+      },
       classificationsCallBack: {
         click: null,
-        addRes: null
+        addRes: this.addNote
       },
       refresh: false
     };
@@ -55,7 +59,16 @@ export default {
     },
     itemStarClicked: function() {},
     itemUnstarClicked: function() {},
-    itemShareClicked: function() {}
+    itemShareClicked: function() {},
+    addNote: function(classis) {
+      let classId = classis.id;
+      let path = "/workBench/" + this.userId;
+      let query = {};
+      if (classId > 0) {
+        query.classId = classId;
+      }
+      this.$router.push({ path: path, query: query });
+    }
   }
 };
 </script>

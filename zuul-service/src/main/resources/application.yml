@@ -29,10 +29,8 @@ logging:
 zuul:
   routes:
     service-member:
-      path: /member/**
+      path: /member-service/**
       serviceId: service-member
-      url: localhost:/9010
-      stripPrefix: false
     service-security:
       path: /security/**
       serviceId: service-security
@@ -46,9 +44,8 @@ zuul:
       serviceId: service-note
       stripPrefix: false
     service-group:
-      path: /group/**
+      path: /group-service/**
       serviceId: service-group
-      stripPrefix: false
     service-resource:
       path: /resource/**
       serviceId: service-resource

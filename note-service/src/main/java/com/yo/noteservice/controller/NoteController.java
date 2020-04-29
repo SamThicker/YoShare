@@ -1,5 +1,6 @@
 package com.yo.noteservice.controller;
 
+import com.yo.noteservice.dto.NoteRes;
 import com.yo.noteservice.mongoModel.Note;
 import com.yo.noteservice.service.NoteService;
 import com.yo.yoshare.common.api.CommonResult;
@@ -7,6 +8,7 @@ import feign.RequestLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -19,9 +21,10 @@ public class NoteController {
      * 添加新笔记
      * */
     @PostMapping(value = "/addNote/{id}")
-    public CommonResult addNote(@RequestBody Note note, @PathVariable(value = "id") String id) {
+    public CommonResult addNote(@RequestBody NoteRes noteRes, @PathVariable(value = "id") String id) {
+        Note note = noteRes.getNote();
         note.setBy(id);
-        Note result = noteService.addNote(note);
+        Note result = noteService.addNote(note, noteRes.getClassId());
         return CommonResult.success(result, "操作成功");
     }
 
@@ -29,10 +32,11 @@ public class NoteController {
      * 更新笔记
      * */
     @PostMapping(value = "/updateNote/{id}")
-    public CommonResult updateNote(@RequestBody Note note, @PathVariable(value = "id") String id) throws IllegalAccessException {
+    public CommonResult updateNote(@RequestBody NoteRes noteRes, @PathVariable(value = "id") String id) throws IllegalAccessException {
+        Note note = noteRes.getNote();
         note.setBy(id);
         if(note.getId() == null){
-            return addNote(note, id);
+            return addNote(noteRes, id);
         }
         noteService.saveNote(note);
         return CommonResult.success("操作成功");

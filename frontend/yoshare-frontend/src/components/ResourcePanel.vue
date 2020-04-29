@@ -9,17 +9,17 @@
         <ul>
           <transition-group name="el-fade-in">
             <li
+              class="classification"
               v-for="classification in classifications"
               :key="classification.id"
               :class="{
                 unEditable: classification.unEditable,
-                unNameable: classification.unNameable
+                unNameable: classification.unNameable,
+                active: currentClassification.id
+                  ? classification.id === currentClassification.id
+                  : false
               }"
-              @click.stop="
-                classificationsCallback
-                  ? classificationsCallback.click(classification)
-                  : null
-              "
+              @click.stop="selectClassis(classification)"
             >
               <i
                 :class="
@@ -63,10 +63,8 @@
             <li
               v-for="resource in resources"
               :key="resource.id"
-              @click.stop="
-                previewItemClickCallback
-                  ? previewItemClickCallback(resource)
-                  : null
+              @click.stop="previewItemCallback.click ?
+              previewItemCallback.click(resource) : null
               "
             >
               <div class="preview-list-item">
@@ -78,28 +76,34 @@
                       v-show="false"
                       style="color: yellow; font-size: 23px"
                       @click.stop="
-                        itemUnstarCallback ? itemUnstarCallback(resource) : null
+                        previewItemCallback.unstar
+                          ? previewItemCallback.unstar(resource)
+                          : null
                       "
                     ></i>
                     <i
                       class="el-icon-star-off preview-item-btn"
                       v-show="true"
                       @click.stop="
-                        itemStarCallback ? itemStarCallback(resource) : null
+                        previewItemCallback.star
+                          ? previewItemCallback.star(resource)
+                          : null
                       "
                     ></i>
                     <i
                       class="el-icon-share preview-item-btn"
                       @click.stop="
-                        itemShareCallback ? itemShareCallback(resource) : null
+                        previewItemCallback.share
+                          ? previewItemCallback.share(resource)
+                          : null
                       "
                     ></i>
                     <i
                       class="el-icon-delete preview-item-btn"
                       @click.stop="
-                        itemDelClicked(resource)
-                          ? itemDelClicked(resource)
-                          : null
+                        previewItemCallback.del
+                          ? previewItemCallback.del(resource)
+                          : itemDelClicked(resource)
                       "
                     ></i>
                   </span>
@@ -128,19 +132,22 @@ import {
   deleteMemClassification,
   delResourceNote,
   getMemClassification,
+  getOwnResource,
   updateMemClassification
 } from "@/api/resource";
-import { getOwnResource } from "@/api/resource";
 import { formatDateTime } from "../../static/utils/dateUtil";
 
 export default {
   name: "ResourcePanel",
   props: {
     type: String,
-    previewItemClickCallback: Function,
-    itemStarCallback: Function,
-    itemUnstarCallback: Function,
-    itemShareCallback: Function,
+    previewItemCallback: {
+      click: Function,
+      star: Function,
+      unstar: Function,
+      del: Function,
+      share: Function
+    },
     classificationsCallback: {
       click: Function,
       more: Function,
@@ -197,7 +204,8 @@ export default {
           classificationName: "星标",
           unEditable: true
         }
-      ]
+      ],
+      currentClassification: ""
     };
   },
   computed: {
@@ -223,17 +231,21 @@ export default {
         this.getClassifications();
       }
     },
+    currentClassification: function() {
+      this.getOwnResource();
+    },
     deep: true
   },
   methods: {
     init: function() {
       this.classifications.push(...this.basicClassifications);
+      this.currentClassification = this.classifications[0];
     },
     getOwnResource: function() {
       let _this = this;
       if (!this.userId) return;
       let type = this.type ? this.type : "all";
-      getOwnResource(_this.userId, type)
+      getOwnResource(_this.userId, type, this.currentClassification.id)
         .then(function(res) {
           _this.resources = res.data;
           _this.resources.forEach(res => {
@@ -244,9 +256,6 @@ export default {
           console.info("err:" + err);
         });
     },
-    itemStarClicked: function() {},
-    itemUnstarClicked: function() {},
-    itemShareClicked: function() {},
     itemDelClicked(resource) {
       let _this = this;
       this.$confirm("此操作将永久删除该资源, 是否继续?", "提示", {
@@ -269,7 +278,7 @@ export default {
               _this.deleteLoading = false;
             })
             .catch(() => {
-              _this.$elementMessage("操作失败，请重试", "error", 1500);
+              _this.$elementMessage("操作失败，请重试", "error", 1000);
               _this.deleteLoading = false;
             });
         })
@@ -282,8 +291,7 @@ export default {
       let type = this.type ? this.type : "all";
       getMemClassification(this.userId, type)
         .then(function(res) {
-          let classes = res.data;
-          _this.ownClassifications = classes;
+          _this.ownClassifications = res.data;
         })
         .catch(err => {
           console.info("出错辣，请稍后再试" + err);
@@ -299,7 +307,7 @@ export default {
       })
         .then(({ value }) => {
           if (!value || "" === value) {
-            _this.$elementMessage("输入不能为空", "error", 1500);
+            _this.$elementMessage("输入不能为空", "error", 1000);
             return;
           }
           let name = value;
@@ -308,10 +316,10 @@ export default {
           addMemClassification(userId, type, name)
             .then(function() {
               _this.getClassifications();
-              _this.$elementMessage("操作成功", "success", 1500);
+              _this.$elementMessage("操作成功", "success", 1000);
             })
             .catch(err => {
-              _this.$elementMessage("出错辣，" + err.message, "error", 1500);
+              _this.$elementMessage("出错辣，" + err.message, "error", 1000);
             });
         })
         .catch(() => {
@@ -320,6 +328,12 @@ export default {
             message: "取消输入"
           });
         });
+    },
+    selectClassis(classification) {
+      this.currentClassification = classification;
+      if (this.classificationsCallback && this.classificationsCallback.click) {
+        this.classificationsCallback.click(classification);
+      }
     },
     //显示"分类"编辑框
     moreDialog(classis) {
@@ -335,7 +349,7 @@ export default {
       })
         .then(({ value }) => {
           classis.classificationName = value;
-          _this.uddateClassis(classis);
+          _this.updateClassis(classis);
         })
         .catch(action => {
           if (action === "close") return;
@@ -362,10 +376,10 @@ export default {
       deleteMemClassification(this.userId, classis.id)
         .then(function() {
           _this.getClassifications();
-          _this.$elementMessage("操作成功", "success", 1500);
+          _this.$elementMessage("操作成功", "success", 1000);
         })
         .catch(err => {
-          _this.$elementMessage(err.message, "error", 1500);
+          _this.$elementMessage(err.message, "error", 1000);
         });
     },
     //更新分类的名称
@@ -373,14 +387,14 @@ export default {
       let _this = this;
       updateMemClassification(_this.userId, classis)
         .then(function() {
-          _this.$elementMessage("操作成功", "success", 1500);
+          _this.$elementMessage("操作成功", "success", 1000);
           _this.getClassifications();
         })
         .catch(err => {
           _this.$elementMessage(
             "操作失败，请重试(" + err.message + ")",
             "error",
-            1500
+            1000
           );
         });
     }
@@ -471,7 +485,7 @@ li {
   text-align: left;
 }
 
-.folders ul li::before {
+.classification::before {
   content: "";
   position: absolute;
   left: 50%;
@@ -487,11 +501,19 @@ li {
   );
 }
 
-.folders ul li:hover {
+.classification:hover:not(.active) {
   background-color: #e8f2fe;
 }
 
-.folders ul li:hover:not(.unEditable) .classification-menu {
+.classification.active {
+  background-color: #d1e7fe;
+}
+
+.classification.active::before {
+  display: none;
+}
+
+.classification:hover:not(.unEditable) .classification-menu {
   display: inline-block;
 }
 
@@ -509,17 +531,18 @@ li {
 }
 
 .classification-menu {
-  line-height: 36px;
-  height: 36px;
   position: absolute;
   z-index: 100;
   top: 1px;
   right: 10px;
   width: 56px;
-  box-sizing: border-box;
-  text-align: left;
+  height: 35px !important;
   display: none;
   background-color: #e8f2fe;
+}
+
+.classification.active .classification-menu {
+  background-color: #d1e7fe;
 }
 
 .unNameable .classification-more {

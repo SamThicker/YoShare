@@ -2,7 +2,7 @@ import request from "../../static/utils/request";
 
 export function createGroup(data, userId) {
   return request({
-    url: "/group/" + userId + "/group",
+    url: "/group-service/group/" + userId + "/group",
     method: "put",
     data: data
   });
@@ -10,7 +10,7 @@ export function createGroup(data, userId) {
 
 export function updateGroupInfo(userId, group) {
   return request({
-    url: "/group/" + userId + "/info",
+    url: "/group-service/group/" + userId + "/info",
     method: "patch",
     data: group
   });
@@ -18,21 +18,21 @@ export function updateGroupInfo(userId, group) {
 
 export function getOwnGroupsByUserId(userId) {
   return request({
-    url: "/group/" + userId + "/createdGroups",
+    url: "/group-service/group/" + userId + "/createdGroups",
     method: "get"
   });
 }
 
 export function getAllGroupsByUserId(userId) {
   return request({
-    url: "/group/" + userId + "/allGroups",
+    url: "/group-service/group/" + userId + "/allGroups",
     method: "get"
   });
 }
 
 export function getAllGroupMember(userId, groupId) {
   return request({
-    url: "/group/" + userId + "/group/member",
+    url: "/group-service/group/" + userId + "/group/member",
     method: "get",
     params: {
       groupId: groupId
@@ -42,7 +42,7 @@ export function getAllGroupMember(userId, groupId) {
 
 export function getAvatarUploadUrl(userId, groupId, type) {
   return request({
-    url: "/group/" + userId + "/" + groupId + "/avatarUploadUrl",
+    url: "/group-service/group/" + userId + "/" + groupId + "/avatarUploadUrl",
     method: "get",
     params: {
       type: type
@@ -52,7 +52,7 @@ export function getAvatarUploadUrl(userId, groupId, type) {
 
 export function getGroupJoinCode(userId, groupId) {
   return request({
-    url: "/group/" + userId + "/groupCode",
+    url: "/group-service/group/" + userId + "/groupCode",
     method: "get",
     params: {
       groupId: groupId
@@ -62,7 +62,7 @@ export function getGroupJoinCode(userId, groupId) {
 
 export function joinGroupByCode(userId, groupId, groupJoinCode) {
   return request({
-    url: "/group/" + userId + "/group/member",
+    url: "/group-service/group/" + userId + "/group/member",
     method: "put",
     params: {
       groupId: groupId,

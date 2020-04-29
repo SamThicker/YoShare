@@ -7,7 +7,7 @@ import com.yo.yoshare.mbg.model.CmsMemberResourceClassfication;
 import java.util.List;
 
 public interface ResourceService {
-    List<CmsMemberResource> getResourcesForSelf(Long id, String type);
+    List<CmsMemberResource> getResourcesForSelf(Long id, String type, String classification);
 
     CommonResult delResourceForSelf(CmsMemberResource resource);
 

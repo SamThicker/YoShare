@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.xmlpull.v1.XmlPullParserException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -19,11 +20,14 @@ public class GroupController {
 
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private HttpServletRequest request;
 
     /**创建小组*/
     @PutMapping(value = "/{id}/group")
     public CommonResult createGroup(@RequestBody GmsGroup group, @PathVariable String id){
-        group.setCreatedBy(id);
+        String userId = request.getHeader("userId");
+        group.setCreatedBy(userId);
         try {
             return groupService.createGroup(id, group);
         } catch (GlobalException.GroupTooMuchException e) {
@@ -81,5 +85,16 @@ public class GroupController {
         return groupService.listAllGroupMember(userId,groupId);
     }
 
+    @GetMapping(value = "/{groupId}/isMember")
+    public CommonResult isGroupMember(@PathVariable(value = "groupId") Long groupId){
+        Long userId = Long.valueOf(request.getHeader("userId"));
+        return groupService.isGroupMember(groupId, userId);
+    }
 
+
+    @GetMapping(value = "/{groupId}/isAdmin")
+    public CommonResult isGroupAdmin(@PathVariable(value = "groupId") Long groupId){
+        Long userId = Long.valueOf(request.getHeader("userId"));
+        return groupService.isGroupAdmin(groupId, userId);
+    }
 }

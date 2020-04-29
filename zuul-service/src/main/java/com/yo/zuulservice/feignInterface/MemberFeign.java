@@ -13,6 +13,7 @@ public interface MemberFeign {
     @RequestMapping(value = "/member/{param}/info/{option}", method = RequestMethod.GET)
     CommonResult<UmsMemberSimpleInfo> getMemberInfo(@PathVariable("param") String param,
                                                            @PathVariable("option") String option);
+
 }
 
 

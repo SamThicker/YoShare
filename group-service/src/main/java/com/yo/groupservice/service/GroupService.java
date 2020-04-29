@@ -28,4 +28,8 @@ public interface GroupService {
     CommonResult joinGroupByCode(Long userId, Long groupId, String groupJoinCode);
 
     CommonResult updateGroupInfo(Long userId, GmsGroup group);
+
+    CommonResult isGroupMember(Long groupId, Long userId);
+
+    CommonResult isGroupAdmin(Long groupId, Long userId);
 }

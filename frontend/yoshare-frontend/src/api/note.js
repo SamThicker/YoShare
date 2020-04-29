@@ -16,8 +16,9 @@ export function getNoteForSelf(userId, noteId) {
 }
 
 export function saveNote(userId, data) {
+  let url = "/note/updateNote/" + userId;
   return request({
-    url: "/note/updateNote/" + userId,
+    url: url,
     method: "post",
     data: data
   });

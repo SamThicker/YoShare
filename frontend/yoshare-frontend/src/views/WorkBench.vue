@@ -120,6 +120,7 @@
 import TimeLine from "../components/TimeLine";
 import { getNoteForSelf, saveNote } from "../api/note";
 import { formatDateTime } from "../../static/utils/dateUtil";
+import { saveGroupNote } from "../api/groupNote";
 export default {
   name: "WorkBench",
   watch: {
@@ -174,6 +175,8 @@ export default {
       currentNote: null,
       userId: null,
       noteId: null,
+      groupId: null,
+      classId: null,
       saveOption: false,
       editing: true,
       markdownEditable: true,
@@ -258,6 +261,8 @@ export default {
     getParams() {
       this.userId = this.$route.params.userId;
       this.noteId = this.$route.params.noteId;
+      this.groupId = this.$route.query.groupId;
+      this.classId = this.$route.query.classId;
     },
     getNote() {
       let _this = this;
@@ -298,30 +303,59 @@ export default {
         editor: this.isMavon ? "MAVON" : "QUILL",
         tag: this.currentTag
       };
-      let data = {
+      let note = {
         id: this.noteId,
         title: this.title,
         contents: [content],
         by: this.userId
       };
+      let data = {};
+      data.note = note;
+      data.classId = this.classId;
       let _this = this;
       this.onSaveLoading = true;
-      saveNote(this.userId, data)
-        .then(function(res) {
-          _this.$elementMessage("保存成功", "success", 1000);
-          _this.onSaveLoading = false;
-          if (!_this.$route.params.noteId) {
-            let id = res.data.id;
-            _this.$router.replace("/workBench/" + _this.userId + "/" + id);
-          }
-          _this.getNote();
-          _this.setData();
-        })
-        .catch(function(err) {
-          _this.$elementMessage("操作失败", "error", 1000);
-          _this.onSaveLoading = false;
-          console.info("er:" + err);
-        });
+      if (!this.groupId) {
+        saveNote(this.userId, data)
+          .then(function(res) {
+            _this.$elementMessage("保存成功", "success", 1000);
+            _this.onSaveLoading = false;
+            if (!_this.$route.params.noteId) {
+              let id = res.data.id;
+              _this.$router.replace("/workBench/" + _this.userId + "/" + id);
+            }
+            _this.getNote();
+            _this.setData();
+          })
+          .catch(function(err) {
+            _this.$elementMessage("操作失败", "error", 1000);
+            _this.onSaveLoading = false;
+            console.info("er:" + err);
+          });
+      } else {
+        saveGroupNote(this.groupId, data)
+          .then(function(res) {
+            _this.$elementMessage("保存成功", "success", 1000);
+            _this.onSaveLoading = false;
+            if (!_this.$route.params.noteId) {
+              let id = res.data.id;
+              let path = "/workBench/" + _this.userId + "/" + id;
+              let query = {
+                groupId: _this.groupId
+              };
+              _this.$router.replace({
+                path: path,
+                query: query
+              });
+            }
+            _this.getNote();
+            _this.setData();
+          })
+          .catch(function(err) {
+            _this.$elementMessage("操作失败", "error", 1000);
+            _this.onSaveLoading = false;
+            console.info("er:" + err);
+          });
+      }
       this.saveOption = false;
     },
     //显示保存选项

@@ -1,6 +1,5 @@
 package com.yo.yoshare.memberservice.controller;
 
-import com.netflix.client.http.HttpResponse;
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.memberservice.dto.UmsMemberExistResult;
 import com.yo.yoshare.memberservice.dto.UmsMemberSimpleInfo;
@@ -10,7 +9,6 @@ import com.yo.yoshare.memberservice.service.MemberService;
 import io.minio.errors.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.BufferedImageHttpMessageConverter;
@@ -18,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
-
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -128,7 +125,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "获取地区")
-    @RequestMapping(value = "area/{code}", method = RequestMethod.GET)
+    @RequestMapping(value = "/area/{code}", method = RequestMethod.GET)
     public CommonResult getProvince(@PathVariable int code) throws IOException {
         Object object = areaService.getAreaByCode(code);
         if (object == null){
