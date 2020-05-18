@@ -1,5 +1,6 @@
 <template>
-  <div class="category-panel-wrap">
+<!--  <div class="resource-panel-wrap">-->
+  <div>
     <div class="note-side-bar-folder">
       <div class="folders-label" @click.stop="addClassDialog()">
         <span class="add"><h3>+</h3></span>
@@ -26,7 +27,7 @@
                   classification.icon ? classification.icon : 'el-icon-reading'
                 "
               ></i>
-              <span>{{
+              <span class="classification-name">{{
                 classification ? classification.classificationName : null
               }}</span>
               <span class="classification-menu">
@@ -48,15 +49,15 @@
     </div>
     <div class="note-side-bar-preview">
       <!--菜单，搜索框-->
-      <div class="preview-menu">
-        <el-input
-          placeholder="请输入内容"
-          v-model="noteSearch"
-          class="note-search"
-        >
-          <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
-      </div>
+<!--      <div class="preview-menu">-->
+<!--        <el-input-->
+<!--          placeholder="请输入内容"-->
+<!--          v-model="noteSearch"-->
+<!--          class="note-search"-->
+<!--        >-->
+<!--          <el-button slot="append" icon="el-icon-search"></el-button>-->
+<!--        </el-input>-->
+<!--      </div>-->
       <div class="preview-list-wrap">
         <ul class="preview-list">
           <transition-group name="el-fade-in">
@@ -403,12 +404,13 @@ export default {
 </script>
 
 <style scoped>
-.category-panel-wrap {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
+/*.resource-panel-wrap {*/
+/*  position: relative;*/
+/*  height: 100%;*/
+/*  width: 100%;*/
+/*}*/
 
+/*分类*/
 .note-side-bar-folder {
   position: relative;
   float: left;
@@ -417,8 +419,10 @@ export default {
   width: 220px;
   background-color: #f2f2f2;
   overflow-y: scroll;
+  box-sizing: border-box;
 }
 
+/*资源列表*/
 .note-side-bar-preview {
   position: relative;
   float: left;
@@ -447,6 +451,7 @@ li {
 .folders-label {
   cursor: pointer;
   box-sizing: border-box;
+  height: 65px;
 }
 
 .folders-label span {
@@ -483,6 +488,7 @@ li {
   background-color: #f2f2f2;
   border-radius: 5px;
   text-align: left;
+  overflow: hidden;
 }
 
 .classification::before {
@@ -518,16 +524,20 @@ li {
 }
 
 .folders ul li i {
-  line-height: 38px;
+  line-height: 36px;
   font-size: 18px;
   font-weight: bold;
+  position: relative;
+  display: inline-block;
+  bottom: 10px;
 }
 
 .folders ul li span {
   margin-left: 25px;
-  line-height: 38px;
-  height: 38px;
+  line-height: 35px;
+  height: 35px;
   font-size: 15px;
+  overflow: hidden;
 }
 
 .classification-menu {
@@ -539,6 +549,7 @@ li {
   height: 35px !important;
   display: none;
   background-color: #e8f2fe;
+  overflow: hidden;
 }
 
 .classification.active .classification-menu {
@@ -547,6 +558,17 @@ li {
 
 .unNameable .classification-more {
   display: none;
+}
+
+.classification-name {
+  max-width: 100px;
+  width: auto;
+  display: inline-block;
+  top: 3px;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .classification-add {
@@ -585,7 +607,7 @@ li {
 
 .preview-list-wrap {
   width: 100%;
-  height: calc(100% - 65px);
+  height: 100%;
   overflow-y: hidden;
 }
 

@@ -37,15 +37,17 @@ public class GroupResourceController {
         return groupResourceService.delGroupResource(resource);
     }
 
-    @PutMapping(value = "/{id}/ownResource/web")
-    public CommonResult addFavorite(@PathVariable("id") Long userId, @RequestParam String title,
+    /**创建收藏网页*/
+    @PutMapping(value = "/{groupId}/resource/web")
+    public CommonResult addFavorite(@PathVariable("groupId") Long groupId, @RequestParam String title,
                                     @RequestParam String introduction, @RequestParam String url){
-        return groupResourceService.addFavorite(userId, title, introduction, url);
+        return groupResourceService.addFavorite(groupId, title, introduction, url);
     }
 
-    @GetMapping(value = "/{id}/ownResource/web")
-    public CommonResult getWeb(@PathVariable(value = "id") Long userId, @RequestParam Long webId){
-        return groupResourceService.getWeb(userId, webId);
+    /**获取收藏的网页*/
+    @GetMapping(value = "/{groupId}/resource/web")
+    public CommonResult getWeb(@PathVariable(value = "groupId") Long groupId, @RequestParam Long webId){
+        return groupResourceService.getWeb(groupId, webId);
     }
 
 }

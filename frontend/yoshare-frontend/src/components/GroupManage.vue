@@ -235,7 +235,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  display: -webkit-flex;
+  display: -webkit-box;
 }
 
 ul,
@@ -445,8 +445,7 @@ li {
 }
 
 .content {
-  width: 100%;
-  -webkit-flex: 1;
   height: 100%;
+  flex: 1;
 }
 </style>

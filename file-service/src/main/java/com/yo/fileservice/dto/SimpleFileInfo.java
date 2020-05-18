@@ -1,16 +1,26 @@
-package com.yo.yoshare.mbg.model;
+package com.yo.fileservice.dto;
 
-import io.swagger.annotations.ApiModelProperty;
-import java.io.Serializable;
+import lombok.Data;
 
-public class CmsGroupResourceClassification implements Serializable {
+public class SimpleFileInfo {
+
     private Long id;
 
-    private Long groupId;
+    private Long size;
 
-    private String classificationName;
+    private String name;
 
     private String type;
+
+    private String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -22,20 +32,20 @@ public class CmsGroupResourceClassification implements Serializable {
         this.id = id;
     }
 
-    public Long getGroupId() {
-        return groupId;
+    public Long getSize() {
+        return size;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setSize(Long size) {
+        this.size = size;
     }
 
-    public String getClassificationName() {
-        return classificationName;
+    public String getName() {
+        return name;
     }
 
-    public void setClassificationName(String classificationName) {
-        this.classificationName = classificationName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getType() {
@@ -53,11 +63,13 @@ public class CmsGroupResourceClassification implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", groupId=").append(groupId);
-        sb.append(", classificationName=").append(classificationName);
+        sb.append(", size=").append(size);
+        sb.append(", name=").append(name);
         sb.append(", type=").append(type);
+        sb.append(", url=").append(url);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
     }
+
 }

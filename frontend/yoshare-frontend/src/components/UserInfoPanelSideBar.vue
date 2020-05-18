@@ -26,12 +26,12 @@ export default {
           link: "/userInfo/simpleInfo",
           label: "simpleInfo"
         },
-        {
-          name: "安全信息",
-          icon: "",
-          link: "/userInfo/securityInfo",
-          label: "securityInfo"
-        },
+        // {
+        //   name: "安全信息",
+        //   icon: "",
+        //   link: "/userInfo/securityInfo",
+        //   label: "securityInfo"
+        // },
         {
           name: "学习记录",
           icon: "",

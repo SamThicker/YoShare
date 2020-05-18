@@ -66,12 +66,13 @@ public class GroupServiceImpl implements GroupService {
         relationship.setJoinedTime(new Date());
         relationship.setMemberId(Long.parseLong(id));
         relationship.setUpdatedTime(new Date());
+        relationship.setStatus("1");
         memberRelationshipMapper.insertSelective(relationship);
         return CommonResult.success(group, "操作成功");
     }
 
     @Override
-    public CommonResult getGroupsByUserId(String id) {
+    public CommonResult getOwnGroupsByUserId(String id) {
         GmsGroupExample example = new GmsGroupExample();
         example.createCriteria().andCreatedByEqualTo(id);
         List list = groupMapper.selectByExample(example);
@@ -80,10 +81,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public CommonResult getAvatarUploadUrl(String id, String groupId, String type) throws IOException, InvalidKeyException, NoSuchAlgorithmException, XmlPullParserException, InvalidPortException, InvalidExpiresRangeException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InvalidEndpointException, ErrorResponseException {
-        GmsGroupMemberRelationshipExample example = new GmsGroupMemberRelationshipExample();
-        example.createCriteria().andGroupIdEqualTo(Long.parseLong(groupId)).andMemberIdEqualTo(Long.parseLong(id));
-        List result = memberRelationshipMapper.selectByExample(example);
-        if (null == result || result.size()<=0) {
+        if (!isMember(Long.valueOf(id), Long.valueOf(groupId))) {
             return CommonResult.forbidden("无权限");
         }
         String fileName = groupId + "_ORIGINAL." + type;
@@ -101,10 +99,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public CommonResult listAllGroupMember(Long userId, Long groupId) {
-        GmsGroupMemberRelationshipExample example = new GmsGroupMemberRelationshipExample();
-        example.createCriteria().andMemberIdEqualTo(userId).andGroupIdEqualTo(groupId);
-        List result = memberRelationshipMapper.selectByExample(example);
-        if (null == result || result.size() <= 0){
+        if(!isMember(userId, groupId)) {
             return CommonResult.forbidden("无权限");
         }
         List<UmsMemberInfo> resultList = groupDao.listGroupMember(groupId);
@@ -132,10 +127,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public CommonResult joinGroupByCode(Long userId, Long groupId, String groupJoinCode) {
-        GmsGroupMemberRelationshipExample example = new GmsGroupMemberRelationshipExample();
-        example.createCriteria().andMemberIdEqualTo(userId).andGroupIdEqualTo(groupId);
-        List result = memberRelationshipMapper.selectByExample(example);
-        if (result.size()>0){
+        if(isMember(userId, groupId)) {
             return CommonResult.failed("您已经在小组中");
         }
         groupJoinCode = groupJoinCode.trim();
@@ -160,6 +152,7 @@ public class GroupServiceImpl implements GroupService {
         relationship.setGroupId(groupId);
         relationship.setJoinedTime(new Date());
         relationship.setMemberId(userId);
+        relationship.setStatus("1");
         memberRelationshipMapper.insertSelective(relationship);
         return CommonResult.success("操作成功", "操作成功");
     }
@@ -179,16 +172,6 @@ public class GroupServiceImpl implements GroupService {
         return CommonResult.success(groupMapper.selectByPrimaryKey(group.getId()),"操作成功");
     }
 
-    @Override
-    public CommonResult isGroupMember(Long groupId, Long userId) {
-        GmsGroupMemberRelationshipExample example = new GmsGroupMemberRelationshipExample();
-        example.createCriteria().andGroupIdEqualTo(groupId).andMemberIdEqualTo(userId);
-        int count = memberRelationshipMapper.countByExample(example);
-        if (0 >= count){
-            return CommonResult.success("false");
-        }
-        return CommonResult.success("true");
-    }
 
     @Override
     public CommonResult isGroupAdmin(Long groupId, Long userId) {
@@ -199,8 +182,7 @@ public class GroupServiceImpl implements GroupService {
     /**判断用户是否小组成员*/
     public boolean isMember(Long userId, Long groupId){
         GmsGroupMemberRelationshipExample example = new GmsGroupMemberRelationshipExample();
-        example.createCriteria().andMemberIdEqualTo(userId).andGroupIdEqualTo(groupId);
-        List result = memberRelationshipMapper.selectByExample(example);
-        return result.size()>0 ? true : false;
+        example.createCriteria().andMemberIdEqualTo(userId).andGroupIdEqualTo(groupId).andStatusEqualTo("1");
+        return 0 < memberRelationshipMapper.countByExample(example);
     }
 }

@@ -71,7 +71,9 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
         );
 
         accessDecisionService.setPermitAllUrl("/resource/resClassis/group/*", "/resource/resClassis/group/*/*", "/resource/resClassis/group/*/*/*", "/resource/group/*/*/*",
-                "/note/group/*/*", "/note/group/*/*/*");
+                "/note/group/*/*", "/note/group/*/*/*",
+                "/file/member/file/*","/file/member/fileInfo/*",
+                "/resource/group/*/resource/web");
 
 
         //JWT校验过滤器

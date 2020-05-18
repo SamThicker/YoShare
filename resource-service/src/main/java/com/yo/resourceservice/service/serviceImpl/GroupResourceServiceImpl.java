@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
@@ -25,13 +26,15 @@ public class GroupResourceServiceImpl implements GroupResourceService {
     @Autowired
     NoteService noteService;
     @Autowired(required = false)
-    CmsMemberFavoritePageMapper favoritePageMapper;
+    CmsGroupFavoritePageMapper favoritePageMapper;
     @Autowired/*(required = false)*/
     CmsMemberFileMapper memberFileMapper;
     @Autowired
     GmsGroupMemberRelationshipMapper relationshipMapper;
     @Value("${file.rootDir.memberFile}")
     private  String MEMBER_FILE_DIR;
+    @Autowired
+    private HttpServletRequest request;
 
     @Override
     public CommonResult getGroupResources(Long userId, Long groupId, String type, Long classis) {
@@ -101,13 +104,16 @@ public class GroupResourceServiceImpl implements GroupResourceService {
     }
 
     @Override
-    public CommonResult addFavorite(Long userId, String title, String introduction, String url) {
-        CmsMemberFavoritePage page = new CmsMemberFavoritePage();
+    public CommonResult addFavorite(Long groupId, String title, String introduction, String url) {
+        String userId = request.getHeader("userId");
+        CmsGroupFavoritePage page = new CmsGroupFavoritePage();
         page.setCreatedTime(new Date());
         page.setUrl(url);
+        page.setMemberId(Long.parseLong(userId));
         favoritePageMapper.insertSelective(page);
         CmsGroupResource resource = new CmsGroupResource();
-        resource.setByUserId(userId);
+        resource.setByUserId(Long.parseLong(userId));
+        resource.setGroupId(groupId);
         resource.setDateTime(new Date());
         resource.setDescription(introduction);
         resource.setType("FAVORITE");
@@ -118,9 +124,12 @@ public class GroupResourceServiceImpl implements GroupResourceService {
     }
 
     @Override
-    public CommonResult getWeb(Long userId, Long webId) {
-        CmsMemberFavoritePageExample example = new CmsMemberFavoritePageExample();
-        return CommonResult.success(favoritePageMapper.selectByPrimaryKey(webId), "操作成功");
+    public CommonResult getWeb(Long groupId, Long webId) {
+        CmsGroupFavoritePageExample example = new CmsGroupFavoritePageExample();
+        example.createCriteria().andGroupidEqualTo(groupId).andIdEqualTo(webId);
+        List list = favoritePageMapper.selectByExample(example);
+        return CommonResult.success(list !=null ? list.get(0) : null, "操作成功");
     }
+
 
 }

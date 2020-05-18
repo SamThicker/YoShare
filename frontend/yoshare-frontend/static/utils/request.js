@@ -32,6 +32,9 @@ service.interceptors.response.use(
      * code为非200是抛错 结合自己业务修改
      * */
     const res = response.data;
+    if (!res.code) {
+      return Promise.resolve(response);
+    }
     if (res.code !== 200) {
       //401:未登录;
       if (res.code === 401) {

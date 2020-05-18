@@ -53,20 +53,3 @@ export function uploadExistFileToServer(userId, formData) {
     data: formData
   });
 }
-
-export function downloadFile(fileId) {
-  return request({
-    url: "/file/member/file/" + fileId,
-    method: "get",
-    headers: {
-      responseType: 'blob'
-    }
-  });
-}
-
-export function getFileInfo(fileId) {
-  return request({
-    url: "/file/member/fileInfo/" + fileId,
-    method: "get"
-  });
-}

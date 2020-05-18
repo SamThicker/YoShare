@@ -412,10 +412,14 @@ html body {
 
 /*总体*/
 .workbench {
-  display: -webkit-box;
+  display: flex;
   flex-direction: column;
+  /*display: -webkit-box;*/
+  /*flex-direction: column;*/
   height: 100%;
+  /*height: 100vh;*/
 }
+
 
 /*菜单*/
 .workbench-menu {
@@ -426,6 +430,7 @@ html body {
   background-color: #f0f0f0;
   overflow: hidden;
   display: flex;
+  flex: 0 0 auto;
 }
 
 /*返回链接*/
@@ -530,7 +535,12 @@ html body {
 /*内容面板*/
 .workbench-content {
   display: flex;
-  flex: auto;
+  /*flex: 1;*/
+  /*height: 100%;*/
+
+  /*flex-grow: 1;*/
+  /*flex-shrink: 1;*/
+  overflow: hidden;
 }
 
 .timeline {
@@ -540,6 +550,7 @@ html body {
   float: left;
   box-sizing: border-box;
   display: flex;
+  overflow: auto;
 }
 
 .editor-panel {
@@ -555,7 +566,9 @@ html body {
 }
 
 .save-option-panel {
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 10000;
   width: 100%;
   height: 100%;

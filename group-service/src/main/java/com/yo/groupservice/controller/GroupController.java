@@ -36,6 +36,7 @@ public class GroupController {
         }
     }
 
+    /**更新小组信息*/
     @PatchMapping(value = "/{id}/info")
     public CommonResult updateGroupInfo(@PathVariable(value = "id") Long userId,
                                         @RequestBody GmsGroup group){
@@ -46,7 +47,7 @@ public class GroupController {
     /**获取用户创建的小组*/
     @GetMapping(value = "/{id}/createdGroups")
     public CommonResult getGroupsByUserId(@PathVariable String id) {
-        return groupService.getGroupsByUserId(id);
+        return groupService.getOwnGroupsByUserId(id);
     }
 
     /**获取上传头像的url*/
@@ -83,12 +84,6 @@ public class GroupController {
     public CommonResult getGroupMembers(@PathVariable(value = "id") Long userId,
                                         @RequestParam(value = "groupId") Long groupId){
         return groupService.listAllGroupMember(userId,groupId);
-    }
-
-    @GetMapping(value = "/{groupId}/isMember")
-    public CommonResult isGroupMember(@PathVariable(value = "groupId") Long groupId){
-        Long userId = Long.valueOf(request.getHeader("userId"));
-        return groupService.isGroupMember(groupId, userId);
     }
 
 

@@ -56,10 +56,19 @@ ribbon:
   #ribbon总超时时间为ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) *
   #(maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
 
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 13500 # 熔断超时时长：13500ms，不能少于ribbon总超时时间
+
 hystrix:
   command:
     default:
       execution:
+        timeout:
+          enabled: false
         isolation:
-          thread:
-            timeoutInMilliseconds: 13500 # 熔断超时时长：13500ms，不能少于ribbon总超时时间
+          strategy: SEMAPHORE

@@ -78,7 +78,8 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
-  display: -webkit-box;
+  /*display: -webkit-box;*/
+  display: flex;
 }
 
 .resource-panel {
@@ -87,8 +88,18 @@ export default {
 }
 
 .note-content {
+  width: 100%;
+  /*height: 100%;*/
+  /*flex: 1;*/
+  /*position: relative;*/
+  display: inline-block;
+  position: relative;
   height: 100%;
-  flex: 1;
+  width: 10px;
+  /*width: 100%;*/
+  /*flex: 1;*/
+  flex-grow: 1;
+  flex-shrink: 1;
   border: 1px solid #eee;
   box-sizing: border-box;
 }

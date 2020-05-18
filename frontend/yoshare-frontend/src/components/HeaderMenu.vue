@@ -2,15 +2,15 @@
   <div class="header-menu">
     <div class="nav">
       <a @click="selectTab('group')">小组</a>
-      <a @click="selectTab('follow')">关注</a>
-      <a @click="selectTab('notice')">消息</a>
+<!--      <a @click="selectTab('follow')">关注</a>-->
+<!--      <a @click="selectTab('notice')">消息</a>-->
     </div>
-    <div class="search">
-      <input class="search-input" placeholder="搜索" v-model="searchContent" />
-      <div class="search-btn" @click="search()">
-        <i class="el-icon-search"></i>
-      </div>
-    </div>
+<!--    <div class="search">-->
+<!--      <input class="search-input" placeholder="搜索" v-model="searchContent" />-->
+<!--      <div class="search-btn" @click="search()">-->
+<!--        <i class="el-icon-search"></i>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="login-register" v-if="!checkLogedIn()">
       <div class="login-btn" @click="toLogin()">
         登录/注册

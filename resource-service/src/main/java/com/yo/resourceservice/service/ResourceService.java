@@ -9,7 +9,7 @@ import java.util.List;
 public interface ResourceService {
     List<CmsMemberResource> getResourcesForSelf(Long id, String type, String classification);
 
-    CommonResult delResourceForSelf(CmsMemberResource resource);
+    CommonResult delResourceForSelf(CmsMemberResource resource) throws Exception;
 
     CommonResult addClassification(Long userId, String type, String classificationName);
 

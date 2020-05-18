@@ -18,6 +18,8 @@
                 gms_group_member_relationship
             WHERE
                 gms_group_member_relationship.member_id = #{userId, jdbcType=BIGINT}
+                    AND
+                        gms_group_member_relationship.status = "1"
         )
     </select>
 
@@ -37,6 +39,8 @@
                 gms_group_member_relationship
             WHERE
                 gms_group_member_relationship.group_id = #{groupId, jdbcType=BIGINT}
+                    AND
+                        gms_group_member_relationship.status = "1"
         )
     </select>
 

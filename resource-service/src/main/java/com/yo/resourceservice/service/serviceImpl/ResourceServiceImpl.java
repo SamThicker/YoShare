@@ -1,6 +1,7 @@
 package com.yo.resourceservice.service.serviceImpl;
 
 import com.yo.resourceservice.bo.ResourceType;
+import com.yo.resourceservice.feignInterface.FileService;
 import com.yo.resourceservice.feignInterface.NoteService;
 import com.yo.resourceservice.service.ResourceService;
 import com.yo.yoshare.common.api.CommonResult;
@@ -26,6 +27,8 @@ public class ResourceServiceImpl implements ResourceService {
     CmsMemberResourceClassficationMapper memberClassificationMapper;
     @Autowired
     NoteService noteService;
+    @Autowired
+    FileService fileService;
     @Autowired(required = false)
     CmsMemberFavoritePageMapper favoritePageMapper;
     @Autowired/*(required = false)*/
@@ -47,7 +50,7 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public CommonResult delResourceForSelf(CmsMemberResource resource) {
+    public CommonResult delResourceForSelf(CmsMemberResource resource) throws Exception {
         switch (resource.getType()){
             case "NOTE":{
                 CommonResult result = noteService.delNote(resource.getByUserId().toString(), resource.getResourceRef());
@@ -67,24 +70,21 @@ public class ResourceServiceImpl implements ResourceService {
                 return CommonResult.success("操作成功");
             }
             case "FILE": {
+                System.out.println("deleting");
                 Long id = Long.valueOf(resource.getResourceRef());
                 CmsMemberFile fileInfo = memberFileMapper.selectByPrimaryKey(id);
                 String name = fileInfo.getName();
                 String hashString = fileInfo.getMd5();
-                memberResourceMapper.deleteByPrimaryKey(resource.getId());
-                memberFileMapper.deleteByPrimaryKey(id);
                 CmsMemberFileExample example = new CmsMemberFileExample();
-                example.createCriteria().andMd5EqualTo(hashString);
-                List<CmsMemberFile> files = memberFileMapper.selectByExample(example);
-                if (files.size() != 0){
-                    return CommonResult.success("操作成功");
+                example.createCriteria().andMd5EqualTo(hashString).andNameEqualTo(name);
+                if (1 == memberFileMapper.countByExample(example)){
+                    CommonResult result = fileService.deleteFile(String.valueOf(id));
+                    System.out.println(result);
+                    if (result.getCode() != ResultCode.SUCCESS.getCode()){
+                        return CommonResult.failed("出错辣");
+                    }
                 }
-                File fileDir = new File(MEMBER_FILE_DIR + hashString);
-                File file = new File(fileDir + "/" + name);
-                file.delete();
-                if (fileDir.exists() && !fileDir.delete()){
-                    return CommonResult.failed("服务异常");
-                }
+                memberResourceMapper.deleteByPrimaryKey(resource.getId());
                 return CommonResult.success("操作成功");
             }
             default: {
@@ -120,6 +120,24 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
+    public CommonResult addFavorite(Long userId, String title, String introduction, String url) {
+        CmsMemberFavoritePage page = new CmsMemberFavoritePage();
+        page.setCreatedTime(new Date());
+        page.setUrl(url);
+        page.setMemberId(userId);
+        favoritePageMapper.insertSelective(page);
+        CmsMemberResource resource = new CmsMemberResource();
+        resource.setByUserId(userId);
+        resource.setDatetime(new Date());
+        resource.setDescription(introduction);
+        resource.setType("FAVORITE");
+        resource.setResourceRef(page.getId().toString());
+        resource.setTitle(title);
+        memberResourceMapper.insertSelective(resource);
+        return CommonResult.success("操作成功", "操作成功");
+    }
+
+    @Override
     public CommonResult getClassification(Long userId, String type) {
         CmsMemberResourceClassficationExample example = new CmsMemberResourceClassficationExample();
         if (!ResourceType.isContain(type)) {
@@ -147,26 +165,11 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public CommonResult addFavorite(Long userId, String title, String introduction, String url) {
-        CmsMemberFavoritePage page = new CmsMemberFavoritePage();
-        page.setCreatedTime(new Date());
-        page.setUrl(url);
-        favoritePageMapper.insertSelective(page);
-        CmsMemberResource resource = new CmsMemberResource();
-        resource.setByUserId(userId);
-        resource.setDatetime(new Date());
-        resource.setDescription(introduction);
-        resource.setType("FAVORITE");
-        resource.setResourceRef(page.getId().toString());
-        resource.setTitle(title);
-        memberResourceMapper.insertSelective(resource);
-        return CommonResult.success("操作成功", "操作成功");
-    }
-
-    @Override
     public CommonResult getWeb(Long userId, Long webId) {
         CmsMemberFavoritePageExample example = new CmsMemberFavoritePageExample();
-        return CommonResult.success(favoritePageMapper.selectByPrimaryKey(webId), "操作成功");
+        example.createCriteria().andMemberIdEqualTo(userId).andIdEqualTo(webId);
+        List list = favoritePageMapper.selectByExample(example);
+        return CommonResult.success(list!=null ? list.get(0) : null, "操作成功");
     }
 
 }

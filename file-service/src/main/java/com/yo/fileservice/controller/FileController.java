@@ -8,7 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
@@ -51,7 +59,7 @@ public class FileController {
                                    @RequestParam("title") String title,
                                    @RequestParam("description") String description,
                                    @RequestParam("classis") Optional<String> classis,
-                                   @RequestParam("hash") String hash) throws IOException, NoSuchAlgorithmException {
+                                   @RequestParam("hash") String hash) throws Exception {
         return fileService.uploadFile(id, hash, file, title, description, classis);
     }
 
@@ -61,8 +69,27 @@ public class FileController {
                                    @RequestParam("description") String description,
                                    @RequestParam("classis") Optional<String> classis,
                                    @RequestParam("hash") String hash,
-                                   @RequestParam("name") String name) throws IOException, NoSuchAlgorithmException {
+                                   @RequestParam("name") String name) throws IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlPullParserException, InvalidExpiresRangeException, InternalException, XmlParserException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
         return fileService.uploadExistFile(id, name, hash, title, description, classis);
+    }
+
+
+    @GetMapping(value = "/member/file/{fileId}")
+    public void download(HttpServletRequest req, HttpServletResponse resp,
+                         @PathVariable(value = "fileId") String fileId) throws IOException, ServletException {
+        String userId = req.getHeader("userId");
+        fileService.downloadFile(req,resp, Long.valueOf(userId),fileId);
+    }
+
+    @ResponseBody
+    @DeleteMapping(value = "/member/file/{fileId}")
+    public CommonResult deleteFile(@PathVariable(value = "fileId") String fileId) throws Exception {
+        return fileService.deleteFile(fileId);
+    }
+
+    @GetMapping(value = "/member/fileInfo/{fileId}")
+    public CommonResult getFileInfo(@PathVariable(value = "fileId") String fileId) throws IOException, ServletException {
+        return fileService.getFileInfo(fileId);
     }
 }
 

@@ -23,6 +23,7 @@ spring:
 file:
   rootDir:
     memberFile: /mydata/yoshare/memberFile/
+    groupFile: /mydata/yoshare/groupFile/
 
 minio:
   endpoint: http://127.0.0.1:9000

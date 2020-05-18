@@ -1,15 +1,13 @@
 package com.yo.fileservice.components;
 
-import io.minio.MinioClient;
-import io.minio.ObjectStat;
-import io.minio.PutObjectOptions;
-import io.minio.Result;
+import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
 import io.minio.messages.Upload;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xmlpull.v1.XmlPullParserException;
@@ -19,6 +17,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -185,5 +184,34 @@ public class MinioTemplate {
         }
         return client.presignedPutObject(bucketName, objectName, expires);
     }
+
+
+
+    /**
+     * 拷贝文件
+     * */
+    public void copyObject(String bucketName,String objectName,String srcBucketName,String srcObjectName) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InvalidExpiresRangeException, InternalException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, InvalidResponseException, XmlParserException {
+        if (StringUtils.equals(bucketName, srcBucketName) && StringUtils.equals(objectName, srcObjectName)){ return;}
+        client.copyObject(bucketName,objectName,null,null,srcBucketName,
+                srcObjectName,null,null);
+    }
+
+
+//    /**
+//     * 拷贝文件
+//     * */
+//    public void copyObject(String bucketName,
+//                             String objectName,
+//                             Map<String, String> headerMap,
+//                             ServerSideEncryption sse,
+//                             String srcBucketName,
+//                             String srcObjectName,
+//                             ServerSideEncryption srcSse,
+//                             CopyConditions copyConditions) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InvalidExpiresRangeException, InternalException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, InvalidResponseException, XmlParserException {
+//
+//
+//        client.copyObject(bucketName,objectName,headerMap,sse,srcBucketName,
+//                srcObjectName,srcSse,copyConditions);
+//    }
 
 }

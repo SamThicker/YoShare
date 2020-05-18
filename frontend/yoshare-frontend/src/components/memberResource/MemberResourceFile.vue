@@ -1,6 +1,5 @@
 <template>
   <div class="resource-panel-wrap">
-
     <resource-panel
       class="resource-panel"
       :type="'FILE'"
@@ -10,23 +9,9 @@
     ></resource-panel>
 
     <div class="resource-content">
-      <file-content></file-content>
+      <file-view :file-info="currentFileInfo"></file-view>
     </div>
-    <!-- 图片上传组件辅助 -->
-    <!--accept="image/jpeg,image/gif,image/png"-->
-    <!--    <el-upload-->
-    <!--      class="file-upload"-->
-    <!--      :action="''"-->
-    <!--      :http-request="doUpload"-->
-    <!--      name="img"-->
-    <!--      :headers="null"-->
-    <!--      :show-file-list="false"-->
-    <!--      :on-success="uploadSuccess"-->
-    <!--      :on-error="uploadError"-->
-    <!--      :before-upload="beforeUpload"-->
-    <!--      style="display: none"-->
-    <!--    >-->
-    <!--    </el-upload>-->
+
 
     <!--上传文件-->
     <div class="add-fav-wrap" v-show="createRes">
@@ -97,13 +82,17 @@
 <script>
 import ResourcePanel from "@/components/ResourcePanel.vue";
 import { delResourceNote } from "@/api/resource";
-import { uploadExistFileToServer, uploadFileToServer } from "../../api/file";
+import {
+  getFileInfo,
+  uploadExistFileToServer,
+  uploadFileToServer
+} from "../../api/file";
 // import SparkMD5 from "spark-md5";
 import { hashFile } from "../../../static/utils/fileUtil";
-import FileContent from "../FileContent";
+import FileView from "../FileView";
 export default {
   name: "CategoryResource",
-  components: { FileContent, ResourcePanel },
+  components: { FileView, ResourcePanel },
   data() {
     return {
       noteSearch: "",
@@ -113,7 +102,7 @@ export default {
       toTop: false,
       classifications: [],
       previewItemCallback: {
-        click: this.noteItemClicked,
+        click: this.fileClicked,
         star: this.itemStarClicked,
         unstar: this.itemUnstarClicked,
         share: this.itemShareClicked,
@@ -131,7 +120,12 @@ export default {
       fileList: [],
       showPreview: false,
       fileName: "",
-      uploading: false
+      uploading: false,
+      currentFile: {
+        type: null,
+        content: null
+      },
+      currentFileInfo: null
     };
   },
   computed: {
@@ -145,11 +139,15 @@ export default {
   },
   methods: {
     //资源预览项点击事件
-    noteItemClicked: function(resource) {
-      this.toTop = true;
-      let redirection = "/resource/note/" + resource.resourceRef;
-      if (redirection === this.$route.path) return;
-      this.$router.push(redirection);
+    fileClicked: function(resource) {
+      let _this = this;
+      getFileInfo(resource.resourceRef)
+        .then(function(res) {
+          _this.currentFileInfo = res.data;
+          // _this.currentFile.type = res.headers["content-type"];
+          // _this.currentFile.content = res.data;
+        })
+        .catch();
     },
     itemStarClicked: function() {},
     itemUnstarClicked: function() {},
@@ -225,7 +223,7 @@ export default {
             .catch(err => {
               _this.uploadError();
               console.info(err);
-              _this.$elementMessage(err.message, "error", 1000)
+              _this.$elementMessage(err.message, "error", 1000);
             });
         });
     },
@@ -248,7 +246,8 @@ export default {
       if (fileList.length > 0) {
         this.showPreview = true;
         this.fileName = fileList[0].name;
-        if (this.resourceName === "") this.resourceName = this.fileName.substring(0,20);
+        if (this.resourceName === "")
+          this.resourceName = this.fileName.substring(0, 20);
       } else {
         this.showPreview = false;
       }
@@ -351,5 +350,10 @@ export default {
   overflow: auto;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.resource-content {
+  width: 100%;
+  height: 100%;
 }
 </style>

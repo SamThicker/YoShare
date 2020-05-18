@@ -33,8 +33,7 @@ zuul:
       serviceId: service-member
     service-security:
       path: /security/**
-      serviceId: service-security
-      stripPrefix: false
+      serviceId: service-security000000
     service-file:
       path: /file/**
       serviceId: service-file

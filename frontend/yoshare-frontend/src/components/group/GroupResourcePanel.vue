@@ -26,7 +26,8 @@
                   classification.icon ? classification.icon : 'el-icon-reading'
                 "
               ></i>
-              <span>{{
+              <span class="classification-name">
+              {{
                 classification ? classification.classificationName : null
               }}</span>
               <span class="classification-menu">
@@ -48,15 +49,15 @@
     </div>
     <div class="note-side-bar-preview">
       <!--菜单，搜索框-->
-      <div class="preview-menu">
-        <el-input
-          placeholder="请输入内容"
-          v-model="noteSearch"
-          class="note-search"
-        >
-          <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
-      </div>
+<!--      <div class="preview-menu">-->
+<!--        <el-input-->
+<!--          placeholder="请输入内容"-->
+<!--          v-model="noteSearch"-->
+<!--          class="note-search"-->
+<!--        >-->
+<!--          <el-button slot="append" icon="el-icon-search"></el-button>-->
+<!--        </el-input>-->
+<!--      </div>-->
       <div class="preview-list-wrap">
         <ul class="preview-list">
           <transition-group name="el-fade-in">
@@ -103,7 +104,7 @@
                       @click.stop="
                         previewItemCallback.del
                           ? previewItemCallback.del(resource)
-                          : null
+                          : deleteResource(resource)
                       "
                     ></i>
                   </span>
@@ -134,7 +135,7 @@ import {
   getGroupClassification,
   updateGroupClassification
 } from "../../api/resource";
-import { getGroupResources } from "../../api/groupResource";
+import { delResource, getGroupResources } from "../../api/groupResource";
 
 export default {
   name: "GroupResourcePanel",
@@ -374,6 +375,38 @@ export default {
       if (this.classificationsCallback && this.classificationsCallback.click) {
         this.classificationsCallback.click(classification);
       }
+    },
+    //删除资源
+    deleteResource(resource) {
+      let _this = this;
+      this.$confirm("此操作将永久删除该资源, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          _this.deleteLoading = true;
+          resource.datetime = new Date(resource.datetime);
+          let groupId = _this.groupId;
+          delResource(groupId, resource.type, _this.currentClassification.id ,resource)
+            .then(function() {
+              let res = resource;
+              let index = _this.resources.findIndex(
+                resource => resource.id === res.id
+              );
+              if (index > -1) {
+                _this.resources.splice(index, 1);
+              }
+              _this.deleteLoading = false;
+            })
+            .catch(() => {
+              _this.$elementMessage("操作失败，请重试", "error", 1000);
+              _this.deleteLoading = false;
+            });
+        })
+        .catch(() => {
+          _this.deleteLoading = false;
+        });
     }
   }
 };
@@ -384,6 +417,7 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .note-side-bar-folder {
@@ -394,6 +428,7 @@ export default {
   width: 220px;
   background-color: #f2f2f2;
   overflow-y: scroll;
+  box-sizing: border-box;
 }
 
 .note-side-bar-preview {
@@ -416,6 +451,7 @@ li {
 
 .folders {
   height: calc(100% - 65px);
+  /*height: 100%;*/
   width: 100%;
   box-sizing: border-box;
   overflow-y: auto;
@@ -424,6 +460,8 @@ li {
 .folders-label {
   cursor: pointer;
   box-sizing: border-box;
+  overflow: hidden;
+  height: 65px;
 }
 
 .folders-label span {
@@ -438,6 +476,7 @@ li {
   font-size: 20px;
   margin-right: 5px;
   display: none;
+  box-sizing: border-box;
 }
 
 .folders-label:hover .add {
@@ -502,6 +541,9 @@ li {
   line-height: 38px;
   font-size: 18px;
   font-weight: bold;
+  bottom: 13px;
+  position: relative;
+  display: inline-block;
 }
 
 .folders ul li span {
@@ -511,9 +553,20 @@ li {
   font-size: 15px;
 }
 
+.classification-name {
+  max-width: 100px;
+  width: auto;
+  display: inline-block;
+  top: 3px;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .classification-menu {
   line-height: 36px;
-  height: 36px;
+  height: 33px !important;
   position: absolute;
   z-index: 100;
   top: 1px;
@@ -567,7 +620,7 @@ li {
 
 .preview-list-wrap {
   width: 100%;
-  height: calc(100% - 65px);
+  height: 100%;
   overflow-y: hidden;
 }
 

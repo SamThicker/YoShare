@@ -25,7 +25,7 @@ public class ResourceController {
     }
 
     @DeleteMapping("/{id}/ownResource")
-    public CommonResult delResourceForSelf(@PathVariable("id") Long id, @RequestBody CmsMemberResource resource) {
+    public CommonResult delResourceForSelf(@PathVariable("id") Long id, @RequestBody CmsMemberResource resource) throws Exception {
         if (!resource.getByUserId().equals(id)){
             return CommonResult.forbidden(null);
         }
@@ -58,12 +58,14 @@ public class ResourceController {
         return resourceService.deleteClassification(userId, classificationId);
     }
 
+    /**创建收藏网页*/
     @PutMapping(value = "/{id}/ownResource/web")
     public CommonResult addFavorite(@PathVariable("id") Long userId, @RequestParam String title,
                                     @RequestParam String introduction, @RequestParam String url){
         return resourceService.addFavorite(userId, title, introduction, url);
     }
 
+    /**获取收藏的网页*/
     @GetMapping(value = "/{id}/ownResource/web")
     public CommonResult getWeb(@PathVariable(value = "id") Long userId, @RequestParam Long webId){
         return resourceService.getWeb(userId, webId);

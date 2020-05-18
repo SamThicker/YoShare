@@ -9,6 +9,11 @@
     ></resource-panel>
 
     <div class="note-content">
+      <!--菜单栏-->
+      <div class="favorite-menu" v-show="showMenu">
+        <div class="web-url">{{ iframeUrl }}</div>
+        <div class="jump" @click="newTab">→</div>
+      </div>
       <iframe class="web-view" :src="iframeUrl"></iframe>
     </div>
 
@@ -71,9 +76,11 @@ export default {
       iframeUrl: "",
       refresh: false,
       currentClassis: null,
-      destClassis: null
+      destClassis: null,
+      showMenu: false
     };
   },
+  // window.open(_this.iframeUrl, "_blank");
   computed: {
     userId: function() {
       return this.$store.state.user.info.id;
@@ -81,6 +88,9 @@ export default {
   },
   mounted() {},
   methods: {
+    newTab() {
+      window.open(this.iframeUrl, "_blank");
+    },
     addFavoriteWebPageDialog: function(classis) {
       this.destClassis = classis;
       this.createRes = true;
@@ -109,6 +119,7 @@ export default {
       document.removeEventListener("click", this.clickListener);
     },
     visitFavoritePage(resource) {
+      this.showMenu = true;
       let _this = this;
       let webId = resource.resourceRef;
       getMemFavPage(this.userId, webId)
@@ -188,6 +199,48 @@ export default {
   border-radius: 100%;
   border: 1px solid #fff;
   cursor: pointer;
+}
+
+.favorite-menu {
+  height: 40px;
+  width: 100%;
+  border-bottom: 1px solid #d5d5d5;
+  border-top: 1px solid #d5d5d5;
+  box-sizing: border-box;
+  line-height: 40px;
+  display: -webkit-box;
+}
+
+.web-url {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  height: 34px;
+  top: 2px;
+  margin: 1px 10px 1px 5px;
+  overflow: hidden;
+  text-align: left;
+  box-sizing: border-box;
+  border-radius: 7px;
+  padding: 0 5px 0 5px;
+  background-color: #efefef;
+  line-height: 34px;
+  overflow-x: auto;
+  font-size: 15px;
+  font-family: Arial;
+}
+
+.jump {
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  position: relative;
+  top: 2px;
+  right: 5px;
+  background-color: #e3effe;
+  line-height: 35px;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .web-view {

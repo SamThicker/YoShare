@@ -16,6 +16,6 @@ import java.security.NoSuchAlgorithmException;
 @FeignClient(value = "SERVICE-FILE")
 public interface FileService {
 
-    @RequestMapping(value = "/groupAvatarUploadUrl", method = RequestMethod.GET)
+    @RequestMapping(value = "/file/groupAvatarUploadUrl", method = RequestMethod.GET)
     CommonResult getGroupAvatarUploadUrl(@RequestParam String name) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidPortException, InvalidExpiresRangeException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InvalidEndpointException, InternalException;
 }

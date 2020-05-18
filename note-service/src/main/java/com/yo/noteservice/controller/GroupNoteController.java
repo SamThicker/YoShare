@@ -27,6 +27,7 @@ public class GroupNoteController {
         Long userId = Long.valueOf(request.getHeader("userId"));
         GroupNote note = noteRes.getNote();
         note.setBy(String.valueOf(userId));
+        note.setGroupId(String.valueOf(groupId));
         GroupNote result = groupNoteService.addNote(note, noteRes.getClassId(), groupId);
         return CommonResult.success(result, "操作成功");
     }
@@ -39,6 +40,7 @@ public class GroupNoteController {
         Long userId = Long.valueOf(request.getHeader("userId"));
         GroupNote note = noteRes.getNote();
         note.setBy(String.valueOf(userId));
+        note.setGroupId(groupId);
         if(note.getId() == null){
             return addNote(noteRes, Long.valueOf(groupId));
         }

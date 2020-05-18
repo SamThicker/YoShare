@@ -1,6 +1,5 @@
 <template>
   <div class="group-resource-note-wrap">
-
     <group-resource-panel
       class="resource-panel"
       :type="'NOTE'"
@@ -10,7 +9,7 @@
     ></group-resource-panel>
 
     <div class="note-content" v-loading="noteLoading">
-      <router-view/>
+      <router-view />
     </div>
   </div>
 </template>
@@ -28,14 +27,15 @@ export default {
         star: this.itemStar,
         unstar: this.itemUnstar,
         share: this.itemShare,
-        del: this.itemDelete
+        del: null
       },
       classificationsCallBack: {
         click: this.classisClick,
         more: this.classisEdit,
         addRes: this.addNote
       },
-      refresh: false
+      refresh: false,
+      toTop: false
     };
   },
   computed: {
@@ -47,11 +47,16 @@ export default {
     }
   },
   methods: {
-    itemClick() {},
+    itemClick(resource) {
+      this.toTop = true;
+      let redirection =
+        "/group/" + this.groupId + "/note/" + resource.resourceRef;
+      if (redirection === this.$route.path) return;
+      this.$router.push(redirection);
+    },
     itemStar() {},
     itemUnstar() {},
     itemShare() {},
-    itemDelete() {},
     classisClick() {},
     classisEdit() {},
     addNote: function(classis) {
@@ -73,9 +78,10 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
-  display: -webkit-box;
-  -webkit-box-orient: horizontal;
+  /*display: -webkit-box;*/
+  display: flex;
 }
+
 
 .resource-panel {
   width: 500px;
@@ -83,10 +89,30 @@ export default {
 }
 
 .note-content {
+  /*height: 100%;*/
+  /*flex: 1;*/
+  /*border: 1px solid #eee;*/
+  /*box-sizing: border-box;*/
+
+  width: 0;
+
+  /*width: 100%;*/
+  /*height: 100%;*/
+  /*flex: 1;*/
+  /*position: relative;*/
+  display: inline-block;
+  position: relative;
   height: 100%;
-  flex: 1;
-  width: 100%;
+  /*width: 10px;*/
+  /*width: 100%;*/
+  /*flex: 1;*/
+  flex-grow: 1;
+  flex-shrink: 1;
   border: 1px solid #eee;
   box-sizing: border-box;
+
+
+
+
 }
 </style>

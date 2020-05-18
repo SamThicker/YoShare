@@ -52,7 +52,7 @@
 
 <script>
 import SimpleHeaderBarPro from "@/components/group/GroupNoteSimpleHeaderBarPro";
-import { getNoteForSelf } from "@/api/note";
+import { getGroupNote } from "../../api/groupNote";
 
 export default {
   name: "GroupNoteReading",
@@ -91,6 +91,9 @@ export default {
   computed: {
     noteId: function() {
       return this.$route.params.noteId;
+    },
+    groupId: function() {
+      return this.$route.params.groupId;
     }
   },
   watch: {
@@ -180,8 +183,7 @@ export default {
     getNote() {
       this.noteLoading = true;
       let _this = this;
-      let userId = this.$store.state.user.info.id;
-      getNoteForSelf(userId, _this.noteId)
+      getGroupNote(_this.groupId, _this.noteId)
         .then(function(res) {
           _this.note = res.data;
           _this.noteLoading = false;

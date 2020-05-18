@@ -3,7 +3,7 @@ import rawRequest from "../../static/utils/rawRequest";
 
 export function login(account, password) {
   return request({
-    url: "/member-service/security/member/login",
+    url: "/security/member/login",
     method: "post",
     data: {
       account: account,
