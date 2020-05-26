@@ -120,7 +120,7 @@
 import TimeLine from "../components/TimeLine";
 import { getNoteForSelf, saveNote } from "../api/note";
 import { formatDateTime } from "../../static/utils/dateUtil";
-import { saveGroupNote } from "../api/groupNote";
+import { getGroupNote, saveGroupNote } from "../api/groupNote";
 export default {
   name: "WorkBench",
   watch: {
@@ -181,16 +181,13 @@ export default {
       editing: true,
       markdownEditable: true,
       onSaveLoading: false,
-      currentVersionId: ""
+      currentVersionId: "",
+      currentTag: ""
     };
   },
   computed: {
     currentTime: function() {
       return this.getCurrentTime();
-    },
-    currentTag: function() {
-      if (this.noteId) return "更改";
-      return "新建";
     }
   },
   methods: {
@@ -267,16 +264,31 @@ export default {
     getNote() {
       let _this = this;
       if (!this.userId || !this.noteId) return;
-      getNoteForSelf(this.userId, this.noteId)
-        .then(function(res) {
-          _this.currentNote = res.data;
-          _this.currentNote.contents.forEach(content => {
-            content.time = formatDateTime(content.time);
+      let groupId = this.$route.query.groupId;
+      console.info(groupId)
+      if(groupId) {
+        getGroupNote(groupId, this.noteId)
+          .then(function(res) {
+            _this.currentNote = res.data;
+            _this.currentNote.contents.forEach(content => {
+              content.time = formatDateTime(content.time);
+            });
+          })
+          .catch(function(err) {
+            console.info("err:" + err);
           });
-        })
-        .catch(function(err) {
-          console.info("err:" + err);
-        });
+      } else {
+        getNoteForSelf(this.userId, this.noteId)
+          .then(function(res) {
+            _this.currentNote = res.data;
+            _this.currentNote.contents.forEach(content => {
+              content.time = formatDateTime(content.time);
+            });
+          })
+          .catch(function(err) {
+            console.info("err:" + err);
+          });
+      }
     },
     setData() {
       if (!this.currentNote) return;
@@ -364,6 +376,7 @@ export default {
       if (this.noteId) {
         this.timeLineItemClick("");
       }
+      this.currentTag = this.noteId ? "更改" : "新建";
       this.editing = true;
       this.markdownEditable = true;
       this.saveOption = true;
@@ -538,8 +551,8 @@ html body {
   /*flex: 1;*/
   /*height: 100%;*/
 
-  /*flex-grow: 1;*/
-  /*flex-shrink: 1;*/
+  flex-grow: 1;
+  flex-shrink: 1;
   overflow: hidden;
 }
 

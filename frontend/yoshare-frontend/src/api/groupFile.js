@@ -1,55 +1,62 @@
-import corsRequest from "../../static/utils/corsRequest";
 import request from "../../static/utils/request";
+import corsRequestPro from "../../static/utils/corsRequestPro";
 
-export function uploadFile(url, file) {
-  let headers = {
-    "Content-Type": file.type
-  };
-  return corsRequest({
+// export function uploadFileToServer(groupId, formData) {
+//   return request({
+//     url: "/zuul/file/group/" + groupId + "/file",
+//     method: "put",
+//     headers: {
+//       "content-type": "application/x-www-form-urlencoded"
+//     },
+//     data: formData
+//   });
+// }
+export function uploadFileToServer(groupId, formData) {
+  return request({
+    url: "/file/group/" + groupId + "/file",
+    method: "put",
+    headers: {
+      "content-type": "application/x-www-form-urlencoded"
+    },
+    data: formData
+  });
+}
+
+export function uploadExistFileToServer(groupId, formData) {
+  return request({
+    url: "/file/group/" + groupId + "/existFile",
+    method: "put",
+    headers: {
+      "content-type": "application/x-www-form-urlencoded"
+    },
+    data: formData
+  });
+}
+
+export function downloadFile(fileId) {
+  return request({
+    url: "/file/member/file/" + fileId,
+    method: "get",
+    headers: {
+      responseType: "blob"
+    }
+  });
+}
+
+export function getFileInfo(groupId, fileId) {
+  return request({
+    url: "/file/group/" + groupId + "/fileInfo/" + fileId,
+    method: "get"
+  });
+}
+
+export function download(url) {
+  return corsRequestPro({
     url: url,
-    method: "put",
-    data: file,
-    headers: headers
-  });
-}
-
-export function getUploadUrl(fileName) {
-  return request({
-    url: "/file/uploadUrl/" + fileName,
-    method: "get"
-  });
-}
-
-export async function uploadDirectly(file) {
-  let url = (await getUploadUrl(file.name)).data;
-  return uploadFile(url, file);
-}
-
-export function getBlogFilePutUrl(userId, filename) {
-  return request({
-    url: "/file/blogFilePutUrl/" + userId + "/" + filename,
-    method: "get"
-  });
-}
-
-export function uploadFileToServer(userId, formData) {
-  return request({
-    url: "/zuul/file/member/" + userId + "/file",
-    method: "put",
+    method: "get",
     headers: {
-      "content-type": "application/x-www-form-urlencoded"
-    },
-    data: formData
-  });
-}
-
-export function uploadExistFileToServer(userId, formData) {
-  return request({
-    url: "/file/member/" + userId + "/existFile",
-    method: "put",
-    headers: {
-      "content-type": "application/x-www-form-urlencoded"
-    },
-    data: formData
+      "Content-Disposition": "attachment"
+      // origin: "127.0.0.1"
+    }
   });
 }

@@ -52,19 +52,25 @@
 
 <script>
 import GroupResourcePanel from "@/components/group/GroupResourcePanel.vue";
+import { addGroupFavPage, getGroupFavPage } from "../../api/groupResource";
 export default {
   name: "GroupFavorite",
   components: { GroupResourcePanel },
   mounted() {},
+  computed: {
+    groupId: function() {
+      return this.$route.params.groupId;
+    }
+  },
   data() {
     return {
       noteLoading: false,
       previewItemCallback: {
-        click: this.itemClick,
+        click: this.visitFavoritePage,
         star: this.itemStar,
         unstar: this.itemUnstar,
         share: this.itemShare,
-        del: this.itemDelete
+        del: null
       },
       classificationsCallBack: {
         click: this.classisClick,
@@ -83,7 +89,6 @@ export default {
     };
   },
   methods: {
-    itemClick() {},
     itemStar() {},
     itemUnstar() {},
     itemShare() {},
@@ -103,19 +108,19 @@ export default {
     },
     addFavoriteWebPage() {
       this.createRes = false;
-      // let _this = this;
-      // addMemFavPage(
-      //   this.userId,
-      //   this.resourceName,
-      //   this.resourceIntroduction,
-      //   this.resourceUrl
-      // )
-      //   .then(function() {
-      //     _this.refreshData();
-      //   })
-      //   .catch(err => {
-      //     console.info("err:" + err);
-      //   });
+      let _this = this;
+      addGroupFavPage(
+        this.groupId,
+        this.resourceName,
+        this.resourceIntroduction,
+        this.resourceUrl
+      )
+        .then(function() {
+          _this.refreshData();
+        })
+        .catch(err => {
+          console.info("err:" + err);
+        });
     },
     clickListener(e) {
       let box = document.getElementsByClassName("add-fav")[0];
@@ -123,17 +128,17 @@ export default {
       this.createRes = false;
       document.removeEventListener("click", this.clickListener);
     },
-    visitFavoritePage(/*resource*/) {
+    visitFavoritePage(resource) {
       this.showMenu = true;
-      // let _this = this;
-      // let webId = resource.resourceRef;
-      // getMemFavPage(this.userId, webId)
-      //   .then(function(res) {
-      //     _this.iframeUrl = res.data.url;
-      //   })
-      //   .catch(err => {
-      //     console.info("err:" + err.message);
-      //   });
+      let _this = this;
+      let webId = resource.resourceRef;
+      getGroupFavPage(this.groupId, webId)
+        .then(function(res) {
+          _this.iframeUrl = res.data.url;
+        })
+        .catch(err => {
+          console.info("err:" + err.message);
+        });
     },
     refreshData() {
       let _this = this;

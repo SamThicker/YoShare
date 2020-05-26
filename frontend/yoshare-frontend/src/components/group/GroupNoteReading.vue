@@ -178,7 +178,10 @@ export default {
     noteEditTrigger() {
       let userId = this.$store.state.user.info.id;
       let noteId = this.note.id;
-      this.$router.push("/workBench/" + userId + "/" + noteId);
+      let query = {};
+      query.groupId = this.groupId;
+      let path = "/workBench/" + userId + "/" + noteId;
+      this.$router.push({ path: path, query: query });
     },
     getNote() {
       this.noteLoading = true;

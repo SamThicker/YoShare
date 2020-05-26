@@ -1,9 +1,9 @@
 package com.yo.resourceservice.service.serviceImpl;
 
 import com.yo.resourceservice.bo.ResourceType;
+import com.yo.resourceservice.feignInterface.FileService;
 import com.yo.resourceservice.feignInterface.NoteService;
 import com.yo.resourceservice.service.GroupResourceService;
-import com.yo.resourceservice.service.ResourceService;
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.common.api.ResultCode;
 import com.yo.yoshare.mbg.mapper.*;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -28,13 +27,16 @@ public class GroupResourceServiceImpl implements GroupResourceService {
     @Autowired(required = false)
     CmsGroupFavoritePageMapper favoritePageMapper;
     @Autowired/*(required = false)*/
-    CmsMemberFileMapper memberFileMapper;
+    CmsGroupFileMapper groupFileMapper;
     @Autowired
     GmsGroupMemberRelationshipMapper relationshipMapper;
     @Value("${file.rootDir.memberFile}")
     private  String MEMBER_FILE_DIR;
     @Autowired
+
     private HttpServletRequest request;
+    @Autowired
+    private FileService fileService;
 
     @Override
     public CommonResult getGroupResources(Long userId, Long groupId, String type, Long classis) {
@@ -52,11 +54,12 @@ public class GroupResourceServiceImpl implements GroupResourceService {
         if (null != classis && 0 < classis){
             cri.andClassificationEqualTo(classis);
         }
-        return CommonResult.success(groupResourceMapper.selectByExample(example),"成功");
+        List list = groupResourceMapper.selectByExample(example);
+        return CommonResult.success(list,"成功");
     }
 
     @Override
-    public CommonResult delGroupResource(CmsGroupResource resource) {
+    public CommonResult delGroupResource(CmsGroupResource resource, String groupId) throws Exception {
         switch (resource.getType()){
             case "NOTE":{
                 CommonResult result = noteService.delNote(resource.getByUserId().toString(), resource.getResourceRef());
@@ -76,25 +79,22 @@ public class GroupResourceServiceImpl implements GroupResourceService {
                 return CommonResult.success("操作成功");
             }
             case "FILE": {
+                System.out.println("deleting");
                 Long id = Long.valueOf(resource.getResourceRef());
-                CmsMemberFile fileInfo = memberFileMapper.selectByPrimaryKey(id);
+                CmsGroupFile fileInfo = groupFileMapper.selectByPrimaryKey(id);
                 String name = fileInfo.getName();
                 String hashString = fileInfo.getMd5();
+                CmsGroupFileExample example = new CmsGroupFileExample();
+                example.createCriteria().andMd5EqualTo(hashString).andNameEqualTo(name);
+                if (1 == groupFileMapper.countByExample(example)){
+                    CommonResult result = fileService.deleteFileForGroup(String.valueOf(id),groupId);
+                    if (result.getCode() != ResultCode.SUCCESS.getCode()){
+                        return CommonResult.failed("出错辣");
+                    }
+                }
                 groupResourceMapper.deleteByPrimaryKey(resource.getId());
-                memberFileMapper.deleteByPrimaryKey(id);
-                CmsMemberFileExample example = new CmsMemberFileExample();
-                example.createCriteria().andMd5EqualTo(hashString);
-                List<CmsMemberFile> files = memberFileMapper.selectByExample(example);
-                if (files.size() != 0){
-                    return CommonResult.success("操作成功");
-                }
-                File fileDir = new File(MEMBER_FILE_DIR + hashString);
-                File file = new File(fileDir + "/" + name);
-                file.delete();
-                if (fileDir.exists() && !fileDir.delete()){
-                    return CommonResult.failed("服务异常");
-                }
                 return CommonResult.success("操作成功");
+
             }
             default: {
                 //TODO
@@ -110,6 +110,7 @@ public class GroupResourceServiceImpl implements GroupResourceService {
         page.setCreatedTime(new Date());
         page.setUrl(url);
         page.setMemberId(Long.parseLong(userId));
+        page.setGroupid(groupId);
         favoritePageMapper.insertSelective(page);
         CmsGroupResource resource = new CmsGroupResource();
         resource.setByUserId(Long.parseLong(userId));

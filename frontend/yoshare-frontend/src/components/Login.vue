@@ -300,19 +300,24 @@ export default {
 
     //倒计时
     countdown(count) {
+      //页面显示的剩余秒数
       this.countdown_flag = count;
       //设置为1可以不显示0s，体验更好
       if (count > 0) {
+        //设置提示的文字
         this.btn_text = "(" + this.countdown_flag + "s)后重新发送";
+        //使能按钮
         this.disabled_flag = true;
         count--;
         let _this = this;
+        //设置定时器
         setTimeout(function() {
           _this.countdown(count);
         }, 1000);
       } else {
         this.btn_text = "获取验证码";
         this.disabled_flag = false;
+        //清除定时器
         clearTimeout();
       }
     },

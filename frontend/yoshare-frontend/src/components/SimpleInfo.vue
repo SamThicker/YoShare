@@ -158,15 +158,19 @@ export default {
         _this.update = true;
       }, 0);
     },
+    //上传头像
     uploadAvatar(content) {
       let _this = this;
       let userId = this.$store.state.user.info.id;
       let file = content.file;
       let type = file.type.replace("image/", "");
+      //获取上传到Minio的URL
       getAvatarUploadUrl(userId, type)
         .then(function(res) {
           let url = res.data;
+          //直接把头像上传到Minio
           uploadFile(url, file).then(function(res) {
+            //如果上传成功，则更新信息
             _this.uploadSuccess(res);
             let userId = _this.infoContainer.id;
             _this.$store.commit(
@@ -176,6 +180,7 @@ export default {
           });
         })
         .catch(function(err) {
+          //失败则返回报错信息
           console.info("err:" + JSON.stringify(err));
           _this.uploadError(err);
         });

@@ -8,6 +8,9 @@
           :key="group.id"
           @click="toGroupManager(group.id)"
         >
+          <div class="admin" v-show="group.adminId === userId">
+            <i class="el-icon-cpu"></i>
+          </div>
           <div class="avatar">
             <img :src="'http://localhost' + group.icon" />
           </div>
@@ -213,6 +216,7 @@ export default {
 }
 
 .group {
+  position: relative;
   width: 300px;
   height: 400px;
   text-align: center;
@@ -256,6 +260,15 @@ export default {
   top: 50%;
   margin: 0 auto;
   transform: translate3d(0, -50%, 0);
+}
+
+.admin {
+  font-weight: bold;
+  font-size: 23px;
+  position: absolute;
+  top: 20px;
+  left: 25px;
+  color: rgba(231, 175, 47, 0.8);
 }
 
 .avatar {

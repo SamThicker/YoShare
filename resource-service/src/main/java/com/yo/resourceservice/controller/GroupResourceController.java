@@ -29,12 +29,12 @@ public class GroupResourceController {
     }
 
     @DeleteMapping("/{groupId}/{type}/{classis}")
-    public CommonResult delResourceForSelf(@PathVariable("groupId") Long groupId, @RequestBody CmsGroupResource resource) {
+    public CommonResult delResourceForSelf(@PathVariable("groupId") Long groupId, @RequestBody CmsGroupResource resource) throws Exception {
         Long userId = Long.valueOf(request.getHeader("userId"));
         if ( !userId.equals(resource.getByUserId()) ){
             return CommonResult.forbidden(null);
         }
-        return groupResourceService.delGroupResource(resource);
+        return groupResourceService.delGroupResource(resource, String.valueOf(groupId));
     }
 
     /**创建收藏网页*/

@@ -27,9 +27,10 @@
                 "
               ></i>
               <span class="classification-name">
-              {{
-                classification ? classification.classificationName : null
-              }}</span>
+                {{
+                  classification ? classification.classificationName : null
+                }}</span
+              >
               <span class="classification-menu">
                 <span
                   class="classification-add"
@@ -49,15 +50,15 @@
     </div>
     <div class="note-side-bar-preview">
       <!--菜单，搜索框-->
-<!--      <div class="preview-menu">-->
-<!--        <el-input-->
-<!--          placeholder="请输入内容"-->
-<!--          v-model="noteSearch"-->
-<!--          class="note-search"-->
-<!--        >-->
-<!--          <el-button slot="append" icon="el-icon-search"></el-button>-->
-<!--        </el-input>-->
-<!--      </div>-->
+      <!--      <div class="preview-menu">-->
+      <!--        <el-input-->
+      <!--          placeholder="请输入内容"-->
+      <!--          v-model="noteSearch"-->
+      <!--          class="note-search"-->
+      <!--        >-->
+      <!--          <el-button slot="append" icon="el-icon-search"></el-button>-->
+      <!--        </el-input>-->
+      <!--      </div>-->
       <div class="preview-list-wrap">
         <ul class="preview-list">
           <transition-group name="el-fade-in">
@@ -252,7 +253,7 @@ export default {
         .then(function(res) {
           _this.resources = res.data;
           _this.resources.forEach(res => {
-            res.datetime = formatDateTime(res.datetime);
+            res.datetime = formatDateTime(res.dateTime);
           });
         })
         .catch(function(err) {
@@ -388,7 +389,12 @@ export default {
           _this.deleteLoading = true;
           resource.datetime = new Date(resource.datetime);
           let groupId = _this.groupId;
-          delResource(groupId, resource.type, _this.currentClassification.id ,resource)
+          delResource(
+            groupId,
+            resource.type,
+            _this.currentClassification.id,
+            resource
+          )
             .then(function() {
               let res = resource;
               let index = _this.resources.findIndex(
@@ -609,8 +615,6 @@ li {
   box-sizing: border-box;
   border-bottom: 1px solid #ddd;
 }
-
-
 
 .note-search {
   margin: 11px auto;

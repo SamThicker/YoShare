@@ -77,6 +77,7 @@ public class ResourceServiceImpl implements ResourceService {
                 String hashString = fileInfo.getMd5();
                 CmsMemberFileExample example = new CmsMemberFileExample();
                 example.createCriteria().andMd5EqualTo(hashString).andNameEqualTo(name);
+                //如果只剩这一份关联的resource，则连同文件删除
                 if (1 == memberFileMapper.countByExample(example)){
                     CommonResult result = fileService.deleteFile(String.valueOf(id));
                     System.out.println(result);

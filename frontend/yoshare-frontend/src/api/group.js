@@ -70,3 +70,11 @@ export function joinGroupByCode(userId, groupId, groupJoinCode) {
     }
   });
 }
+
+//退出小组
+export function quitGroup(groupId) {
+  return request({
+    url: "/group-service/group/" + groupId + "/member",
+    method: "delete"
+  });
+}

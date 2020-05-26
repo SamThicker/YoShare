@@ -37,6 +37,9 @@ public interface GroupService {
     /**更新小组信息*/
     CommonResult updateGroupInfo(Long userId, GmsGroup group);
 
-    /**判断用户是否小组管理员*/
-    CommonResult isGroupAdmin(Long groupId, Long userId);
+    /**判断用户是否小组管理员
+     * @return*/
+    boolean isGroupAdmin(Long groupId, Long userId);
+
+    CommonResult quitGroup(Long groupId);
 }

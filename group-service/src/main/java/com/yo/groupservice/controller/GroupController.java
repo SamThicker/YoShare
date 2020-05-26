@@ -88,8 +88,16 @@ public class GroupController {
 
 
     @GetMapping(value = "/{groupId}/isAdmin")
-    public CommonResult isGroupAdmin(@PathVariable(value = "groupId") Long groupId){
+    public boolean isGroupAdmin(@PathVariable(value = "groupId") Long groupId){
         Long userId = Long.valueOf(request.getHeader("userId"));
         return groupService.isGroupAdmin(groupId, userId);
     }
+
+    /**退出小组*/
+    @DeleteMapping(value = "/{groupId}/member")
+    public CommonResult quitGroup(@PathVariable(value = "groupId") Long groupId) {
+        return groupService.quitGroup(groupId);
+    }
+
+
 }

@@ -1,6 +1,5 @@
 <template>
   <div class="group-category-note-wrap">
-
     <group-resource-panel
       class="resource-panel"
       :type="'FILE'"
@@ -10,7 +9,7 @@
     ></group-resource-panel>
 
     <div class="resource-content">
-      <file-content></file-content>
+      <file-view :file-info="currentFileInfo"></file-view>
     </div>
 
     <!--上传文件-->
@@ -76,62 +75,110 @@
         <el-button type="primary" @click="addFileRes()">创建</el-button>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-import GroupResourcePanel from "@/components/group/GroupResourcePanel.vue";
-import { uploadExistFileToServer } from "../../api/file";
+import { delResourceNote } from "@/api/resource";
+import {
+  getFileInfo,
+  uploadExistFileToServer,
+  uploadFileToServer
+} from "../../api/groupFile";
+// import SparkMD5 from "spark-md5";
 import { hashFile } from "../../../static/utils/fileUtil";
-import { uploadFileToServer } from "../../api/groupFile";
+import GroupResourcePanel from "./GroupResourcePanel";
+import FileView from "../FileView";
 export default {
-  name: "GroupFile",
-  components: { GroupResourcePanel },
+  name: "CategoryResource",
+  components: { FileView, GroupResourcePanel },
   data() {
     return {
+      noteSearch: "",
+      deleteLoading: false,
       noteLoading: false,
-      resourceIntroduction: "",
+      note: null,
+      toTop: false,
+      classifications: [],
       previewItemCallback: {
-        click: this.itemClick,
-        star: this.itemStar,
-        unstar: this.itemUnstar,
-        share: this.itemShare,
+        click: this.fileClicked,
+        star: this.itemStarClicked,
+        unstar: this.itemUnstarClicked,
+        share: this.itemShareClicked,
         del: null
       },
       classificationsCallBack: {
-        click: this.classisClick,
-        more: this.classisEdit,
+        click: null,
         addRes: this.addFileResDialog
       },
       refresh: false,
       createRes: false,
-      uploading: false,
       resourceName: "",
-      fileName: "",
-      destClassis: null,
+      resourceIntroduction: "",
+      resourceUrl: "",
       fileList: [],
-      showPreview: false
+      showPreview: false,
+      fileName: "",
+      uploading: false,
+      currentFile: {
+        type: null,
+        content: null
+      },
+      currentFileInfo: null
     };
   },
-  methods: {
-    itemClick() {},
-    itemStar() {},
-    itemUnstar() {},
-    itemShare() {},
-    classisClick() {},
-    classisEdit() {},
-    addFileResDialog: function(classis) {
-      console.info("asdfas")
-      this.destClassis = classis;
-      this.createRes = true;
-      document.addEventListener("click", this.clickListener);
+  computed: {
+    userId: function() {
+      return this.$store.state.user.info.id;
     },
-    clickListener(e) {
-      let box = document.getElementsByClassName("add-fav")[0];
-      if (box.contains(e.target)) return;
-      this.createRes = false;
-      document.removeEventListener("click", this.clickListener);
+    groupId: function() {
+      return this.$route.params.groupId;
+    }
+  },
+  watch: {
+    userId: function() {},
+    note: function() {}
+  },
+  methods: {
+    //资源预览项点击事件
+    fileClicked: function(resource) {
+      let _this = this;
+      getFileInfo(_this.groupId, resource.resourceRef)
+        .then(function(res) {
+          _this.currentFileInfo = res.data;
+          // _this.currentFile.type = res.headers["content-type"];
+          // _this.currentFile.content = res.data;
+        })
+        .catch();
+    },
+    itemStarClicked: function() {},
+    itemUnstarClicked: function() {},
+    itemShareClicked: function() {},
+    itemDelClicked(resource) {
+      let _this = this;
+      this.$confirm("此操作将永久删除该笔记, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          _this.deleteLoading = true;
+          delResourceNote(_this.$store.state.user.info.id, resource)
+            .then(function() {
+              let index = _this.resources.indexOf(resource);
+              if (index > -1) {
+                _this.resources.splice(index, 1);
+              }
+              _this.deleteLoading = false;
+            })
+            .catch(() => {
+              _this.$elementMessage("操作失败，请重试", "error", 1500);
+              _this.deleteLoading = false;
+            });
+        })
+        .catch(() => {
+          _this.deleteLoading = false;
+        });
     },
     uploadSuccess: function() {
       this.createRes = false;
@@ -163,14 +210,14 @@ export default {
       formData.append("name", file.name);
       formData.append("hash", md5);
       let _this = this;
-      uploadExistFileToServer(this.userId, formData)
+      uploadExistFileToServer(this.groupId, formData)
         .then(function() {
           _this.$elementMessage("文件秒传成功", "success", 1000);
           _this.uploadSuccess();
         })
         .catch(function() {
           formData.append("file", file);
-          uploadFileToServer(_this.userId, formData)
+          uploadFileToServer(_this.groupId, formData)
             .then(function() {
               _this.$elementMessage("文件上传成功", "success", 1000);
               _this.uploadSuccess();
@@ -178,11 +225,48 @@ export default {
             .catch(err => {
               _this.uploadError();
               console.info(err);
-              _this.$elementMessage(err.message, "error", 1000)
+              _this.$elementMessage(err.message, "error", 1000);
             });
         });
     },
-    onChange(){}
+    clickListener(e) {
+      let box = document.getElementsByClassName("add-fav")[0];
+      if (box.contains(e.target)) return;
+      this.createRes = false;
+      document.removeEventListener("click", this.clickListener);
+    },
+    addFileResDialog: function(classis) {
+      this.destClassis = classis;
+      this.createRes = true;
+      document.addEventListener("click", this.clickListener);
+    },
+    //上传文件
+    addFileRes() {
+      this.$refs.upload.submit();
+    },
+    onChange(file, fileList) {
+      if (fileList.length > 0) {
+        this.showPreview = true;
+        this.fileName = fileList[0].name;
+        if (this.resourceName === "")
+          this.resourceName = this.fileName.substring(0, 20);
+      } else {
+        this.showPreview = false;
+      }
+    },
+    delFile() {
+      this.resourceName = "";
+      this.fileName = "";
+      this.$refs.upload.clearFiles();
+      this.showPreview = false;
+    },
+    refreshData() {
+      let _this = this;
+      this.refresh = true;
+      setTimeout(function() {
+        _this.refresh = false;
+      }, 50);
+    },
   }
 };
 </script>
@@ -195,7 +279,6 @@ export default {
   display: flex;
 }
 
-
 .resource-panel {
   height: 100%;
   width: 500px;
@@ -204,6 +287,7 @@ export default {
 .resource-content {
   height: 100%;
   flex: 1;
+  overflow: hidden;
 }
 
 .add-fav-wrap {
@@ -271,8 +355,5 @@ export default {
   text-overflow: ellipsis;
 }
 
-.resource-content {
-  width: 100%;
-  height: 100%;
-}
+
 </style>

@@ -1,6 +1,7 @@
 package com.yo.zuulservice.security;
 
 import com.alibaba.fastjson.JSON;
+import com.netflix.zuul.context.RequestContext;
 import com.yo.yoshare.mbg.model.UmsMemberSecurity;
 import com.yo.yoshare.mbg.model.UmsMemberSecurityExample;
 import com.yo.zuulservice.service.SecurityService;
@@ -59,6 +60,9 @@ public class JwtHeadFilter extends OncePerRequestFilter {
             response.getWriter().write("token 失效");
             return;
         }
+        RequestContext context = RequestContext.getCurrentContext();
+        context.addZuulRequestHeader("UserId", String.valueOf(memberid));
+        context.addZuulRequestHeader("UserName", userDetails.getUsername());
         //不用处理userDetails为空的情况，当user为空，说明token异常，直接抛出NullPointerException退出认证
         //生成认证成功后的AuthenticationToken
         JwtAuthenticationToken jwtLoginToken = new JwtAuthenticationToken(userDetails, "", userDetails.getAuthorities());

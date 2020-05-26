@@ -15,4 +15,10 @@ public interface FileService {
     @RequestMapping(value = "/file/member/file/{fileId}", method = RequestMethod.DELETE)
     CommonResult deleteFile(@PathVariable(value = "fileId") String fileId) throws Exception;
 
+
+    @ResponseBody
+    @DeleteMapping(value = "/file/group/{groupId}/file/{fileId}")
+    CommonResult deleteFileForGroup(@PathVariable(value = "fileId") String fileId,
+                            @PathVariable(value = "groupId") String groupId) throws Exception;
+
 }

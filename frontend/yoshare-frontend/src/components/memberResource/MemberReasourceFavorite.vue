@@ -14,6 +14,7 @@
         <div class="web-url">{{ iframeUrl }}</div>
         <div class="jump" @click="newTab">→</div>
       </div>
+      <!--网页浏览窗口-->
       <iframe class="web-view" :src="iframeUrl"></iframe>
     </div>
 
@@ -118,12 +119,16 @@ export default {
       this.createRes = false;
       document.removeEventListener("click", this.clickListener);
     },
+    //浏览网页
     visitFavoritePage(resource) {
+      //显示菜单
       this.showMenu = true;
       let _this = this;
       let webId = resource.resourceRef;
+      //获取网页的URL
       getMemFavPage(this.userId, webId)
         .then(function(res) {
+          //给iframe设置URL
           _this.iframeUrl = res.data.url;
         })
         .catch(err => {

@@ -180,16 +180,20 @@ export default {
       let noteId = this.note.id;
       this.$router.push("/workBench/" + userId + "/" + noteId);
     },
+    //获取笔记
     getNote() {
+      //清除定时器
       clearTimeout(this.timer);
       if (!this.noteId) return;
       this.noteLoading = true;
       let _this = this;
       let userId = this.$store.state.user.info.id;
+      //发送获取笔记的请求
       getNoteForSelf(userId, _this.noteId)
         .then(function(res) {
           _this.note = res.data;
           _this.noteLoading = false;
+          //设置定时器
           _this.timer = setTimeout(_this.addMemberReadRecord, 1000 * 30);
         })
         .catch(function(err) {
@@ -198,8 +202,10 @@ export default {
           _this.noteLoading = false;
         });
     },
+    //添加阅读记录
     addMemberReadRecord() {
       let userId = this.$store.state.user.info.id;
+      //发送请求
       addReadNoteLog(userId, this.noteId)
         .then()
         .catch();

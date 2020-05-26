@@ -73,7 +73,10 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
         accessDecisionService.setPermitAllUrl("/resource/resClassis/group/*", "/resource/resClassis/group/*/*", "/resource/resClassis/group/*/*/*", "/resource/group/*/*/*",
                 "/note/group/*/*", "/note/group/*/*/*",
                 "/file/member/file/*","/file/member/fileInfo/*",
-                "/resource/group/*/resource/web");
+                "/file/group/*/file/*", "/file/group/*/existFile","/group/*/file/*","/zuul/file/group/*/file",
+                "/zuul/file/group/*/file","file/group/*/file",
+                "/resource/group/*/resource/web","/resource/group/*/*/*",
+                "/group-service/group/*/member");
 
 
         //JWT校验过滤器
@@ -103,7 +106,8 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
                         "/member-service/member/area/*","/member-service/member/register","/member-service/member/info/exist","/member-service/member/mailVerificationCode","/member-service/member/*/info",
                         "/note/getNote/*/*","/note/updateNote/*",
                         "/group-service/group/*/group","/group-service/group/*/createdGroups",
-                        "/login.html").permitAll()
+                        "/login.html","/file/group/**",
+                        "/group-service/group/*/member").permitAll()
                 .anyRequest().access("@accessDecisionService.hasPermission(request , authentication)")
                 .and()
                 //将授权提供者注册到授权管理器中(AuthenticationManager)

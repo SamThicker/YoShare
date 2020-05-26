@@ -1,12 +1,13 @@
 package com.yo.resourceservice.feignInterface;
 
+import com.yo.resourceservice.component.FeignConfiguration;
 import com.yo.yoshare.common.api.CommonResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 @Repository
-@FeignClient(value = "service-note")
+@FeignClient(value = "service-note", configuration = FeignConfiguration.class)
 public interface NoteService {
 
 

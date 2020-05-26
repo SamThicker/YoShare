@@ -11,7 +11,7 @@ public interface GroupResourceService {
 
     CommonResult getGroupResources(Long userId, Long groupId, String type, Long classis);
 
-    CommonResult delGroupResource(CmsGroupResource resource);
+    CommonResult delGroupResource(CmsGroupResource resource, String groupId) throws Exception;
 
     CommonResult addFavorite(Long userId, String title, String introduction, String url);
 

@@ -88,7 +88,7 @@ public class FileServiceImpl implements FileService {
         MessageDigest md5;
         String name = file.getOriginalFilename();
         String type = name.substring(name.lastIndexOf(".")+1);
-        //文件操作
+        //校验文件MD5
         md5 = MessageDigest.getInstance("MD5");
         byte[] uploadBytes = file.getBytes();
         byte[] digest = md5.digest(uploadBytes);
@@ -97,7 +97,8 @@ public class FileServiceImpl implements FileService {
             return CommonResult.failed("文件出错");
         }
         String fileName = fileDirTrans(hashString, file.getOriginalFilename());
-        minioTemplate.putObject("file", fileName, file.getInputStream(), file.getSize(), file.getContentType());
+        //把文件存到Minio
+        minioTemplate.putObject("file", fileName, file.getInputStream(), file.getSize(), "file.getContentType()");
         //数据库操作
         CmsMemberFile memberFile = new CmsMemberFile();
         memberFile.setById(id);
@@ -105,6 +106,7 @@ public class FileServiceImpl implements FileService {
         memberFile.setType(type);
         memberFile.setSize(file.getSize());
         memberFile.setName(name);
+        //插入数据
         memberFileMapper.insertSelective(memberFile);
         CmsMemberResource resource = new CmsMemberResource();
         resource.setTitle(title);
@@ -122,13 +124,16 @@ public class FileServiceImpl implements FileService {
     public CommonResult uploadExistFile(Long id, String name, String hash, String title, String description, Optional<String> classis) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidExpiresRangeException, InvalidResponseException, ErrorResponseException, XmlParserException, InvalidBucketNameException, InsufficientDataException, InternalException {
         CmsMemberFileExample example = new CmsMemberFileExample();
         example.createCriteria().andMd5EqualTo(hash);
+        //查看该文件是否存在
         List<CmsMemberFile> files = memberFileMapper.selectByExample(example);
+        //如果文件不存在则返回，让用户上传文件
         if (files.size() == 0){
             return CommonResult.failed("文件不存在");
         }
         CmsMemberFile file = files.get(0);
         String srcFileName = fileDirTrans(file);
         String targetFileName = fileDirTrans(hash, name);
+        //复制文件
         minioTemplate.copyObject("file", targetFileName,"file", srcFileName);
         //数据库操作
         file.setId(null);
@@ -193,7 +198,7 @@ public class FileServiceImpl implements FileService {
         SimpleFileInfo fileInfo = new SimpleFileInfo();
         BeanUtils.copyProperties(file, fileInfo);
         //得到要访问的文件的URL
-        String objectName = file.getMd5() + "/member/" + file.getName();
+        String objectName = fileDirTrans(file.getMd5(), file.getName());
         String url = minioTemplate.getObjectURL("file", objectName, 60 * 60 *24);
         String reg = "^(https|http)(:\\/\\/)[a-zA-Z0-9.]+:[0-9]{1,}";
         url = url.replaceAll(reg, "");

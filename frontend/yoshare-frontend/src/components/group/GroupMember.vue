@@ -2,6 +2,19 @@
   <div class="user-panel">
     <transition-group name="el-fade-in">
       <div class="user-card" v-for="member in groupMembers" :key="member.id">
+        <div
+          class="member-quit"
+          v-show="member.id === userId"
+          @click="quitGroupClicked"
+        >
+          <div></div>
+        </div>
+        <div
+          class="member-quit admin"
+          v-show="member.id !== userId && isAdmin()"
+        >
+          <div></div>
+        </div>
         <div class="user-avatar">
           <img :src="'http://localhost/static/icon/' + member.icon" />
         </div>
@@ -66,12 +79,18 @@
 </template>
 
 <script>
-import { getAllGroupMember, getGroupJoinCode } from "../../api/group";
+import {
+  getAllGroupMember,
+  getGroupJoinCode,
+  quitGroup
+} from "../../api/group";
+import { deepClone } from "../../../static/utils/deepClone";
 
 export default {
   name: "GroupMember",
   mounted() {
     this.getGroupMembers();
+    this.setCurrentGroupInfo();
   },
   data() {
     return {
@@ -81,12 +100,14 @@ export default {
       code: "",
       instruction:
         '       请把验证码与小组ID分享给您的小伙伴，您的小伙伴只需在"小组"内容面板下点击' +
-        '"加入小组"的小卡片，然后输入验证码和小组ID，即可加入小组。 验证码有效期10分钟。'
+        '"加入小组"的小卡片，然后输入验证码和小组ID，即可加入小组。 验证码有效期10分钟。',
+      currentGroupInfo: null
     };
   },
   watch: {
     groupId: function() {
       this.getGroupMembers();
+      this.setCurrentGroupInfo();
     }
   },
   computed: {
@@ -101,11 +122,30 @@ export default {
     },
     getIcon: function(icon) {
       return "http://localhost/" + icon;
+    },
+    groups: function() {
+      return this.$store.state.user.allGroups;
     }
   },
   methods: {
     search(val) {
       console.info(val);
+    },
+    isAdmin() {
+      let bool = false;
+      if (
+        this.currentGroupInfo &&
+        this.currentGroupInfo.adminId === this.userId
+      )
+        bool = true;
+      return bool;
+    },
+    setCurrentGroupInfo() {
+      let _this = this;
+      let currentGroup = this.groups.filter(group => {
+        return parseInt(group.id) === parseInt(_this.groupId);
+      });
+      this.currentGroupInfo = deepClone(currentGroup[0]);
     },
     getGroupMembers() {
       let _this = this;
@@ -128,6 +168,24 @@ export default {
         .catch(err => {
           console.info("err:" + err);
         });
+    },
+    quitGroupClicked() {
+      let _this = this;
+      this.$confirm("确定要退出小组吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(function() {
+          quitGroup(_this.groupId)
+            .then(function() {
+              _this.$store.dispatch("getAllGroups", _this.userId);
+              _this.$elementMessage("操作成功", "success", 800);
+              _this.$router.push("/");
+            })
+            .catch(err => console.info(err));
+        })
+        .catch(err => console.info(err));
     }
   }
 };
@@ -305,5 +363,50 @@ export default {
   word-wrap: break-word;
   white-space: pre-wrap;
   text-align: left;
+}
+
+.member-quit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(231, 34, 51, 0.6);
+  -webkit-transition: 0.3s cubic-bezier(0.37, 1.44, 0.57, 0.77);
+  transition: 0.3s cubic-bezier(0.37, 1.44, 0.57, 0.77);
+  display: none;
+}
+
+.member-quit div {
+  position: relative;
+  top: 11px;
+  left: 4px;
+  width: 17px;
+  height: 3px;
+  background-color: white;
+  border: none;
+  z-index: 100;
+}
+
+.member-quit:hover {
+  background-color: rgba(231, 25, 43, 0.8);
+  transform: scale3d(1.1, 1.1, 0);
+}
+
+.admin {
+  background-color: rgba(231, 181, 70, 0.6);
+}
+
+.admin:hover {
+  background-color: rgba(231, 175, 47, 0.8);
+}
+
+.user-card:hover .member-quit {
+  transform: translateY(-2%);
+  box-shadow: 1px 1px 5px 2px #ccc;
+  -webkit-box-shadow: 1px 1px 5px 2px #ccc;
+  display: inline-block;
 }
 </style>

@@ -16,3 +16,25 @@ export function delResource(groupId, type, classis, resource) {
     data: resource
   });
 }
+
+export function addGroupFavPage(groupId, title, introduction, url) {
+  return request({
+    url: "resource/group/" + groupId + "/resource/web",
+    method: "put",
+    params: {
+      title: title,
+      introduction: introduction,
+      url: url
+    }
+  });
+}
+
+export function getGroupFavPage(groupId, webId) {
+  return request({
+    url: "resource/group/" + groupId + "/resource/web",
+    method: "get",
+    params: {
+      webId: webId
+    }
+  });
+}

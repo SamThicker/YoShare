@@ -11,42 +11,47 @@
           <div class="info-title">类型</div>
           <div class="info-value">{{ type }}</div>
         </div>
-        <div class="info-group-el" @click="download()">
+        <div class="info-group-el" @click="downloadClicked()">
           <div class="info-title">下载</div>
           <div class="info-value">↓</div>
         </div>
       </div>
     </div>
+    <div class="content-wrap">
+      <video
+        id="video"
+        class="preview-component"
+        preload="preload"
+        controlsList="nodownload"
+        controls="controls"
+        :src="videoSrc"
+        v-show="fileType === 'VIDEO'"
+      ></video>
+      <img
+        id="image"
+        class="preview-component"
+        v-show="fileType === 'IMAGE'"
+        crossOrigin
+        :src="imageSrc"
+      />
+      <audio
+        id="audio"
+        class="preview-component"
+        controls
+        :src="audioSrc"
+        v-show="fileType === 'AUDIO'"
+      >
+        您的浏览器不支持音频预览标签。
+      </audio>
+    </div>
 
-    <video
-      id="video"
-      class="preview-component"
-      preload="preload"
-      controlsList="nodownload"
-      controls="controls"
-      :src="videoSrc"
-      v-show="fileType === 'VIDEO'"
-    ></video>
-    <img
-      id="image"
-      class="preview-component"
-      v-show="fileType === 'IMAGE'"
-      crossOrigin
-      :src="imageSrc"
-    />
-    <audio
-      id="audio"
-      class="preview-component"
-      controls
-      :src="audioSrc"
-      v-show="fileType === 'AUDIO'"
-    >
-      您的浏览器不支持音频预览标签。
-    </audio>
+
   </div>
 </template>
 
 <script>
+// import { download } from "../api/groupFile";
+
 export default {
   name: "FileView",
   props: {
@@ -141,41 +146,25 @@ export default {
         audio.pause();
       }
     },
-    download() {
+    downloadClicked() {
       if (!this.fileInfo.url) return;
-
-      // let url = "http://127.0.0.1:9000" + this.fileInfo.url;
-      // console.info(url)
-      // var form = document.createElement("form");
-      // document.getElementsByTagName('body')[0].appendChild(form);
-      // form.setAttribute('style','display:none');
-      // form.setAttribute('target','');
-      // form.setAttribute('method','get');
-      // form.setAttribute('action',url);//下载文件的请求路径
-      //
-      // //clinicId
-      // var input1 = document.createElement('input');
-      // input1.setAttribute('type','hidden');
-      // input1.setAttribute('name','clinicId');
-      // form.appendChild(input1);
-      //
-      // form.submit();
-
-
-
-      window.open("http://127.0.0.1:9000" + this.fileInfo.url);
-
-      // let link = document.createElement("a");
-      // //设置下载的文件名
-      // link.download = this.fileInfo.name;
-      // link.style.display = "none";
-      // //设置下载路径
-      // link.href = this.fileInfo.url;
-      // //触发点击
-      // document.body.appendChild(link);
-      // link.click();
-      // //移除节点
-      // document.body.removeChild(link);
+      let url = "http://127.0.0.1:9000" + this.fileInfo.url;
+      window.open(url);
+    },
+    download(url, params) {
+      let tempForm = document.createElement("form");
+      tempForm.action = url;
+      tempForm.method = "get";
+      tempForm.style.display = "none";
+      for (var x in params) {
+        let opt = document.createElement("textarea");
+        opt.name = x;
+        opt.value = params[x];
+        tempForm.appendChild(opt);
+      }
+      document.body.appendChild(tempForm);
+      tempForm.submit();
+      return tempForm;
     }
   }
 };
@@ -185,6 +174,8 @@ export default {
 .file-view {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .file-info {
@@ -201,12 +192,16 @@ export default {
   width: 100%;
 }
 
+.info-group {
+  display: flex;
+}
+
 .info-group-el {
   display: inline-block;
-  width: 32%;
+  flex: 1;
   background-color: #e3edf9;
   box-sizing: border-box;
-  margin: 1px 2px 1px 2px;
+  margin: 1px 3px 1px 3px;
   border-radius: 7px;
   user-select: none;
 }
@@ -220,13 +215,26 @@ export default {
   font-size: 16px;
   overflow: hidden;
   box-sizing: border-box;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .info-title {
   font-size: 13px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .info-value {
   font-size: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.content-wrap {
+  overflow: auto;
+  flex: 1;
 }
 </style>
