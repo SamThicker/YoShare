@@ -1,6 +1,9 @@
 <template>
-  <div>
+  <div class="follow-panel-wrap">
     follow
+    <div class="follow-message">
+
+    </div>
   </div>
 </template>
 
@@ -10,4 +13,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.follow-panel-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+</style>

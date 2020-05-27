@@ -4,12 +4,17 @@ import com.mongodb.client.result.DeleteResult;
 import com.yo.noteservice.dao.GroupNoteDao;
 import com.yo.noteservice.model.Content;
 import com.yo.noteservice.mongoModel.GroupNote;
+import com.yo.noteservice.mongoModel.Note;
 import com.yo.noteservice.service.GroupNoteService;
+import com.yo.noteservice.service.NoteEsService;
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.mbg.mapper.CmsGroupResourceMapper;
 import com.yo.yoshare.mbg.model.CmsGroupResource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.stream.Stream;
 import java.util.Arrays;
 import java.util.Date;
@@ -24,18 +29,25 @@ public class GroupNoteServiceImpl implements GroupNoteService {
     GroupNoteDao groupNoteDao;
     @Autowired(required = false)
     CmsGroupResourceMapper resourceMapper;
+    @Autowired
+    NoteEsService noteEsService;
+
 
     /**
      * 添加新笔记
      *
      * @return*/
     @Override
+    @Transactional
     public GroupNote addNote(GroupNote note, Long classId, Long groupId) {
         int index = note.getContents().length-1;
         Content content = (Content)note.getContents()[index];
         content.setId(UUID.randomUUID().toString());
         content.setTime(new Date());
         GroupNote result = groupNoteDao.addNote(note);
+        com.yo.noteservice.esModel.GroupNote esObject = new com.yo.noteservice.esModel.GroupNote();
+        BeanUtils.copyProperties(note, esObject);
+        noteEsService.indexGroup(esObject);
         if (result != null && result.getId()!=null) {
             CmsGroupResource resource = new CmsGroupResource();
             resource.setByUserId(Long.valueOf(note.getBy()));
@@ -58,6 +70,7 @@ public class GroupNoteServiceImpl implements GroupNoteService {
      * 保存笔记
      * */
     @Override
+    @Transactional
     public void saveNote(GroupNote note) throws IllegalAccessException {
         Content[] contents = note.getContents();
         if (contents.length <= 0 ) {
@@ -71,6 +84,10 @@ public class GroupNoteServiceImpl implements GroupNoteService {
         note.setContents(null);
         note.setTags(null);
         groupNoteDao.update(note);
+        Note result = groupNoteDao.getNote(note.getId());
+        com.yo.noteservice.esModel.GroupNote esNote = new com.yo.noteservice.esModel.GroupNote();
+        BeanUtils.copyProperties(result, esNote);
+        noteEsService.updateGroup(esNote);
     }
 
     @Override
@@ -87,6 +104,7 @@ public class GroupNoteServiceImpl implements GroupNoteService {
     public CommonResult deleteGroupNote(String userId, String noteId, String groupId) {
         DeleteResult result = groupNoteDao.remove(userId, noteId, groupId);
         if (result.wasAcknowledged()){
+            noteEsService.deleteGroup(noteId);
             return CommonResult.success("操作成功");
         }
         return CommonResult.failed("操作失败，请重试");

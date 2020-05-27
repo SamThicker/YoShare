@@ -15,6 +15,9 @@
         >
           <div></div>
         </div>
+        <div class="admin-tag" v-show="member.id === currentGroupInfo.adminId">
+          <i class="el-icon-cpu"></i>
+        </div>
         <div class="user-avatar">
           <img :src="'http://localhost/static/icon/' + member.icon" />
         </div>
@@ -212,6 +215,7 @@ export default {
   margin: 20px;
   -webkit-transition: 0.6s cubic-bezier(0.37, 1.44, 0.57, 0.77);
   transition: 0.6s cubic-bezier(0.37, 1.44, 0.57, 0.77);
+  position: relative;
 }
 
 .user-card:hover {
@@ -401,6 +405,15 @@ export default {
 
 .admin:hover {
   background-color: rgba(231, 175, 47, 0.8);
+}
+
+.admin-tag {
+  font-weight: bold;
+  font-size: 23px;
+  position: absolute;
+  top: 20px;
+  left: 25px;
+  color: rgba(231, 175, 47, 0.8);
 }
 
 .user-card:hover .member-quit {

@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(value = "service-file", configuration = FeignConfiguration.class)
 public interface FileService {
 
-    /**删除文件*/
+    /**删除个人文件*/
     @ResponseBody
     @RequestMapping(value = "/file/member/file/{fileId}", method = RequestMethod.DELETE)
     CommonResult deleteFile(@PathVariable(value = "fileId") String fileId) throws Exception;
 
 
+    /**删除小组文件*/
     @ResponseBody
     @DeleteMapping(value = "/file/group/{groupId}/file/{fileId}")
     CommonResult deleteFileForGroup(@PathVariable(value = "fileId") String fileId,

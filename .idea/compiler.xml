@@ -11,24 +11,26 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="resource-service" />
-        <module name="eureka-server" />
-        <module name="notification-service" />
-        <module name="yoshare-common" />
-        <module name="yoshare-mbg" />
-        <module name="yoshare" />
-        <module name="note-service" />
-        <module name="security-service" />
-        <module name="group-service" />
-        <module name="log-service" />
-        <module name="zuul-service" />
+        <module name="feed-service" />
         <module name="file-service" />
         <module name="member-service" />
+        <module name="yoshare-common" />
+        <module name="note-service" />
+        <module name="resource-service" />
+        <module name="eureka-server" />
+        <module name="log-service" />
+        <module name="zuul-service" />
+        <module name="security-service" />
+        <module name="yoshare-mbg" />
+        <module name="group-service" />
+        <module name="notification-service" />
+        <module name="yoshare" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="demo" target="1.8" />
       <module name="eureka-server" target="1.8" />
+      <module name="feed-service" target="1.8" />
       <module name="file-service" target="1.8" />
       <module name="group-service" target="1.8" />
       <module name="group-service (1)" target="1.8" />
@@ -49,6 +51,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="demo" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
+      <module name="feed-service" options="-parameters" />
       <module name="file-service" options="-parameters" />
       <module name="group-service" options="-parameters" />
       <module name="group-service (1)" options="-parameters" />

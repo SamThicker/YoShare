@@ -4,6 +4,12 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/yoshare
+
+es:
+  host: 127.0.0.1:9300
+  schema: http
+  cluster-name: elasticsearch
+
 eureka:
   client:
     service-url:

@@ -303,6 +303,9 @@ export default {
   float: left;
   top: 50%;
   transform: translate3d(0, -50%, 0);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .btn-to-top {

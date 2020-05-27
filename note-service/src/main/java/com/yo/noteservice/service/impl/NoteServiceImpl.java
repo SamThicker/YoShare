@@ -4,10 +4,12 @@ import com.mongodb.client.result.DeleteResult;
 import com.yo.noteservice.dao.NoteDao;
 import com.yo.noteservice.model.Content;
 import com.yo.noteservice.mongoModel.Note;
+import com.yo.noteservice.service.NoteEsService;
 import com.yo.noteservice.service.NoteService;
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.mbg.mapper.CmsMemberResourceMapper;
 import com.yo.yoshare.mbg.model.CmsMemberResource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Arrays;
@@ -22,6 +24,8 @@ public class NoteServiceImpl implements NoteService {
     NoteDao noteDao;
     @Autowired(required = false)
     CmsMemberResourceMapper cmsMemberResourceMapper;
+    @Autowired
+    NoteEsService noteEsService;
 
 
     /**
@@ -34,6 +38,9 @@ public class NoteServiceImpl implements NoteService {
         content.setId(UUID.randomUUID().toString());
         content.setTime(new Date());
         Note result = noteDao.addNote(note);
+        com.yo.noteservice.esModel.Note esObject = new com.yo.noteservice.esModel.Note();
+        BeanUtils.copyProperties(note, esObject);
+        noteEsService.index(esObject);
         if (result != null && result.getId()!=null) {
             CmsMemberResource memberResource = new CmsMemberResource();
             memberResource.setByUserId(Long.valueOf(note.getBy()));
@@ -66,6 +73,10 @@ public class NoteServiceImpl implements NoteService {
         note.setContents(null);
         note.setTags(null);
         noteDao.update(note);
+        Note result = noteDao.getNote(note.getId());
+        com.yo.noteservice.esModel.Note esNote = new com.yo.noteservice.esModel.Note();
+        BeanUtils.copyProperties(result, esNote);
+        noteEsService.update(esNote);
     }
 
     @Override
@@ -82,8 +93,10 @@ public class NoteServiceImpl implements NoteService {
     public CommonResult deleteUserNote(String userId, String noteId) {
         DeleteResult result = noteDao.remove(userId, noteId);
         if (result.wasAcknowledged()){
+            noteEsService.delete(noteId);
             return CommonResult.success("操作成功");
         }
+
         return CommonResult.failed("操作失败，请重试");
     }
 

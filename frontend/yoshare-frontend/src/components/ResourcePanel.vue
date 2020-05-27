@@ -672,8 +672,10 @@ li {
   color: #888890;
   white-space: pre-wrap;
   word-wrap: break-word;
-  overflow: hidden;
   margin-top: 2px;
+  /*white-space: nowrap;*/
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .preview-list-item-tag {

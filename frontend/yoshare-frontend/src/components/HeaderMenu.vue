@@ -2,8 +2,8 @@
   <div class="header-menu">
     <div class="nav">
       <a @click="selectTab('group')">小组</a>
-<!--      <a @click="selectTab('follow')">关注</a>-->
-<!--      <a @click="selectTab('notice')">消息</a>-->
+      <a @click="selectTab('follow')">关注</a>
+      <a @click="selectTab('notice')" style="display: none">消息</a>
     </div>
 <!--    <div class="search">-->
 <!--      <input class="search-input" placeholder="搜索" v-model="searchContent" />-->

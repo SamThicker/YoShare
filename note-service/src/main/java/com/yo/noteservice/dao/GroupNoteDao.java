@@ -2,6 +2,7 @@ package com.yo.noteservice.dao;
 
 import com.mongodb.client.result.DeleteResult;
 import com.yo.noteservice.mongoModel.GroupNote;
+import com.yo.noteservice.mongoModel.Note;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -80,5 +81,12 @@ public class GroupNoteDao {
     public GroupNote getGroupNoteById(String groupId, String noteId) {
         Query query = new Query(Criteria.where("groupId").is(groupId).and("id").is(noteId));
         return mongoTemplate.findOne(query, GroupNote.class, "groupNote");
+    }
+
+    /**获取笔记*/
+    public Note getNote(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(id));
+        return mongoTemplate.findOne(query, Note.class, "groupNote");
     }
 }

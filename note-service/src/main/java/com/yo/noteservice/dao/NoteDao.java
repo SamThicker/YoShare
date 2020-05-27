@@ -67,6 +67,13 @@ public class NoteDao {
         mongoTemplate.updateFirst(query,update,Note.class,"note");
     }
 
+    /**根据id获取笔记*/
+    public Note getNote(String noteId){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(noteId));
+        return mongoTemplate.findOne(query, Note.class, "note");
+    }
+
     /**
      * 通过用户id获取所有笔记
      * */

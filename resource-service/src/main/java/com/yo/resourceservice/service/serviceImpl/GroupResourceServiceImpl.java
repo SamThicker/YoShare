@@ -62,7 +62,7 @@ public class GroupResourceServiceImpl implements GroupResourceService {
     public CommonResult delGroupResource(CmsGroupResource resource, String groupId) throws Exception {
         switch (resource.getType()){
             case "NOTE":{
-                CommonResult result = noteService.delNote(resource.getByUserId().toString(), resource.getResourceRef());
+                CommonResult result = noteService.delGroupNote(resource.getGroupId().toString(), resource.getResourceRef());
                 if (result.getCode()!= ResultCode.SUCCESS.getCode()) {
                     return CommonResult.failed("操作失败");
                 }

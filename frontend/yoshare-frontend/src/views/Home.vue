@@ -56,8 +56,8 @@ export default {
     }
   },
   methods: {
-    changeSwitchAble(bool) {
-      this.switch_able = bool;
+    changeSwitchAble(/*bool*/) {
+      this.switch_able = false;
     }
   }
 };

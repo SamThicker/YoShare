@@ -19,4 +19,13 @@ public interface NoteService {
     CommonResult delNote(@PathVariable(value = "userId") String userId,
                                 @PathVariable(value = "noteId") String noteId);
 
+
+    /**
+     * 删除小组笔记
+     * */
+    @RequestMapping(value = "/note/group/ownNote/{groupId}/{noteId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    CommonResult delGroupNote(@PathVariable(value = "groupId") String groupId,
+                                @PathVariable(value = "noteId") String noteId);
+
 }

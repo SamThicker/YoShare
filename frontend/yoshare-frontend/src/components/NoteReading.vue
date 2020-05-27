@@ -317,6 +317,8 @@ export default {
   top: 50%;
   transform: translate3d(0, -50%, 0);
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .btn-to-top {

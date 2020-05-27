@@ -16,6 +16,7 @@
         <option value="$PROJECT_DIR$/group-service/pom.xml" />
         <option value="$PROJECT_DIR$/file-service/pom.xml" />
         <option value="$PROJECT_DIR$/log-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feed-service/pom.xml" />
       </list>
     </option>
   </component>
