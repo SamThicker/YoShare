@@ -16,8 +16,13 @@
     <div class="add-fav-wrap" v-show="createRes">
       <div class="add-fav">
         <div class="uploading" v-show="uploading">
-          <el-progress type="circle" :percentage="25"></el-progress>
-          <el-progress type="circle" :percentage="100" status="success"></el-progress>
+          <el-progress
+            class="uploadCircle"
+            type="circle"
+            :percentage="uploadPercentage"
+            :color="colors"
+          ></el-progress>
+          <div class="message">{{ message }}</div>
         </div>
         <div class="add-fav-del" @click.stop="createRes = false">&#215;</div>
         <label>标题</label>
@@ -129,7 +134,17 @@ export default {
         type: null,
         content: null
       },
-      currentFileInfo: null
+      currentFileInfo: null,
+      uploadPercentage: 0,
+      colors: [
+        { color: "#f56c6c", percentage: 20 },
+        { color: "#e6a23c", percentage: 40 },
+        { color: "#6f7ad3", percentage: 60 },
+        { color: "#1989fa", percentage: 80 },
+        { color: "#5cb87a", percentage: 95 },
+        { color: "#57b845", percentage: 100 }
+      ],
+      message: ""
     };
   },
   computed: {
@@ -199,6 +214,7 @@ export default {
     checkFileAndUpload: function(data) {
       this.uploading = true;
       let file = data.file;
+      this.message = "正在解析文件...";
       hashFile(file, this.doUpload);
     },
     doUpload: function(md5, file) {
@@ -213,6 +229,7 @@ export default {
       let _this = this;
       uploadExistFileToServer(this.userId, formData)
         .then(function() {
+          _this.uploadPercentage = 100;
           _this.$elementMessage("文件秒传成功", "success", 1000);
           _this.uploadSuccess();
         })
@@ -226,6 +243,7 @@ export default {
               fileData.append("size", file.size);
               let totalNum = Math.ceil(parseInt(file.size) / (1024 * 1024 * 5));
               fileData.append("totalNum", totalNum);
+              _this.uploadPercentage = (2 / (6 + totalNum)).toFixed(2) * 100;
               _this.uploadPart(fileData, 3, file);
             })
             .catch(err => {
@@ -236,14 +254,13 @@ export default {
         });
     },
     uploadPart(formData, retry, file) {
-      console.info(
-        "uploading " +
-          "(" +
-          (parseInt(formData.get("cursor")) + 1) +
-          "/" +
-          formData.get("totalNum") +
-          ")"
-      );
+      this.message =
+        "正在上传 " +
+        "(" +
+        (parseInt(formData.get("cursor")) + 1) +
+        "/" +
+        formData.get("totalNum") +
+        ")...";
       //计算文件切片总数
       let fileSize = parseInt(formData.get("size"));
       let bufferLength = 1024 * 1024 * 5;
@@ -256,13 +273,24 @@ export default {
       var chunk = file.slice(start, end);
       let _this = this;
       formData.set("file", chunk);
+      let cursor = parseInt(formData.get("cursor"));
+      let percent = ((2 + cursor) / (parseInt(totalNum) + 6)).toFixed(2);
+      _this.uploadPercentage = parseInt((percent * 100).toFixed(0));
       uploadMultipartFile(formData)
         .then(function() {
-          formData.set("cursor", parseInt(formData.get("cursor")) + 1);
+          let cursor = parseInt(formData.get("cursor"));
+          formData.set("cursor", cursor + 1);
           if (parseInt(formData.get("cursor")) < totalNum) {
             _this.uploadPart(formData, retry, file);
           } else {
-            _this.uploading = false;
+            _this.message = "后台正在处理...";
+            setTimeout(function() {
+              _this.uploadPercentage = 100;
+              setTimeout(function() {
+                _this.uploading = false;
+                _this.uploadPercentage = 0;
+              }, 1000);
+            }, 3000);
             _this.delFile();
             _this.refreshData();
           }
@@ -273,6 +301,7 @@ export default {
             _this.uploadPart(formData, retry, file);
           } else {
             _this.uploading = false;
+            _this.uploadPercentage = 0;
             _this.delFile();
           }
         });
@@ -443,7 +472,21 @@ export default {
   position: absolute;
   width: 360px;
   height: 580px;
-  z-index: 10;
-  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.uploadCircle {
+  position: relative;
+  top: 50%;
+  transform: translate3d(0, -50%, 0);
+}
+
+.message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, calc(-50% + 90px), 0);
+  font-size: 15px;
 }
 </style>
