@@ -1,8 +1,13 @@
 package com.yo.fileservice.controller;
 
 
+import com.mongodb.CommandResult;
 import com.yo.fileservice.service.FileService;
+import com.yo.fileservice.vo.VOFileResourceInfo;
+import com.yo.fileservice.vo.VOFileTransInfo;
 import com.yo.yoshare.common.api.CommonResult;
+import com.yo.yoshare.mbg.model.CmsFileTransInfo;
+import com.yo.yoshare.mbg.model.CmsMemberFile;
 import io.minio.errors.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +31,8 @@ import java.util.Optional;
 public class FileController {
     @Autowired
     private FileService fileService;
+    @Autowired
+    private HttpServletRequest request;
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.GET)
     public CommonResult uploadResource(String username, MultipartFile file, @PathVariable("directly") boolean directly) throws Exception {
@@ -55,22 +62,14 @@ public class FileController {
 
     @PutMapping(value = "/member/{id}/file")
     public CommonResult uploadFile(@PathVariable(value = "id") Long id,
-                                   @RequestParam("file") MultipartFile file,
-                                   @RequestParam("title") String title,
-                                   @RequestParam("description") String description,
-                                   @RequestParam("classis") Optional<String> classis,
-                                   @RequestParam("hash") String hash) throws Exception {
-        return fileService.uploadFile(id, hash, file, title, description, classis);
+                                   VOFileResourceInfo info) throws Exception {
+        return fileService.uploadFile(info);
     }
 
     @PutMapping(value = "/member/{id}/existFile")
-    public CommonResult uploadFile(@PathVariable(value = "id") Long id,
-                                   @RequestParam("title") String title,
-                                   @RequestParam("description") String description,
-                                   @RequestParam("classis") Optional<String> classis,
-                                   @RequestParam("hash") String hash,
-                                   @RequestParam("name") String name) throws IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlPullParserException, InvalidExpiresRangeException, InternalException, XmlParserException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
-        return fileService.uploadExistFile(id, name, hash, title, description, classis);
+    public CommonResult uploadExistFile(@PathVariable(value = "id") Long id,
+                                    VOFileResourceInfo info) throws IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlPullParserException, InvalidExpiresRangeException, InternalException, XmlParserException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
+        return fileService.uploadExistFile(id, info);
     }
 
 
@@ -90,6 +89,11 @@ public class FileController {
     @GetMapping(value = "/member/fileInfo/{fileId}")
     public CommonResult getFileInfo(@PathVariable(value = "fileId") String fileId) throws IOException, ServletException {
         return fileService.getFileInfo(fileId);
+    }
+
+    @PostMapping(value = "/member/multipartFile")
+    public CommonResult uploadMutipartFile(VOFileTransInfo info) throws Exception {
+        return fileService.uploadMultipartFile(info);
     }
 }
 

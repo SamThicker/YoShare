@@ -1,6 +1,10 @@
 package com.yo.fileservice.service;
 
+import com.yo.fileservice.vo.VOFileResourceInfo;
+import com.yo.fileservice.vo.VOFileTransInfo;
 import com.yo.yoshare.common.api.CommonResult;
+import com.yo.yoshare.mbg.model.CmsFileTransInfo;
+import com.yo.yoshare.mbg.model.CmsMemberFile;
 import io.minio.errors.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
@@ -31,9 +35,9 @@ public interface FileService {
      * */
     Object presignedBlogFilePutUrl(Long userid,String fileName, int expires) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidExpiresRangeException, ErrorResponseException, InvalidBucketNameException, InsufficientDataException, InternalException, InvalidResponseException, XmlParserException;
 
-    CommonResult uploadFile(Long id, String hash, MultipartFile file, String title, String description, Optional<String> classis) throws Exception;
+    CommonResult uploadFile(VOFileResourceInfo info) throws Exception;
 
-    CommonResult uploadExistFile(Long id, String name, String hash, String title, String description, Optional<String> classis) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidExpiresRangeException, InvalidResponseException, ErrorResponseException, XmlParserException, InvalidBucketNameException, InsufficientDataException, InternalException;
+    CommonResult uploadExistFile(Long id, VOFileResourceInfo info) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidExpiresRangeException, InvalidResponseException, ErrorResponseException, XmlParserException, InvalidBucketNameException, InsufficientDataException, InternalException;
 
     void downloadFile(HttpServletRequest req, HttpServletResponse resp, Long userId, String fileId) throws IOException, ServletException;
 
@@ -41,4 +45,6 @@ public interface FileService {
     CommonResult getFileInfo(String fileId);
 
     CommonResult deleteFile(String fileId) throws Exception;
+
+    CommonResult uploadMultipartFile(VOFileTransInfo info) throws Exception;
 }

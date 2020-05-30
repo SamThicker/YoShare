@@ -1,6 +1,4 @@
-package com.yo.fileservice.dto;
-
-import lombok.Data;
+package com.yo.fileservice.vo;
 
 public class SimpleFileInfo {
 

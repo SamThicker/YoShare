@@ -12,10 +12,13 @@
       <file-view :file-info="currentFileInfo"></file-view>
     </div>
 
-
     <!--上传文件-->
     <div class="add-fav-wrap" v-show="createRes">
-      <div class="add-fav" v-loading="uploading">
+      <div class="add-fav">
+        <div class="uploading" v-show="uploading">
+          <el-progress type="circle" :percentage="25"></el-progress>
+          <el-progress type="circle" :percentage="100" status="success"></el-progress>
+        </div>
         <div class="add-fav-del" @click.stop="createRes = false">&#215;</div>
         <label>标题</label>
         <el-input v-model="resourceName" placeholder="20字符内" maxlength="20">
@@ -85,7 +88,8 @@ import { delResourceNote } from "@/api/resource";
 import {
   getFileInfo,
   uploadExistFileToServer,
-  uploadFileToServer
+  uploadFileToServer,
+  uploadMultipartFile
 } from "../../api/file";
 // import SparkMD5 from "spark-md5";
 import { hashFile } from "../../../static/utils/fileUtil";
@@ -198,15 +202,14 @@ export default {
       hashFile(file, this.doUpload);
     },
     doUpload: function(md5, file) {
-      console.info("md5:" + md5);
       //创建 formData 对象
       let formData = new FormData();
       // 向 formData 对象中添加文件
-      formData.append("title", this.resourceName);
-      formData.append("description", this.resourceIntroduction);
-      formData.append("classis", this.destClassis.id);
-      formData.append("name", file.name);
-      formData.append("hash", md5);
+      formData.append("resTitle", this.resourceName);
+      formData.append("resDescription", this.resourceIntroduction);
+      formData.append("resClassification", this.destClassis.id);
+      formData.append("fileName", file.name);
+      formData.append("fileMd5", md5);
       let _this = this;
       uploadExistFileToServer(this.userId, formData)
         .then(function() {
@@ -214,17 +217,64 @@ export default {
           _this.uploadSuccess();
         })
         .catch(function() {
-          formData.append("file", file);
           uploadFileToServer(_this.userId, formData)
-            .then(function() {
-              _this.$elementMessage("文件上传成功", "success", 1000);
-              _this.uploadSuccess();
+            .then(function(res) {
+              let fileData = new FormData();
+              fileData.append("md5", md5);
+              fileData.append("name", file.name);
+              fileData.append("cursor", res.data);
+              fileData.append("size", file.size);
+              let totalNum = Math.ceil(parseInt(file.size) / (1024 * 1024 * 5));
+              fileData.append("totalNum", totalNum);
+              _this.uploadPart(fileData, 3, file);
             })
             .catch(err => {
               _this.uploadError();
               console.info(err);
               _this.$elementMessage(err.message, "error", 1000);
             });
+        });
+    },
+    uploadPart(formData, retry, file) {
+      console.info(
+        "uploading " +
+          "(" +
+          (parseInt(formData.get("cursor")) + 1) +
+          "/" +
+          formData.get("totalNum") +
+          ")"
+      );
+      //计算文件切片总数
+      let fileSize = parseInt(formData.get("size"));
+      let bufferLength = 1024 * 1024 * 5;
+      let totalNum = formData.get("totalNum");
+      //计算开始的位置
+      let start = formData.get("cursor") * bufferLength;
+      let end = start + bufferLength;
+      if (end > fileSize) end = fileSize;
+      //切割文件
+      var chunk = file.slice(start, end);
+      let _this = this;
+      formData.set("file", chunk);
+      uploadMultipartFile(formData)
+        .then(function() {
+          formData.set("cursor", parseInt(formData.get("cursor")) + 1);
+          if (parseInt(formData.get("cursor")) < totalNum) {
+            _this.uploadPart(formData, retry, file);
+          } else {
+            _this.uploading = false;
+            _this.delFile();
+            _this.refreshData();
+          }
+        })
+        .catch(function() {
+          retry--;
+          if (retry > 0) {
+            _this.uploadPart(formData, retry, file);
+          } else {
+            _this.uploading = false;
+            _this.delFile();
+          }
         });
     },
     clickListener(e) {
@@ -265,6 +315,37 @@ export default {
         _this.refresh = false;
       }, 50);
     }
+
+    // doUpload: function(md5, file) {
+    //   console.info("md5:" + md5);
+    //   //创建 formData 对象
+    //   let formData = new FormData();
+    //   // 向 formData 对象中添加文件
+    //   formData.append("title", this.resourceName);
+    //   formData.append("description", this.resourceIntroduction);
+    //   formData.append("classis", this.destClassis.id);
+    //   formData.append("name", file.name);
+    //   formData.append("hash", md5);
+    //   let _this = this;
+    //   uploadExistFileToServer(this.userId, formData)
+    //     .then(function() {
+    //       _this.$elementMessage("文件秒传成功", "success", 1000);
+    //       _this.uploadSuccess();
+    //     })
+    //     .catch(function() {
+    //       formData.append("file", file);
+    //       uploadFileToServer(_this.userId, formData)
+    //         .then(function() {
+    //           _this.$elementMessage("文件上传成功", "success", 1000);
+    //           _this.uploadSuccess();
+    //         })
+    //         .catch(err => {
+    //           _this.uploadError();
+    //           console.info(err);
+    //           _this.$elementMessage(err.message, "error", 1000);
+    //         });
+    //     });
+    // },
   }
 };
 </script>
@@ -305,7 +386,7 @@ export default {
   transform: translate3d(-50%, -50%, 0);
   background-color: #e8f2fe;
   width: 360px;
-  height: auto;
+  height: 580px;
   border-radius: 15px;
   padding: 20px;
   box-shadow: 1px 4px 10px 2px #ccc;
@@ -325,6 +406,7 @@ export default {
   border-radius: 100%;
   border: 1px solid #fff;
   cursor: pointer;
+  z-index: 100;
 }
 
 .file-preview {
@@ -355,5 +437,13 @@ export default {
 .resource-content {
   width: 100%;
   height: 100%;
+}
+
+.uploading {
+  position: absolute;
+  width: 360px;
+  height: 580px;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 </style>

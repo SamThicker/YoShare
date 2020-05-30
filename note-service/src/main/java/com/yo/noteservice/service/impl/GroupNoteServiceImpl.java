@@ -57,7 +57,7 @@ public class GroupNoteServiceImpl implements GroupNoteService {
             resource.setTitle(note.getTitle());
             String str = content.getContent();
             resource.setDescription(str.substring(0, str.length()<101 ? str.length() : 100));
-            resource.setClassification(classId);
+            resource.setClassification(classId == null ? -1 : classId);
             resource.setGroupId(groupId);
             resourceMapper.insertSelective(resource);
         }

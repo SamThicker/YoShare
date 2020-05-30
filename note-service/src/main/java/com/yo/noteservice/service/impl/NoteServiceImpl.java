@@ -50,7 +50,7 @@ public class NoteServiceImpl implements NoteService {
             memberResource.setTitle(note.getTitle());
             String str = content.getContent();
             memberResource.setDescription(str.substring(0, str.length()<101 ? str.length() : 100));
-            memberResource.setClassification(String.valueOf(classId));
+            memberResource.setClassification(classId==null? "-1" : String.valueOf(classId));
             cmsMemberResourceMapper.insertSelective(memberResource);
         }
         return result;

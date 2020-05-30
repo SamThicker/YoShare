@@ -1,3 +1,4 @@
+/*
 package com.yo.fileservice.config;
 
 import org.aspectj.lang.annotation.Aspect;
@@ -16,7 +17,8 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 @Aspect
 @Configuration
 public class TransactionAdviceConfig {
-    private static final String AOP_POINTCUT_EXPRESSION = "execution(* com.yo.yoshare.memberservice.service.serviceImpl..*.*(..))";
+   */
+/* private static final String AOP_POINTCUT_EXPRESSION = "execution(* com.yo.yoshare.fileservice.service.serviceImpl..*.*(..))";
 
     @Autowired
     private PlatformTransactionManager transactionManager;
@@ -55,6 +57,8 @@ public class TransactionAdviceConfig {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
         pointcut.setExpression(AOP_POINTCUT_EXPRESSION);
         return new DefaultPointcutAdvisor(pointcut, txAdvice());
-    }
+    }*//*
+
 
 }
+*/

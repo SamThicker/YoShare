@@ -1,13 +1,11 @@
 package com.yo.fileservice.service.ServiceImpl;
 
 import com.yo.fileservice.components.MinioTemplate;
-import com.yo.fileservice.dto.SimpleFileInfo;
+import com.yo.fileservice.vo.SimpleFileInfo;
 import com.yo.fileservice.service.GroupFileService;
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.mbg.mapper.CmsGroupFileMapper;
 import com.yo.yoshare.mbg.mapper.CmsGroupResourceMapper;
-import com.yo.yoshare.mbg.mapper.CmsMemberFileMapper;
-import com.yo.yoshare.mbg.mapper.CmsMemberResourceMapper;
 import com.yo.yoshare.mbg.model.*;
 import io.minio.errors.*;
 import org.springframework.beans.BeanUtils;
@@ -18,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.InvalidKeyException;

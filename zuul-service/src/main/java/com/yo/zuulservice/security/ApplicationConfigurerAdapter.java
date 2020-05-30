@@ -76,7 +76,7 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
                 "/file/group/*/file/*", "/file/group/*/existFile","/group/*/file/*","/zuul/file/group/*/file",
                 "/zuul/file/group/*/file","file/group/*/file",
                 "/resource/group/*/resource/web","/resource/group/*/*/*",
-                "/group-service/group/*/member");
+                "/group-service/group/*/member","/file/member/multipartFile");
 
 
         //JWT校验过滤器

@@ -1,22 +1,27 @@
 package com.yo.fileservice.service.ServiceImpl;
 
 import com.alibaba.druid.util.StringUtils;
-import com.yo.fileservice.dto.SimpleFileInfo;
+import com.yo.fileservice.util.CallBack;
+import com.yo.fileservice.util.FileUtil;
+import com.yo.fileservice.vo.SimpleFileInfo;
 import com.yo.fileservice.service.FileService;
 import com.yo.fileservice.components.MinioTemplate;
+import com.yo.fileservice.vo.VOFileResourceInfo;
+import com.yo.fileservice.vo.VOFileTransInfo;
 import com.yo.yoshare.common.api.CommonResult;
+import com.yo.yoshare.mbg.mapper.CmsFileTransInfoMapper;
 import com.yo.yoshare.mbg.mapper.CmsMemberFileMapper;
 import com.yo.yoshare.mbg.mapper.CmsMemberResourceMapper;
-import com.yo.yoshare.mbg.model.CmsMemberFile;
-import com.yo.yoshare.mbg.model.CmsMemberFileExample;
-import com.yo.yoshare.mbg.model.CmsMemberResource;
+import com.yo.yoshare.mbg.model.*;
 import io.minio.MinioClient;
 import io.minio.errors.*;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.tika.Tika;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
@@ -24,21 +29,14 @@ import org.xmlpull.v1.XmlPullParserException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.math.BigInteger;
+import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
-public class FileServiceImpl implements FileService {
+public class FileServiceImpl implements FileService, CallBack {
 
     @Value("${minio.endpoint}")
     private String endpoint;
@@ -47,19 +45,21 @@ public class FileServiceImpl implements FileService {
     @Value("${minio.secretKey}")
     private String secretkey;
     @Value("${file.rootDir.memberFile}")
-    private  String MEMBER_FILE_DIR;
+    private String MEMBER_FILE_DIR;
+    @Value("${file.rootDir.partFile}")
+    private String PART_FILE_DIR;
     @Autowired
     private CmsMemberFileMapper memberFileMapper;
     @Autowired
     private CmsMemberResourceMapper memberResourceMapper;
     @Autowired
+    private CmsFileTransInfoMapper fileTransInfoMapper;
+    @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private FileUtil fileUtil;
 
 
-    @Bean
-    public MinioClient client() throws InvalidPortException, InvalidEndpointException {
-        return new MinioClient(endpoint, accesskey, secretkey);
-    }
 
     @Autowired
     private MinioTemplate minioTemplate;
@@ -82,48 +82,12 @@ public class FileServiceImpl implements FileService {
         return minioTemplate.presignedPutObjectUrl("resource", objectName, null).replaceFirst("^.+:[0-9]+","");
     }
 
-    @Override
-    public CommonResult uploadFile(Long id, String hash, MultipartFile file, String title, String description, Optional<String> classis) throws Exception {
-        String hashString = "";
-        MessageDigest md5;
-        String name = file.getOriginalFilename();
-        String type = name.substring(name.lastIndexOf(".")+1);
-        //校验文件MD5
-        md5 = MessageDigest.getInstance("MD5");
-        byte[] uploadBytes = file.getBytes();
-        byte[] digest = md5.digest(uploadBytes);
-        hashString = new BigInteger(1, digest).toString(16);
-        if (!hashString.equals(hash)) {
-            return CommonResult.failed("文件出错");
-        }
-        String fileName = fileDirTrans(hashString, file.getOriginalFilename());
-        //把文件存到Minio
-        minioTemplate.putObject("file", fileName, file.getInputStream(), file.getSize(), "file.getContentType()");
-        //数据库操作
-        CmsMemberFile memberFile = new CmsMemberFile();
-        memberFile.setById(id);
-        memberFile.setMd5(hashString);
-        memberFile.setType(type);
-        memberFile.setSize(file.getSize());
-        memberFile.setName(name);
-        //插入数据
-        memberFileMapper.insertSelective(memberFile);
-        CmsMemberResource resource = new CmsMemberResource();
-        resource.setTitle(title);
-        resource.setDescription(description);
-        resource.setDatetime(new Date());
-        resource.setType("FILE");
-        resource.setResourceRef(memberFile.getId().toString());
-        resource.setClassification(classis.orElse(""));
-        resource.setByUserId(id);
-        memberResourceMapper.insertSelective(resource);
-        return CommonResult.success("成功");
-    }
+//
 
     @Override
-    public CommonResult uploadExistFile(Long id, String name, String hash, String title, String description, Optional<String> classis) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidExpiresRangeException, InvalidResponseException, ErrorResponseException, XmlParserException, InvalidBucketNameException, InsufficientDataException, InternalException {
+    public CommonResult uploadExistFile(Long id, VOFileResourceInfo info) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidExpiresRangeException, InvalidResponseException, ErrorResponseException, XmlParserException, InvalidBucketNameException, InsufficientDataException, InternalException {
         CmsMemberFileExample example = new CmsMemberFileExample();
-        example.createCriteria().andMd5EqualTo(hash);
+        example.createCriteria().andMd5EqualTo(info.getFileMd5()).andStatusEqualTo("1");
         //查看该文件是否存在
         List<CmsMemberFile> files = memberFileMapper.selectByExample(example);
         //如果文件不存在则返回，让用户上传文件
@@ -132,21 +96,21 @@ public class FileServiceImpl implements FileService {
         }
         CmsMemberFile file = files.get(0);
         String srcFileName = fileDirTrans(file);
-        String targetFileName = fileDirTrans(hash, name);
+        String targetFileName = fileDirTrans(info.getFileMd5(), info.getFileName());
         //复制文件
         minioTemplate.copyObject("file", targetFileName,"file", srcFileName);
         //数据库操作
         file.setId(null);
         file.setById(id);
-        file.setName(name);
+        file.setName(info.getFileName());
         memberFileMapper.insertSelective(file);
         CmsMemberResource resource = new CmsMemberResource();
-        resource.setTitle(title);
-        resource.setDescription(description);
+        resource.setTitle(info.getResTitle());
+        resource.setDescription(info.getResDescription());
         resource.setDatetime(new Date());
         resource.setType("FILE");
         resource.setResourceRef(file.getId().toString());
-        resource.setClassification(classis.orElse(""));
+        resource.setClassification(info.getResClassification());
         resource.setByUserId(id);
         memberResourceMapper.insertSelective(resource);
         return CommonResult.success("成功");
@@ -187,6 +151,37 @@ public class FileServiceImpl implements FileService {
         os.close();
     }
 
+    @Override
+    public CommonResult uploadFile(VOFileResourceInfo info) throws Exception {
+        String userId = request.getHeader("userId");
+        String userName = request.getHeader("userName");
+        String name = info.getFileName();
+        String type = name.substring(name.lastIndexOf(".")+1);
+        CmsMemberFile file = new CmsMemberFile();
+        file.setStatus("0");
+        file.setByName(userName);
+        file.setById(Long.parseLong(userId));
+        file.setName(name);
+        file.setType(type);
+        file.setMd5(info.getFileMd5());
+        //插入数据
+        memberFileMapper.insertSelective(file);
+        CmsMemberResource resource = new CmsMemberResource();
+        resource.setTitle(info.getResTitle());
+        resource.setDescription(info.getResDescription());
+        resource.setDatetime(new Date());
+        resource.setType("FILE");
+        resource.setResourceRef(file.getId().toString());
+        resource.setClassification(info.getResClassification());
+        resource.setByUserId(Long.parseLong(userId));
+        memberResourceMapper.insertSelective(resource);
+        CmsFileTransInfo transInfo = new CmsFileTransInfo();
+        CmsFileTransInfoExample example = new CmsFileTransInfoExample();
+        example.createCriteria().andMd5EqualTo(info.getFileMd5()).andFinishEqualTo("0");
+        List<CmsFileTransInfo> list = fileTransInfoMapper.selectByExample(example);
+        int result = list.size()>0 ? list.get(0).getCursor() : 0;
+        return CommonResult.success(result);
+    }
 
     @Override
     public CommonResult getFileInfo(String fileId) {
@@ -219,6 +214,102 @@ public class FileServiceImpl implements FileService {
         return CommonResult.success("操作成功");
     }
 
+    /**上传文件分片
+     * @return*/
+    @Override
+    public CommonResult uploadMultipartFile(VOFileTransInfo info) throws Exception {
+        String hashString;
+        MessageDigest md5;
+        CmsFileTransInfo realInfo;
+        CmsFileTransInfoExample example = new CmsFileTransInfoExample();
+        example.createCriteria().andMd5EqualTo(info.getMd5()).andFinishEqualTo("0");
+        List<CmsFileTransInfo> realInfos = fileTransInfoMapper.selectByExample(example);
+        if (realInfos == null || realInfos.size()<=0){
+            realInfo = new CmsFileTransInfo();
+            realInfo.setCursor(0);
+            realInfo.setFinish("0");
+            realInfo.setMd5(info.getMd5());
+            realInfo.setName(info.getName());
+            realInfo.setTotalNum(info.getTotalNum());
+            realInfo.setType(info.getName().substring(info.getName().lastIndexOf(".")+1));
+            realInfo.setTotalNum(info.getTotalNum());
+            fileTransInfoMapper.insert(realInfo);
+        } else {
+            realInfo = realInfos.get(0);
+        }
+        if (realInfo.getCursor()>=realInfo.getTotalNum()){
+            return CommonResult.failed("文件出错");
+        }
+        hashString = info.getMd5();
+        String fileName = "";
+        //扩展名左边补0对齐，方便排序
+        if (info.getCursor()/10>0){
+            fileName = hashString+"."+ info.getCursor();
+        } else {
+            fileName = hashString+"."+ "0" + info.getCursor();
+        }
+        String parentDirStr = PART_FILE_DIR + hashString;
+        File parentDir = new File(parentDirStr);
+        if (!parentDir.exists()) {
+            parentDir.mkdir();
+        }
+        File destFile = new File(parentDir + "/" + fileName);
+        info.getFile().transferTo(destFile);
+        realInfo.setCursor(realInfo.getCursor()+1);
+        fileTransInfoMapper.updateByPrimaryKeySelective(realInfo);
+        System.out.println("start:" +System.currentTimeMillis());
+        if (realInfo.getCursor().equals(realInfo.getTotalNum())){
+            fileUtil.callBack(this, info);
+        }
+        System.out.println("end:" +System.currentTimeMillis());
+        return CommonResult.success("操作成功");
+    }
+
+    @Override
+    public void doCallBack(CmsFileTransInfo info) throws Exception {
+         mergeFile(info);
+    }
+
+    /**合并文件*/
+    void mergeFile(CmsFileTransInfo info) throws Exception {
+        String parentDirStr = PART_FILE_DIR + info.getMd5();
+        File parentDir = new File(parentDirStr);
+        String outFile = parentDirStr + "/" + info.getName();
+        String[] list =  parentDir.list();
+        Arrays.sort(list);
+        //合并文件
+        FileUtil.doMergeFiles(outFile, list, parentDirStr);
+        String hashString = "";
+        //校验文件MD5
+        hashString = DigestUtils.md5Hex(new FileInputStream(outFile));
+        if (!hashString.equals(info.getMd5())) {
+            CmsFileTransInfo info1 = new CmsFileTransInfo();
+            info1.setMessage("文件出错");
+            CmsFileTransInfoExample example = new CmsFileTransInfoExample();
+            fileTransInfoMapper.updateByExampleSelective(info1,example);
+            return;
+        }
+        String fileName = fileDirTrans(hashString, info.getName());
+        File file = new File(outFile);
+        //把文件存到Minio
+        minioTemplate.putObject("file", fileName, new FileInputStream(file), file.length(), "file.getContentType()");
+        //数据库操作
+        CmsMemberFile memberFile = new CmsMemberFile();
+        memberFile.setStatus("1");
+        memberFile.setSize((long) outFile.length());
+        CmsMemberFileExample example = new CmsMemberFileExample();
+        example.createCriteria().andMd5EqualTo(info.getMd5()).andStatusEqualTo("0");
+        memberFileMapper.updateByExampleSelective(memberFile, example);
+        CmsFileTransInfo info1 = new CmsFileTransInfo();
+        info1.setFinish("1");
+        info1.setStatus("0");
+        CmsFileTransInfoExample example1 = new CmsFileTransInfoExample();
+        example1.createCriteria().andFinishEqualTo("0").andMd5EqualTo(info.getMd5());
+        fileTransInfoMapper.updateByExampleSelective(info1, example1);
+        FileUtil.deleteTempFiles(parentDirStr);
+    }
+
+
     /**文件信息转换为minio文件名*/
     String fileDirTrans(CmsMemberFile file){
         return file.getMd5() + "/member/" + file.getName();
@@ -240,4 +331,44 @@ public class FileServiceImpl implements FileService {
             return fileInfoList.get(0);
         }
     }
+
+
+//    @Override
+//    public CommonResult uploadFile(Long id, String hash, MultipartFile file, String title, String description, Optional<String> classis) throws Exception {
+////        String hashString = "";
+////        MessageDigest md5;
+//        String name = file.getOriginalFilename();
+//        String type = name.substring(name.lastIndexOf(".")+1);
+////        //校验文件MD5
+////        md5 = MessageDigest.getInstance("MD5");
+////        byte[] uploadBytes = file.getBytes();
+////        byte[] digest = md5.digest(uploadBytes);
+////        hashString = new BigInteger(1, digest).toString(16);
+////        if (!hashString.equals(hash)) {
+////            return CommonResult.failed("文件出错");
+////        }
+////        String fileName = fileDirTrans(hashString, file.getOriginalFilename());
+////        //把文件存到Minio
+////        minioTemplate.putObject("file", fileName, file.getInputStream(), file.getSize(), "file.getContentType()");
+////        //数据库操作
+//        CmsMemberFile memberFile = new CmsMemberFile();
+//        memberFile.setById(id);
+////        memberFile.setMd5(hashString);
+//        memberFile.setType(type);
+//        memberFile.setSize(file.getSize());
+//        memberFile.setName(name);
+//        //插入数据
+//        memberFileMapper.insertSelective(memberFile);
+//        CmsMemberResource resource = new CmsMemberResource();
+//        resource.setTitle(title);
+//        resource.setDescription(description);
+//        resource.setDatetime(new Date());
+//        resource.setType("FILE");
+//        resource.setResourceRef(memberFile.getId().toString());
+//        resource.setClassification(classis.orElse(""));
+//        resource.setByUserId(id);
+//        memberResourceMapper.insertSelective(resource);
+//        return CommonResult.success("成功");
+//    }
+
 }

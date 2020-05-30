@@ -44,8 +44,6 @@
         您的浏览器不支持音频预览标签。
       </audio>
     </div>
-
-
   </div>
 </template>
 
@@ -97,7 +95,7 @@ export default {
   data() {
     return {
       imageTag: ["png", "jpeg", "png", "gif", "jpg", "bmp"],
-      videoTag: ["mp4", "mpg"],
+      videoTag: ["mp4", "mpg", "mov"],
       audioTag: ["mp3"],
       fileType: null,
       videoSrc: "",
@@ -116,25 +114,19 @@ export default {
       let type = this.fileInfo.type;
       let _this = this;
       this.fileType = null;
-      this.imageTag.forEach(el => {
-        if (el === type) {
-          _this.fileType = "IMAGE";
-          _this.imageSrc = "http://127.0.0.1:9000" + _this.fileInfo.url;
-          // _this.fileInfo.url = _this.fileInfo.url.replace(/^(https|http)(:\/\/)[a-zA-Z0-9.]+:[0-9]{1,}/g, "");
-        }
-      });
-      this.videoTag.forEach(el => {
-        if (el === type) {
-          _this.fileType = "VIDEO";
-          _this.videoSrc = "http://127.0.0.1:9000" + _this.fileInfo.url;
-        }
-      });
-      this.audioTag.forEach(el => {
-        if (el === type) {
-          _this.fileType = "AUDIO";
-          _this.audioSrc = "http://127.0.0.1:9000" + _this.fileInfo.url;
-        }
-      });
+      if (this.imageTag.indexOf(type) > -1) {
+        _this.fileType = "IMAGE";
+        _this.imageSrc = "http://127.0.0.1:9000" + _this.fileInfo.url;
+        // _this.fileInfo.url = _this.fileInfo.url.replace(/^(https|http)(:\/\/)[a-zA-Z0-9.]+:[0-9]{1,}/g, "");
+      }
+      if (this.videoTag.indexOf(type) > -1) {
+        _this.fileType = "VIDEO";
+        _this.videoSrc = "http://127.0.0.1:9000" + _this.fileInfo.url;
+      }
+      if (this.audioTag.indexOf(type) > -1) {
+        _this.fileType = "AUDIO";
+        _this.audioSrc = "http://127.0.0.1:9000" + _this.fileInfo.url;
+      }
     },
     pausePlaying() {
       let video = document.getElementById("video");

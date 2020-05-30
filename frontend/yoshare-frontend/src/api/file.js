@@ -37,7 +37,7 @@ export function uploadFileToServer(userId, formData) {
     url: "/zuul/file/member/" + userId + "/file",
     method: "put",
     headers: {
-      "content-type": "application/x-www-form-urlencoded"
+      // "content-type": "application/x-www-form-urlencoded"
     },
     data: formData
   });
@@ -48,7 +48,7 @@ export function uploadExistFileToServer(userId, formData) {
     url: "/file/member/" + userId + "/existFile",
     method: "put",
     headers: {
-      "content-type": "application/x-www-form-urlencoded"
+      // "content-type": "application/x-www-form-urlencoded"
     },
     data: formData
   });
@@ -68,5 +68,16 @@ export function getFileInfo(fileId) {
   return request({
     url: "/file/member/fileInfo/" + fileId,
     method: "get"
+  });
+}
+
+export function uploadMultipartFile(formData) {
+  return request({
+    url: "/file/member/multipartFile",
+    method: "post",
+    headers: {
+      "content-type": "application/x-www-form-urlencoded"
+    },
+    data: formData
   });
 }

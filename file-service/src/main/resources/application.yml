@@ -24,6 +24,7 @@ file:
   rootDir:
     memberFile: /mydata/yoshare/memberFile/
     groupFile: /mydata/yoshare/groupFile/
+    partFile: /mydata/yoshare/partFile/
 
 minio:
   endpoint: http://127.0.0.1:9000
