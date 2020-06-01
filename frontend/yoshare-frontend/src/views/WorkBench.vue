@@ -75,6 +75,7 @@
       <!-- 编辑器面板 -->
       <div class="editor-panel">
         <Editor
+          :enable = "markdownEditable"
           v-if="!isMavon"
           v-model="content"
           ref="myQuillEditor"
@@ -182,7 +183,8 @@ export default {
       markdownEditable: true,
       onSaveLoading: false,
       currentVersionId: "",
-      currentTag: ""
+      currentTag: "",
+      currentEditor: ""
     };
   },
   computed: {
@@ -191,15 +193,6 @@ export default {
     }
   },
   methods: {
-    onEditorBlur() {
-      //失去焦点事件
-    },
-    onEditorFocus() {
-      //获得焦点事件
-    },
-    onEditorChange() {
-      //内容改变事件
-    },
     getCurrentTime() {
       let date = new Date();
       let month = date.getMonth() + 1;
@@ -243,17 +236,21 @@ export default {
       document.removeEventListener("click", this.clickListener);
     },
     refreshContainerHeight() {
-      if (!this.isMavon) {
-        this.quillContainerHeight =
-          document.documentElement.offsetHeight -
-          document.querySelector(".ql-toolbar.ql-snow").offsetHeight -
-          document.querySelector(".workbench-menu").offsetHeight;
-      } else {
-        this.mdContainerHeight =
-          document.documentElement.offsetHeight -
-          document.querySelector(".v-note-op").offsetHeight -
-          document.querySelector(".workbench-menu").offsetHeight;
-      }
+      // if (!this.isMavon) {
+      //   let el = document.querySelector(".ql-toolbar.ql-snow");
+      //   if (!el) return;
+      //   this.quillContainerHeight =
+      //     document.documentElement.offsetHeight -
+      //     document.querySelector(".ql-toolbar.ql-snow").offsetHeight -
+      //     document.querySelector(".workbench-menu").offsetHeight;
+      // } else {
+      //   let el = document.querySelector(".workbench-menu");
+      //   if (!el) return;
+      //   this.mdContainerHeight =
+      //     document.documentElement.offsetHeight -
+      //     document.querySelector(".v-note-op").offsetHeight -
+      //     document.querySelector(".workbench-menu").offsetHeight;
+      // }
     },
     getParams() {
       this.userId = this.$route.params.userId;
@@ -293,6 +290,9 @@ export default {
     setData() {
       if (!this.currentNote) return;
       let lastIndex = this.currentNote.contents.length - 1;
+      this.isMavon = (this.currentNote.contents[lastIndex].editor==="MAVON");
+      this.currentEditor = this.isMavon;
+      // this.this.quill.pasteHTML('<h3>add some title</h3>' + html)
       this.content = this.currentNote.contents[lastIndex].content;
       this.editingBackup = this.content;
       this.title = this.currentNote.title;
@@ -402,6 +402,7 @@ export default {
         let contents = this.currentNote.contents.filter(
           content => content.id === id
         );
+        this.isMavon = contents[0].editor === "MAVON";
         this.content = contents[0].content;
         return;
       }
@@ -409,6 +410,8 @@ export default {
       //如果noteId为空，则表示新笔记，没有历史版本不需要备份
       if (this.noteId && this.currentVersionId != "") {
         this.content = this.editingBackup;
+        this.isMavon = this.currentEditor;
+        this.$mount();
       }
       this.currentVersionId = "";
       this.editing = true;
@@ -626,6 +629,29 @@ html body {
   transform: translate3d(-50%, 0, 0);
   width: 100px;
   height: 50px;
+}
+
+.ql-editor {
+  height: 100vh;
+}
+
+.ql-container{
+  overflow-y:auto;
+  height:8rem!important;
+}
+
+/*滚动条整体样式*/
+.ql-container ::-webkit-scrollbar{
+  width: 10px;/*竖向滚动条的宽度*/
+  height: 10px;/*横向滚动条的高度*/
+}
+.ql-container ::-webkit-scrollbar-thumb{/*滚动条里面的小方块*/
+  background: #666666;
+  border-radius: 5px;
+}
+.ql-container ::-webkit-scrollbar-track{/*滚动条轨道的样式*/
+  background: #ccc;
+  border-radius: 5px;
 }
 
 body {

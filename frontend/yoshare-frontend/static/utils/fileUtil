@@ -13,14 +13,14 @@ export function hashFile(binFile, callBack) {
     fileReader = new FileReader();
 
   fileReader.onload = function(e) {
-    console.log("read chunk nr", currentChunk + 1, "of", chunks);
+    // console.log("read chunk nr", currentChunk + 1, "of", chunks);
     spark.append(e.target.result); // Append array buffer
     currentChunk++;
 
     if (currentChunk < chunks) {
       loadNext();
     } else {
-      console.log("finished loading");
+      // console.log("finished loading");
       // console.info("computed hash", spark.end()); // Compute hash
       let result = spark.end();
       callBack(result, file);

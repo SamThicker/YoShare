@@ -1,6 +1,8 @@
 package com.yo.fileservice.controller;
 
 import com.yo.fileservice.service.GroupFileService;
+import com.yo.fileservice.vo.VOFileResourceInfo;
+import com.yo.fileservice.vo.VOFileTransInfo;
 import com.yo.yoshare.common.api.CommonResult;
 import io.minio.errors.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +25,21 @@ public class GroupFileController {
 
     @PutMapping(value = "/group/{groupId}/file")
     public CommonResult uploadFile(@PathVariable(value = "groupId") Long groupId,
-                                   @RequestParam("file") MultipartFile file,
-                                   @RequestParam("title") String title,
-                                   @RequestParam("description") String description,
-                                   @RequestParam("classis") Optional<Long> classis,
-                                   @RequestParam("hash") String hash) throws Exception {
-        return groupFileService.uploadFile(null, groupId, hash, file, title, description, classis);
+                                   VOFileResourceInfo info) throws Exception {
+        return groupFileService.uploadFile(info, groupId);
+    }
+
+    /**上传文件分片*/
+    @PostMapping(value = "/group/{groupId}/multipartFile")
+    public CommonResult uploadMutipartFile(@PathVariable("groupId") Long groupId,
+                                           VOFileTransInfo info) throws Exception {
+        return groupFileService.uploadMultipartFile(info,groupId);
     }
 
     @PutMapping(value = "/group/{groupId}/existFile")
-    public CommonResult uploadFile(@PathVariable(value = "groupId") Long groupId,
-                                   @RequestParam("title") String title,
-                                   @RequestParam("description") String description,
-                                   @RequestParam("classis") Optional<Long> classis,
-                                   @RequestParam("hash") String hash,
-                                   @RequestParam("name") String name) throws IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlPullParserException, InvalidExpiresRangeException, InternalException, XmlParserException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
-        return groupFileService.uploadExistFile(null, groupId, name, hash, title, description, classis);
+    public CommonResult uploadExistFile(@PathVariable(value = "groupId") Long groupId,
+                                   VOFileResourceInfo info) throws IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlPullParserException, InvalidExpiresRangeException, InternalException, XmlParserException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
+        return groupFileService.uploadExistFile(groupId, info);
     }
 
     @ResponseBody

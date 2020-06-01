@@ -73,7 +73,7 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
         accessDecisionService.setPermitAllUrl("/resource/resClassis/group/*", "/resource/resClassis/group/*/*", "/resource/resClassis/group/*/*/*", "/resource/group/*/*/*",
                 "/note/group/*/*", "/note/group/*/*/*",
                 "/file/member/file/*","/file/member/fileInfo/*",
-                "/file/group/*/file/*", "/file/group/*/existFile","/group/*/file/*","/zuul/file/group/*/file",
+                "/file/group/*/file/*", "/file/group/*/existFile","/group/*/file/*","/zuul/file/group/*/file","/group/*/multipartFile",
                 "/zuul/file/group/*/file","file/group/*/file",
                 "/resource/group/*/resource/web","/resource/group/*/*/*",
                 "/group-service/group/*/member","/file/member/multipartFile");
@@ -106,7 +106,7 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
                         "/member-service/member/area/*","/member-service/member/register","/member-service/member/info/exist","/member-service/member/mailVerificationCode","/member-service/member/*/info",
                         "/note/getNote/*/*","/note/updateNote/*",
                         "/group-service/group/*/group","/group-service/group/*/createdGroups",
-                        "/login.html","/file/group/**",
+                        "/login.html","/file/group/**","/zull/file/group/*/file",
                         "/group-service/group/*/member").permitAll()
                 .anyRequest().access("@accessDecisionService.hasPermission(request , authentication)")
                 .and()

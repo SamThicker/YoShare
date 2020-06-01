@@ -67,10 +67,14 @@ export default {
       type: Number,
       default: 5000 //kb
     },
-    containerHeight: Number
+    containerHeight: Number,
+    enable: Boolean
   },
 
   mounted() {
+    console.info("afadf");
+    console.info(this.content)
+;    this.$refs.myQuillEditor.quill.enable(this.enable);
     addQuillTitle();
   },
 
@@ -84,6 +88,14 @@ export default {
     },
     value: function(val) {
       this.content = val;
+    },
+    enable: function(val) {
+      this.$refs.myQuillEditor.quill.enable(val);
+      // this.$refs.myQuillEditor.quill.blur();
+      // this.$nextTick(function() {
+      //   this.$refs.myQuillEditor.quill.enable(val);
+      //   this.$refs.myQuillEditor.quill.blur();
+      // });
     }
   },
   data() {
@@ -327,5 +339,24 @@ code {
 .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
   content: "等宽字体";
+}
+
+.ql-container{
+  overflow-y: auto;
+  height: 8rem!important;
+}
+
+/*滚动条整体样式*/
+.ql-container ::-webkit-scrollbar{
+  width: 10px;/*竖向滚动条的宽度*/
+  height: 10px;/*横向滚动条的高度*/
+}
+.ql-container ::-webkit-scrollbar-thumb{/*滚动条里面的小方块*/
+  background: #666666;
+  border-radius: 5px;
+}
+.ql-container ::-webkit-scrollbar-track{/*滚动条轨道的样式*/
+  background: #ccc;
+  border-radius: 5px;
 }
 </style>

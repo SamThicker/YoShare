@@ -157,6 +157,7 @@ public class FileServiceImpl implements FileService, CallBack {
         String userName = request.getHeader("userName");
         String name = info.getFileName();
         String type = name.substring(name.lastIndexOf(".")+1);
+        //设置文件信息
         CmsMemberFile file = new CmsMemberFile();
         file.setStatus("0");
         file.setByName(userName);
@@ -220,41 +221,11 @@ public class FileServiceImpl implements FileService, CallBack {
     public CommonResult uploadMultipartFile(VOFileTransInfo info) throws Exception {
         String hashString;
         MessageDigest md5;
-        CmsFileTransInfo realInfo;
-        CmsFileTransInfoExample example = new CmsFileTransInfoExample();
-        example.createCriteria().andMd5EqualTo(info.getMd5()).andFinishEqualTo("0");
-        List<CmsFileTransInfo> realInfos = fileTransInfoMapper.selectByExample(example);
-        if (realInfos == null || realInfos.size()<=0){
-            realInfo = new CmsFileTransInfo();
-            realInfo.setCursor(0);
-            realInfo.setFinish("0");
-            realInfo.setMd5(info.getMd5());
-            realInfo.setName(info.getName());
-            realInfo.setTotalNum(info.getTotalNum());
-            realInfo.setType(info.getName().substring(info.getName().lastIndexOf(".")+1));
-            realInfo.setTotalNum(info.getTotalNum());
-            fileTransInfoMapper.insert(realInfo);
-        } else {
-            realInfo = realInfos.get(0);
-        }
+        CmsFileTransInfo realInfo = fileUtil.getTransInfo(info);
         if (realInfo.getCursor()>=realInfo.getTotalNum()){
             return CommonResult.failed("文件出错");
         }
-        hashString = info.getMd5();
-        String fileName = "";
-        //扩展名左边补0对齐，方便排序
-        if (info.getCursor()/10>0){
-            fileName = hashString+"."+ info.getCursor();
-        } else {
-            fileName = hashString+"."+ "0" + info.getCursor();
-        }
-        String parentDirStr = PART_FILE_DIR + hashString;
-        File parentDir = new File(parentDirStr);
-        if (!parentDir.exists()) {
-            parentDir.mkdir();
-        }
-        File destFile = new File(parentDir + "/" + fileName);
-        info.getFile().transferTo(destFile);
+        fileUtil.saveFile(info);
         realInfo.setCursor(realInfo.getCursor()+1);
         fileTransInfoMapper.updateByPrimaryKeySelective(realInfo);
         System.out.println("start:" +System.currentTimeMillis());

@@ -3,7 +3,8 @@ spring:
     name: service-note
   data:
     mongodb:
-      uri: mongodb://localhost:27017/yoshare
+      uri: mongodb://127.0.0.1:27017,127.0.0.1:27018,127.0.0.1:27019
+      database: yoshare
 
 es:
   host: 127.0.0.1:9300

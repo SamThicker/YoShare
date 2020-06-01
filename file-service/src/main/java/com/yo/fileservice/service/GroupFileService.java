@@ -1,8 +1,9 @@
 package com.yo.fileservice.service;
 
+import com.yo.fileservice.vo.VOFileResourceInfo;
+import com.yo.fileservice.vo.VOFileTransInfo;
 import com.yo.yoshare.common.api.CommonResult;
 import io.minio.errors.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -12,11 +13,13 @@ import java.util.Optional;
 
 public interface GroupFileService {
 
-    CommonResult uploadFile(Long id, Long groupId, String hash, MultipartFile file, String title, String description, Optional<Long> classis) throws Exception;
+    CommonResult uploadFile(VOFileResourceInfo info, Long groupId) throws Exception;
 
-    CommonResult uploadExistFile(Long id, Long groupId, String name, String hash, String title, String description, Optional<Long> classis) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidExpiresRangeException, InvalidResponseException, ErrorResponseException, XmlParserException, InvalidBucketNameException, InsufficientDataException, InternalException;
+    CommonResult uploadExistFile(Long groupId, VOFileResourceInfo info) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidExpiresRangeException, InvalidResponseException, ErrorResponseException, XmlParserException, InvalidBucketNameException, InsufficientDataException, InternalException;
 
     CommonResult deleteFile(String fileId, String groupId) throws Exception;
 
     CommonResult getFileInfo(String fileId, String goroupId);
+
+    CommonResult uploadMultipartFile(VOFileTransInfo info, Long groupId) throws Exception;
 }
