@@ -8,6 +8,7 @@ import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.common.api.ResultCode;
 import com.yo.yoshare.mbg.mapper.*;
 import com.yo.yoshare.mbg.model.*;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -54,11 +55,28 @@ public class GroupResourceServiceImpl implements GroupResourceService {
         if (null != classis && 0 < classis){
             cri.andClassificationEqualTo(classis);
         }
+        if (null != classis && 0 > classis){
+            switch (classis.intValue()){
+                case -2: {
+                    cri.andByUserIdEqualTo(userId);
+                    break;
+                }
+                case -3: {
+                    cri.andByUserIdNotEqualTo(userId);
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+
+        }
         List list = groupResourceMapper.selectByExample(example);
         return CommonResult.success(list,"成功");
     }
 
     @Override
+    @GlobalTransactional(name = "my_test_tx_group", rollbackFor = Exception.class)
     public CommonResult delGroupResource(CmsGroupResource resource, String groupId) throws Exception {
         switch (resource.getType()){
             case "NOTE":{
@@ -104,7 +122,7 @@ public class GroupResourceServiceImpl implements GroupResourceService {
     }
 
     @Override
-    public CommonResult addFavorite(Long groupId, String title, String introduction, String url) {
+    public CommonResult addFavorite(Long groupId, String title, String introduction, String url, String classis) {
         String userId = request.getHeader("userId");
         CmsGroupFavoritePage page = new CmsGroupFavoritePage();
         page.setCreatedTime(new Date());
@@ -120,6 +138,7 @@ public class GroupResourceServiceImpl implements GroupResourceService {
         resource.setType("FAVORITE");
         resource.setResourceRef(page.getId().toString());
         resource.setTitle(title);
+        resource.setClassification(Long.parseLong(classis));
         groupResourceMapper.insertSelective(resource);
         return CommonResult.success("操作成功", "操作成功");
     }

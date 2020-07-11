@@ -17,6 +17,7 @@ public class ResourceController {
     @Autowired
     ResourceService resourceService;
 
+    /**获取用户资源*/
     @GetMapping("/{id}/ownResource")
     public CommonResult getResourcesForSelf(@RequestParam String classification,
             @RequestParam String type, @PathVariable("id") Long id) {
@@ -61,8 +62,8 @@ public class ResourceController {
     /**创建收藏网页*/
     @PutMapping(value = "/{id}/ownResource/web")
     public CommonResult addFavorite(@PathVariable("id") Long userId, @RequestParam String title,
-                                    @RequestParam String introduction, @RequestParam String url){
-        return resourceService.addFavorite(userId, title, introduction, url);
+                                    @RequestParam String introduction, @RequestParam String url, @RequestParam String classis){
+        return resourceService.addFavorite(userId, title, introduction, url, classis);
     }
 
     /**获取收藏的网页*/

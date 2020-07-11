@@ -9,9 +9,13 @@ import com.yo.noteservice.service.NoteService;
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.mbg.mapper.CmsMemberResourceMapper;
 import com.yo.yoshare.mbg.model.CmsMemberResource;
+import io.seata.rm.tcc.api.BusinessActionContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +41,7 @@ public class NoteServiceImpl implements NoteService {
         Content content = (Content)note.getContents()[index];
         content.setId(UUID.randomUUID().toString());
         content.setTime(new Date());
+//        content.setContent(htmlEncode(content.getContent()));
         Note result = noteDao.addNote(note);
         com.yo.noteservice.esModel.Note esObject = new com.yo.noteservice.esModel.Note();
         BeanUtils.copyProperties(note, esObject);
@@ -66,6 +71,7 @@ public class NoteServiceImpl implements NoteService {
             return;
         }
         Content content = contents[0];
+//        content.setContent(htmlEncode(content.getContent()));
         content.setTime(new Date());
         content.setId(UUID.randomUUID().toString());
         noteDao.addElement(note.getId(),note.getBy(),"contents", content);
@@ -90,14 +96,38 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public CommonResult deleteUserNote(String userId, String noteId) {
-        DeleteResult result = noteDao.remove(userId, noteId);
-        if (result.wasAcknowledged()){
-            noteEsService.delete(noteId);
-            return CommonResult.success("操作成功");
-        }
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public CommonResult deleteUserNote(String userId, String noteId) throws IllegalAccessException {
+        Note note = noteDao.getUserNoteById(userId, noteId);
+        note.setStatus("0");
+        noteDao.update(note);
+        System.out.println("已删除");
+        return CommonResult.success("操作成功");
+    }
 
-        return CommonResult.failed("操作失败，请重试");
+
+    @Override
+    public boolean commitDelete(BusinessActionContext context) {
+        String noteId = (String) context.getActionContext("noteId");
+        Note note = noteDao.getNote(noteId);
+        if ("0".equals(note.getStatus())){
+            DeleteResult result = noteDao.remove(note);
+            if (result.wasAcknowledged()){
+                noteEsService.delete(noteId);
+            }
+        }
+        System.out.println("提交");
+        return true;
+    }
+
+    @Override
+    public boolean rollbackDelete(BusinessActionContext context) throws IllegalAccessException {
+        String noteId = (String) context.getActionContext("noteId");
+        Note note = noteDao.getNote(noteId);
+        note.setStatus("1");
+        noteDao.update(note);
+        System.out.println("回滚");
+        return true;
     }
 
     @Override
@@ -111,5 +141,33 @@ public class NoteServiceImpl implements NoteService {
         return note;
     }
 
+    private static String htmlEncode(char c) {
+        switch(c) {
+            case '&':
+                return"&amp;";
+            case '<':
+                return"&lt;";
+            case '>':
+                return"&gt;";
+            case '"':
+                return"&quot;";
+            case ' ':
+                return"&nbsp;";
+            default:
+                return c +"";
+        }
+    }
+
+    /** 对传入的字符串str进行Html encode转换 */
+    public static String htmlEncode(String str) {
+        if(str ==null || str.trim().equals("")) {
+            return str;
+        }
+        StringBuilder encodeStrBuilder = new StringBuilder();
+        for (int i = 0, len = str.length(); i < len; i++) {
+            encodeStrBuilder.append(htmlEncode(str.charAt(i)));
+        }
+        return encodeStrBuilder.toString();
+    }
 
 }

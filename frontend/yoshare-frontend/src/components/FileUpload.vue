@@ -203,6 +203,13 @@ export default {
       document.removeEventListener("click", this.clickListener);
     },
     uploadPart(formData, retry, file) {
+      if (!this.show) {
+        this.uploadPercentage = 0;
+        this.delFile();
+        this.uploading = false;
+        this.message = "";
+        return;
+      }
       this.message =
         "正在上传 " +
         "(" +
@@ -238,7 +245,7 @@ export default {
               setTimeout(function() {
                 _this.uploading = false;
                 _this.uploadPercentage = 0;
-              }, 1000);
+              }, 1500);
             }, 3000);
             _this.delFile();
             _this.refreshData();

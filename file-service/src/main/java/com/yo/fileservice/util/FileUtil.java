@@ -73,7 +73,6 @@ public class FileUtil {
         FileChannel outChannel = null;
         System.out.println("Merge " + Arrays.toString(files) + " into " + outFile);
         String lastFlag = files[files.length-1];
-        int len = 0;
         try {
             outChannel = new FileOutputStream(outFile).getChannel();
             for(String f : files){

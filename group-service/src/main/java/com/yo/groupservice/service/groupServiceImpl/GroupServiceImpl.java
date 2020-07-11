@@ -78,7 +78,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public CommonResult getOwnGroupsByUserId(String id) {
         GmsGroupExample example = new GmsGroupExample();
-        example.createCriteria().andCreatedByEqualTo(id);
+        example.createCriteria().andCreatedByEqualTo(id).andStatusEqualTo("1");
         List list = groupMapper.selectByExample(example);
         return CommonResult.success(list, "操作成功");
     }
@@ -194,7 +194,6 @@ public class GroupServiceImpl implements GroupService {
         return CommonResult.success(groupMapper.selectByPrimaryKey(group.getId()),"操作成功");
     }
 
-
     @Override
     public boolean isGroupAdmin(Long groupId, Long userId) {
         GmsGroupExample example = new GmsGroupExample();
@@ -220,6 +219,7 @@ public class GroupServiceImpl implements GroupService {
         }
         relationship.setStatus("0");
         memberRelationshipMapper.updateByPrimaryKeySelective(relationship);
+        //小组人数减一
         group.setMemberNum(group.getMemberNum() - 1);
         if (group.getMemberNum() == 0){
             group.setStatus("0");
@@ -232,6 +232,26 @@ public class GroupServiceImpl implements GroupService {
             group.setAdminId(relationships.get(0).getMemberId());
         }
         groupMapper.updateByPrimaryKeySelective(group);
+        return CommonResult.success("操作成功");
+    }
+
+    @Override
+    public CommonResult removeMember(Long groupId, Long memberId) {
+        GmsGroup group = groupMapper.selectByPrimaryKey(groupId);
+        String userId = request.getHeader("userId");
+        if ("0".equals(group.getStatus())){
+            return CommonResult.failed("小组不存在！");
+        }
+        if (group.getAdminId() != Long.parseLong(userId)) {
+            return CommonResult.failed("无管理权限");
+        }
+        GmsGroupMemberRelationshipExample relationExample = new GmsGroupMemberRelationshipExample();
+        relationExample.createCriteria().andGroupIdEqualTo(groupId).andMemberIdEqualTo(memberId).andStatusEqualTo("1");
+        GmsGroupMemberRelationship relationship = new GmsGroupMemberRelationship();
+        relationship.setStatus("0");
+        memberRelationshipMapper.updateByExampleSelective(relationship, relationExample);
+        group.setMemberNum(group.getMemberNum()-1);
+        groupMapper.updateByPrimaryKey(group);
         return CommonResult.success("操作成功");
     }
 

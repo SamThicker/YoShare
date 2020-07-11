@@ -117,6 +117,7 @@ const user = {
       });
     },
     getAllGroups({ commit }, userId) {
+      userId = this.state.user.info.id;
       return new Promise((resolve, reject) => {
         getAllGroupsByUserId(userId)
           .then(function(res) {

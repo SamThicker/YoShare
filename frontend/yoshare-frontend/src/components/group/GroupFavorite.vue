@@ -95,25 +95,26 @@ export default {
     itemDelete() {},
     classisClick() {},
     classisEdit() {},
-    classisAddRes() {
+    classisAddRes(classis) {
+      this.destClassis = classis;
+      this.createRes = true;
       this.addFavoriteWebPageDialog();
     },
     newTab() {
       window.open(this.iframeUrl, "_blank");
     },
-    addFavoriteWebPageDialog: function(classis) {
-      this.destClassis = classis;
-      this.createRes = true;
+    addFavoriteWebPageDialog: function() {
       document.addEventListener("click", this.clickListener);
     },
     addFavoriteWebPage() {
       this.createRes = false;
       let _this = this;
       addGroupFavPage(
-        this.groupId,
-        this.resourceName,
+        _this.groupId,
+        _this.resourceName,
         this.resourceIntroduction,
-        this.resourceUrl
+        this.resourceUrl,
+        _this.destClassis.id
       )
         .then(function() {
           _this.refreshData();

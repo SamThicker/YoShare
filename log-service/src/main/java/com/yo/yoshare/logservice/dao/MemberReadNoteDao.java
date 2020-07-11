@@ -12,7 +12,10 @@ public interface MemberReadNoteDao {
 
     int addMemberReadRecord(@Param(value = "memberId") Long memberId,
                             @Param(value = "date") Date date,
-                            @Param(value = "noteId") String noteId);
+                            @Param(value = "noteId") String noteId,
+                            @Param(value = "noteType") String noteType,
+                            @Param(value = "groupId") Long groupId,
+                            @Param(value = "title") String title);
 
 
     List<Map<Date, Integer>> selectMemberReadByWeek(@Param(value = "memberId") Long memberId);

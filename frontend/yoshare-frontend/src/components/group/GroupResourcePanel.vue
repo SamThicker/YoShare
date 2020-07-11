@@ -73,33 +73,33 @@
                 <div class="preview-list-item-header">
                   <span class="preview-item-title">{{ resource.title }}</span>
                   <span class="preview-item-menu">
-                    <i
-                      class="el-icon-star-on preview-item-btn"
-                      v-show="false"
-                      style="color: yellow; font-size: 23px"
-                      @click.stop="
-                        previewItemCallback.unstar
-                          ? previewItemCallback.unstar(resource)
-                          : null
-                      "
-                    ></i>
-                    <i
-                      class="el-icon-star-off preview-item-btn"
-                      v-show="true"
-                      @click.stop="
-                        previewItemCallback.star
-                          ? previewItemCallback.star(resource)
-                          : null
-                      "
-                    ></i>
-                    <i
-                      class="el-icon-share preview-item-btn"
-                      @click.stop="
-                        previewItemCallback.share
-                          ? previewItemCallback.share(resource)
-                          : null
-                      "
-                    ></i>
+<!--                    <i-->
+<!--                      class="el-icon-star-on preview-item-btn"-->
+<!--                      v-show="false"-->
+<!--                      style="color: yellow; font-size: 23px"-->
+<!--                      @click.stop="-->
+<!--                        previewItemCallback.unstar-->
+<!--                          ? previewItemCallback.unstar(resource)-->
+<!--                          : null-->
+<!--                      "-->
+<!--                    ></i>-->
+<!--                    <i-->
+<!--                      class="el-icon-star-off preview-item-btn"-->
+<!--                      v-show="true"-->
+<!--                      @click.stop="-->
+<!--                        previewItemCallback.star-->
+<!--                          ? previewItemCallback.star(resource)-->
+<!--                          : null-->
+<!--                      "-->
+<!--                    ></i>-->
+<!--                    <i-->
+<!--                      class="el-icon-share preview-item-btn"-->
+<!--                      @click.stop="-->
+<!--                        previewItemCallback.share-->
+<!--                          ? previewItemCallback.share(resource)-->
+<!--                          : null-->
+<!--                      "-->
+<!--                    ></i>-->
                     <i
                       class="el-icon-delete preview-item-btn"
                       @click.stop="
@@ -199,12 +199,12 @@ export default {
           classificationName: "共享",
           unEditable: true
         },
-        {
-          id: "-4",
-          icon: "el-icon-star-off",
-          classificationName: "星标",
-          unEditable: true
-        }
+        // {
+        //   id: "-4",
+        //   icon: "el-icon-star-off",
+        //   classificationName: "星标",
+        //   unEditable: true
+        // }
       ],
       currentClassification: ""
     };
@@ -296,10 +296,10 @@ export default {
             });
         })
         .catch(() => {
-          this.$message({
-            type: "info",
-            message: "取消输入"
-          });
+          // this.$message({
+          //   type: "info",
+          //   message: "取消输入"
+          // });
         });
     },
     //显示"分类"编辑框
@@ -547,7 +547,7 @@ li {
   line-height: 38px;
   font-size: 18px;
   font-weight: bold;
-  bottom: 13px;
+  bottom: 10px;
   position: relative;
   display: inline-block;
 }
@@ -652,6 +652,9 @@ li {
   width: calc(100% - 60px);
   font-size: 13px;
   color: #2b2b2b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .preview-item-menu {

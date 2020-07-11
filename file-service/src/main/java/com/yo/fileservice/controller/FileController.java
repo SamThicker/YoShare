@@ -86,6 +86,7 @@ public class FileController {
         return fileService.deleteFile(fileId);
     }
 
+    /**获取用户文件信息*/
     @GetMapping(value = "/member/fileInfo/{fileId}")
     public CommonResult getFileInfo(@PathVariable(value = "fileId") String fileId) throws IOException, ServletException {
         return fileService.getFileInfo(fileId);

@@ -1,7 +1,6 @@
 server:
   port: 9011
 
-
 jwt:
   tokenHeader: Authorization #JWT存储的请求头
   secret: yoshare-secret #JWT加解密使用的密钥
@@ -33,7 +32,10 @@ spring:
         max-idle: 8
         min-idle: 0
     timeout: 100ms
-
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 
 mybatis:
   mapper-locations:
@@ -41,11 +43,3 @@ mybatis:
     - classpath*:com/**/mapper/*.xml
 
 
-
-
-
-
-management:
-  endpoint:
-    health:
-      enabled: true

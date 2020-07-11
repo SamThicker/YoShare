@@ -159,13 +159,13 @@ export default {
     // 富文本图片上传前
     beforeUpload(file) {
       const isIMAGE = file.type === "image/jpeg" || "image/gif" || "image/png";
-      const isLt1M = file.size / 1024 / 1024 < 1;
+      const isLt1M = file.size / 1024 / 1024 < 10;
 
       if (!isIMAGE) {
         this.$message.error("上传文件只能是图片格式!");
       }
       if (!isLt1M) {
-        this.$message.error("上传文件大小不能超过 1MB!");
+        this.$message.error("上传文件大小不能超过 10MB!");
       }
       // 显示loading动画
       this.quillUpdateImg = true;

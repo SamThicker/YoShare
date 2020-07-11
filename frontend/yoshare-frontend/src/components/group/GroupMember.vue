@@ -12,6 +12,7 @@
         <div
           class="member-quit admin"
           v-show="member.id !== userId && isAdmin()"
+          @click="removeMember(member.id)"
         >
           <div></div>
         </div>
@@ -85,7 +86,8 @@
 import {
   getAllGroupMember,
   getGroupJoinCode,
-  quitGroup
+  quitGroup,
+  removeMember
 } from "../../api/group";
 import { deepClone } from "../../../static/utils/deepClone";
 
@@ -185,6 +187,22 @@ export default {
               _this.$store.dispatch("getAllGroups", _this.userId);
               _this.$elementMessage("操作成功", "success", 800);
               _this.$router.push("/");
+            })
+            .catch(err => console.info(err));
+        })
+        .catch(err => console.info(err));
+    },
+    removeMember(memberId) {
+      let _this = this;
+      this.$confirm("确定要删除该成员吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(function() {
+          removeMember(_this.groupId, memberId)
+            .then(function() {
+              _this.getGroupMembers();
             })
             .catch(err => console.info(err));
         })

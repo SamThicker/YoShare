@@ -202,7 +202,7 @@ export default {
             });
         })
         .catch(function() {
-          _this.$elementMessage("请稍后重试", "error", 1500);
+          // _this.$elementMessage("请稍后重试", "error", 1500);
         });
     }
   }

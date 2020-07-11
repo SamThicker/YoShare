@@ -11,11 +11,12 @@ import com.yo.yoshare.mbg.mapper.CmsMemberFileMapper;
 import com.yo.yoshare.mbg.mapper.CmsMemberResourceClassficationMapper;
 import com.yo.yoshare.mbg.mapper.CmsMemberResourceMapper;
 import com.yo.yoshare.mbg.model.*;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +50,10 @@ public class ResourceServiceImpl implements ResourceService {
         return memberResourceMapper.selectByExample(example);
     }
 
+
     @Override
+    @Transactional
+    @GlobalTransactional(name = "my_test_tx_group", rollbackFor = Exception.class)
     public CommonResult delResourceForSelf(CmsMemberResource resource) throws Exception {
         switch (resource.getType()){
             case "NOTE":{
@@ -121,7 +125,7 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public CommonResult addFavorite(Long userId, String title, String introduction, String url) {
+    public CommonResult addFavorite(Long userId, String title, String introduction, String url, String classis) {
         CmsMemberFavoritePage page = new CmsMemberFavoritePage();
         page.setCreatedTime(new Date());
         page.setUrl(url);
@@ -134,6 +138,7 @@ public class ResourceServiceImpl implements ResourceService {
         resource.setType("FAVORITE");
         resource.setResourceRef(page.getId().toString());
         resource.setTitle(title);
+        resource.setClassification(classis);
         memberResourceMapper.insertSelective(resource);
         return CommonResult.success("操作成功", "操作成功");
     }

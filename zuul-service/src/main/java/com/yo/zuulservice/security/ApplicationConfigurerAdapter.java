@@ -104,10 +104,12 @@ public class ApplicationConfigurerAdapter extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/member-service/member/*/info/*","/member-service/member/*/icon").permitAll()
                 .antMatchers("/file/presignedUrl","/file/uploadUrl/*","/file/uploadResource","/file/iconUploadUrl","/file/groupAvatarUploadUrl",
                         "/member-service/member/area/*","/member-service/member/register","/member-service/member/info/exist","/member-service/member/mailVerificationCode","/member-service/member/*/info",
-                        "/note/getNote/*/*","/note/updateNote/*",
+                        "/note/getNote/*/*","/note/updateNote/*","note/search",
                         "/group-service/group/*/group","/group-service/group/*/createdGroups",
+                        "/group-service/group/*/*/byAdmin",
                         "/login.html","/file/group/**","/zull/file/group/*/file",
-                        "/group-service/group/*/member").permitAll()
+                        "/group-service/group/*/member",
+                        "/log/readNoteLogDetails/*").permitAll()
                 .anyRequest().access("@accessDecisionService.hasPermission(request , authentication)")
                 .and()
                 //将授权提供者注册到授权管理器中(AuthenticationManager)

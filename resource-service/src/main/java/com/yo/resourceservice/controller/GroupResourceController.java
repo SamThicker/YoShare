@@ -40,8 +40,8 @@ public class GroupResourceController {
     /**创建收藏网页*/
     @PutMapping(value = "/{groupId}/resource/web")
     public CommonResult addFavorite(@PathVariable("groupId") Long groupId, @RequestParam String title,
-                                    @RequestParam String introduction, @RequestParam String url){
-        return groupResourceService.addFavorite(groupId, title, introduction, url);
+                                    @RequestParam String introduction, @RequestParam String url, @RequestParam String classis){
+        return groupResourceService.addFavorite(groupId, title, introduction, url, classis);
     }
 
     /**获取收藏的网页*/

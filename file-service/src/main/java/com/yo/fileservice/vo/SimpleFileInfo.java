@@ -12,6 +12,8 @@ public class SimpleFileInfo {
 
     private String url;
 
+    private Boolean finished;
+
     public String getUrl() {
         return url;
     }
@@ -54,6 +56,14 @@ public class SimpleFileInfo {
         this.type = type;
     }
 
+    public Boolean getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Boolean finished) {
+        this.finished = finished;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -65,6 +75,7 @@ public class SimpleFileInfo {
         sb.append(", name=").append(name);
         sb.append(", type=").append(type);
         sb.append(", url=").append(url);
+        sb.append(", finished=").append(finished);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

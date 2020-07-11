@@ -51,6 +51,12 @@ public class NoteController {
         return CommonResult.success(noteList, "操作成功");
     }
 
+    /**搜索笔记*/
+    @GetMapping(value = "/search")
+    public CommonResult<List> searchNote(String keyWord) {
+        return null;
+    }
+
     /**
      * 获取特定用户特定笔记
      * */

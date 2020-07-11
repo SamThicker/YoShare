@@ -2,7 +2,7 @@
   <div class="header-menu">
     <div class="nav">
       <a @click="selectTab('group')">小组</a>
-      <a @click="selectTab('follow')">关注</a>
+      <a @click="selectTab('follow')" style="display: none">关注</a>
       <a @click="selectTab('notice')" style="display: none">消息</a>
     </div>
 <!--    <div class="search">-->
@@ -144,6 +144,7 @@ export default {
       this.$router.push("/resource/note");
     },
     selectTab(option) {
+      this.$store.dispatch("getAllGroups", null);
       let tab = ["group", "follow", "notice"];
       let els = document.getElementsByClassName("nav").item(0).children;
       tab.forEach((val, index) => {

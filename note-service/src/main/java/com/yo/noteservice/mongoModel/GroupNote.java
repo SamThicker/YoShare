@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class GroupNote {
 
-
     private String id;
     /**标题*/
     private String title;
@@ -21,5 +20,7 @@ public class GroupNote {
     private Comment[] comments;
     /**文章标签*/
     private String[] tags;
+    /**文章的状态*/
+    private String status;
 
 }

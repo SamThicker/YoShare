@@ -47,4 +47,6 @@ public interface FileService {
     CommonResult deleteFile(String fileId) throws Exception;
 
     CommonResult uploadMultipartFile(VOFileTransInfo info) throws Exception;
+
+    void deleteFileInMinio(String userId, String fileId, String objectName) throws Exception;
 }

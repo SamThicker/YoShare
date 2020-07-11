@@ -17,4 +17,6 @@ public class Note {
     private Comment[] comments;
     /**文章标签*/
     private String[] tags;
+    /**文章的状态*/
+    private String status;
 }

@@ -17,14 +17,15 @@ export function delResource(groupId, type, classis, resource) {
   });
 }
 
-export function addGroupFavPage(groupId, title, introduction, url) {
+export function addGroupFavPage(groupId, title, introduction, url, classis) {
   return request({
     url: "resource/group/" + groupId + "/resource/web",
     method: "put",
     params: {
       title: title,
       introduction: introduction,
-      url: url
+      url: url,
+      classis: classis
     }
   });
 }

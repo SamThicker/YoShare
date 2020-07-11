@@ -36,11 +36,31 @@ spring:
         max-idle: 8 #连接池中最大空闲连接
         min-idle: 0 #连接池中的最小空闲连接
     timeout: 3000ms #连接超时时间(毫秒)
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/yoshare
+    username: root
+    password: root
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: yoshare
+    password: yoshare
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
 
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml
     - classpath*:com/**/mapper/*.xml
+
+
 
 management:
   endpoint:
@@ -72,3 +92,4 @@ hystrix:
           enabled: false
         isolation:
           strategy: SEMAPHORE
+

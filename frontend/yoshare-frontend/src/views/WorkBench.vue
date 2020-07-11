@@ -22,7 +22,9 @@
           @click.stop="showSaveOption()"
           >保存</el-button
         >
-        <el-button type="primary" class="btn-publish">发布</el-button>
+        <el-button type="primary" class="btn-publish" v-show="isGroup()"
+          >发布</el-button
+        >
       </div>
 
       <!-- 设置面板 -->
@@ -75,7 +77,7 @@
       <!-- 编辑器面板 -->
       <div class="editor-panel">
         <Editor
-          :enable = "markdownEditable"
+          :enable="markdownEditable"
           v-if="!isMavon"
           v-model="content"
           ref="myQuillEditor"
@@ -83,11 +85,9 @@
           @blur="onEditorBlur($event)"
           @focus="onEditorFocus($event)"
           @change="onEditorChange($event)"
-          :container-height="quillContainerHeight"
         ></Editor>
         <MarkdownEditor
           v-else
-          :container-height="mdContainerHeight"
           v-model="content"
           :editable="markdownEditable"
         ></MarkdownEditor>
@@ -126,7 +126,22 @@ export default {
   name: "WorkBench",
   watch: {
     content: function() {
-      this.refreshContainerHeight();
+      console.info("c:"+this.content)
+      // this.content = "";
+      //  // this.content = val.replace(/<script>/gi, this.stringEncode("<script>"));
+      //  this.content = val.replace(/<script>/gi, "哈哈");
+      //  this.content = val.replace(/<[^>]+>/g,"哈哈");
+      // // 替换字符串变量或者结束标签这样写
+      //  this.content = val.replace(new RegExp('&ls;/script>','gi'), this.stringEncode("&lt;/script>"));
+      //  this.content = val.replace("<script>","\\&lt;script&gt;");
+      //
+      //  //转义括号"()"
+      //  this.content = val.replace(/\(/g,"%28").replace(/\)/g,"%29");
+      //  //双引号
+      //  this.content = val.replace("\"","&quot;")
+      //  //单引号
+      //  this.content = val.replace("'","&apos;")
+      //  if (this.isMavon) this.content = val.replace("<img>","\\" +"&lt;img>")
     },
     $route: function() {
       this.getParams();
@@ -141,11 +156,6 @@ export default {
     let _this = this;
     this.timeLineCallback = function(id) {
       _this.timeLineItemClick(id);
-    };
-    this.refreshContainerHeight();
-    window.onresize = () => {
-      //只要窗口高度发生变化，就会进入这里面
-      this.refreshContainerHeight();
     };
     this.getParams();
     this.getNote();
@@ -193,6 +203,18 @@ export default {
     }
   },
   methods: {
+    stringEncode(str) {
+      var div = document.createElement("div");
+      if (div.innerText) {
+        div.innerText = str;
+      } else {
+        div.textContent = str;
+      }
+      return div.innerHTML;
+    },
+    isGroup() {
+      return !!this.groupId;
+    },
     getCurrentTime() {
       let date = new Date();
       let month = date.getMonth() + 1;
@@ -235,23 +257,6 @@ export default {
       this.settingBar = false;
       document.removeEventListener("click", this.clickListener);
     },
-    refreshContainerHeight() {
-      // if (!this.isMavon) {
-      //   let el = document.querySelector(".ql-toolbar.ql-snow");
-      //   if (!el) return;
-      //   this.quillContainerHeight =
-      //     document.documentElement.offsetHeight -
-      //     document.querySelector(".ql-toolbar.ql-snow").offsetHeight -
-      //     document.querySelector(".workbench-menu").offsetHeight;
-      // } else {
-      //   let el = document.querySelector(".workbench-menu");
-      //   if (!el) return;
-      //   this.mdContainerHeight =
-      //     document.documentElement.offsetHeight -
-      //     document.querySelector(".v-note-op").offsetHeight -
-      //     document.querySelector(".workbench-menu").offsetHeight;
-      // }
-    },
     getParams() {
       this.userId = this.$route.params.userId;
       this.noteId = this.$route.params.noteId;
@@ -262,8 +267,8 @@ export default {
       let _this = this;
       if (!this.userId || !this.noteId) return;
       let groupId = this.$route.query.groupId;
-      console.info(groupId)
-      if(groupId) {
+      console.info(groupId);
+      if (groupId) {
         getGroupNote(groupId, this.noteId)
           .then(function(res) {
             _this.currentNote = res.data;
@@ -290,7 +295,7 @@ export default {
     setData() {
       if (!this.currentNote) return;
       let lastIndex = this.currentNote.contents.length - 1;
-      this.isMavon = (this.currentNote.contents[lastIndex].editor==="MAVON");
+      this.isMavon = this.currentNote.contents[lastIndex].editor === "MAVON";
       this.currentEditor = this.isMavon;
       // this.this.quill.pasteHTML('<h3>add some title</h3>' + html)
       this.content = this.currentNote.contents[lastIndex].content;
@@ -435,7 +440,6 @@ html body {
   height: 100%;
   /*height: 100vh;*/
 }
-
 
 /*菜单*/
 .workbench-menu {
@@ -635,21 +639,23 @@ html body {
   height: 100vh;
 }
 
-.ql-container{
-  overflow-y:auto;
-  height:8rem!important;
+.ql-container {
+  overflow-y: auto;
+  height: 8rem !important;
 }
 
 /*滚动条整体样式*/
-.ql-container ::-webkit-scrollbar{
-  width: 10px;/*竖向滚动条的宽度*/
-  height: 10px;/*横向滚动条的高度*/
+.ql-container ::-webkit-scrollbar {
+  width: 10px; /*竖向滚动条的宽度*/
+  height: 10px; /*横向滚动条的高度*/
 }
-.ql-container ::-webkit-scrollbar-thumb{/*滚动条里面的小方块*/
+.ql-container ::-webkit-scrollbar-thumb {
+  /*滚动条里面的小方块*/
   background: #666666;
   border-radius: 5px;
 }
-.ql-container ::-webkit-scrollbar-track{/*滚动条轨道的样式*/
+.ql-container ::-webkit-scrollbar-track {
+  /*滚动条轨道的样式*/
   background: #ccc;
   border-radius: 5px;
 }

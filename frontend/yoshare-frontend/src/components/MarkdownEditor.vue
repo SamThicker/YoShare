@@ -19,6 +19,7 @@ import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import { getBlogFilePutUrl, uploadFile } from "../api/file";
 import "element-ui/lib/theme-chalk/index.css";
+// import xss from "xss";
 
 export default {
   name: "MarkdownEditor",
@@ -27,19 +28,17 @@ export default {
     value: {
       type: String
     },
-    containerHeight: Number,
     editable: Boolean
   },
   watch: {
     value: function() {
-      this.content = this.value;
+      // let xss = require("xss");
+      // this.content = xss(this.value);
     },
     content: function() {
+      // this.content = this.value;
       //内容改变事件
       this.$emit("input", this.content);
-    },
-    containerHeight: function(val) {
-      document.querySelector(".v-note-panel").style.height = val + "px";
     }
   },
   // 注册
@@ -51,19 +50,47 @@ export default {
       content: this.value, // 输入的markdown
       html: "", // 及时转的html
       imageList: [],
-      imageNum: 0
+      imageNum: 0,
+      xssOption: {
+        onTag: this.onTag
+      }
     };
   },
   methods: {
-    // 所有操作都会被解析重新渲染
+    onTag(tag/*, html, options*/) {
+      // tag是当前的标签名称，比如<a>标签，则tag的值是'a'
+      // html是该标签的HTML，比如<a>标签，则html的值是'<a>'
+      // options是一些附加的信息，具体如下：
+      //   isWhite    boolean类型，表示该标签是否在白名单上
+      //   isClosing  boolean类型，表示该标签是否为闭合标签，比如</a>时为true
+      //   position        integer类型，表示当前标签在输出的结果中的起始位置
+      //   sourcePosition  integer类型，表示当前标签在原HTML中的起始位置
+      // 如果返回一个字符串，则当前标签将被替换为该字符串
+      // 如果不返回任何值，则使用默认的处理方法：
+      //   在白名单上：  通过onTagAttr来过滤属性，详见下文
+      //   不在白名单上：通过onIgnoreTag指定，详见下文
+      if (tag === "object") {
+        console.info("sssssssssssssssss")
+        return "哈哈哈哈哈哈"
+      }
+    },
+    //所有操作都会被解析重新渲染
     change(value, render) {
-      // render 为 markdown 解析后的结果[html]
-      this.html = render;
+      // let myxss = new xss.FilterXSS(this.xssOption);
+      // // render 为 markdown 解析后的结果[html]
+      // let filtered = myxss.process(render);
+      // console.info("filtered:");
+      // this.html = filtered;
+      // console.info(this.html)
+      // this.html = "";
+      console.info(value);
+      value = ""
+      // render = ""
+      console.info(render)
+      render = ""
     },
     // 提交
     submit() {
-      console.log(this.content);
-      console.log(this.html);
     },
     //添加图片
     upLoadPic(file) {

@@ -99,5 +99,16 @@ public class GroupController {
         return groupService.quitGroup(groupId);
     }
 
+    /**小组管理员删除小组成员*/
+    @DeleteMapping(value = "/{groupId}/{memberId}/byAdmin")
+    public CommonResult removeMember(@PathVariable(value = "groupId") Long groupId,
+                                     @PathVariable(value = "memberId") Long memberId) {
+        String userId = request.getHeader("userId");
+        if (Long.parseLong(userId) == memberId ) {
+            return groupService.quitGroup(groupId);
+        }
+        return groupService.removeMember(groupId, memberId);
+    }
+
 
 }

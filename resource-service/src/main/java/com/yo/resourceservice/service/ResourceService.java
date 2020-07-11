@@ -19,7 +19,7 @@ public interface ResourceService {
 
     CommonResult deleteClassification(Long userId, Long classificationId);
 
-    CommonResult addFavorite(Long userId, String title, String introduction, String url);
+    CommonResult addFavorite(Long userId, String title, String introduction, String url, String classis);
 
     CommonResult getWeb(Long userId, Long webId);
 }

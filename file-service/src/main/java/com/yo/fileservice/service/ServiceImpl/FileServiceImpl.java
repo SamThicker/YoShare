@@ -1,6 +1,7 @@
 package com.yo.fileservice.service.ServiceImpl;
 
 import com.alibaba.druid.util.StringUtils;
+import com.yo.fileservice.components.MessageSender;
 import com.yo.fileservice.util.CallBack;
 import com.yo.fileservice.util.FileUtil;
 import com.yo.fileservice.vo.SimpleFileInfo;
@@ -58,6 +59,8 @@ public class FileServiceImpl implements FileService, CallBack {
     private HttpServletRequest request;
     @Autowired
     private FileUtil fileUtil;
+    @Autowired
+    private MessageSender messageSender;
 
 
 
@@ -103,6 +106,7 @@ public class FileServiceImpl implements FileService, CallBack {
         file.setId(null);
         file.setById(id);
         file.setName(info.getFileName());
+        file.setStatus("1");
         memberFileMapper.insertSelective(file);
         CmsMemberResource resource = new CmsMemberResource();
         resource.setTitle(info.getResTitle());
@@ -115,6 +119,43 @@ public class FileServiceImpl implements FileService, CallBack {
         memberResourceMapper.insertSelective(resource);
         return CommonResult.success("成功");
     }
+
+
+    @Override
+    public CommonResult uploadFile(VOFileResourceInfo info) throws Exception {
+        CmsFileTransInfoExample example = new CmsFileTransInfoExample();
+        example.createCriteria().andMd5EqualTo(info.getFileMd5()).andFinishEqualTo("0");
+        List<CmsFileTransInfo> list = fileTransInfoMapper.selectByExample(example);
+        //已上传部分文件，返回文件游标
+        if (list.size()>0){
+            return CommonResult.success(list.get(0).getCursor());
+        }
+        String userId = request.getHeader("userId");
+        String userName = request.getHeader("userName");
+        String name = info.getFileName();
+        String type = name.substring(name.lastIndexOf(".")+1);
+        //设置文件信息
+        CmsMemberFile file = new CmsMemberFile();
+        file.setStatus("0");
+        file.setByName(userName);
+        file.setById(Long.parseLong(userId));
+        file.setName(name);
+        file.setType(type);
+        file.setMd5(info.getFileMd5());
+        //插入数据
+        memberFileMapper.insertSelective(file);
+        CmsMemberResource resource = new CmsMemberResource();
+        resource.setTitle(info.getResTitle());
+        resource.setDescription(info.getResDescription());
+        resource.setDatetime(new Date());
+        resource.setType("FILE");
+        resource.setResourceRef(file.getId().toString());
+        resource.setClassification(info.getResClassification());
+        resource.setByUserId(Long.parseLong(userId));
+        memberResourceMapper.insertSelective(resource);
+        return CommonResult.success(0);
+    }
+
 
     @Override
     public void downloadFile(HttpServletRequest req, HttpServletResponse resp, Long userId, String fileId) throws IOException, ServletException {
@@ -151,38 +192,7 @@ public class FileServiceImpl implements FileService, CallBack {
         os.close();
     }
 
-    @Override
-    public CommonResult uploadFile(VOFileResourceInfo info) throws Exception {
-        String userId = request.getHeader("userId");
-        String userName = request.getHeader("userName");
-        String name = info.getFileName();
-        String type = name.substring(name.lastIndexOf(".")+1);
-        //设置文件信息
-        CmsMemberFile file = new CmsMemberFile();
-        file.setStatus("0");
-        file.setByName(userName);
-        file.setById(Long.parseLong(userId));
-        file.setName(name);
-        file.setType(type);
-        file.setMd5(info.getFileMd5());
-        //插入数据
-        memberFileMapper.insertSelective(file);
-        CmsMemberResource resource = new CmsMemberResource();
-        resource.setTitle(info.getResTitle());
-        resource.setDescription(info.getResDescription());
-        resource.setDatetime(new Date());
-        resource.setType("FILE");
-        resource.setResourceRef(file.getId().toString());
-        resource.setClassification(info.getResClassification());
-        resource.setByUserId(Long.parseLong(userId));
-        memberResourceMapper.insertSelective(resource);
-        CmsFileTransInfo transInfo = new CmsFileTransInfo();
-        CmsFileTransInfoExample example = new CmsFileTransInfoExample();
-        example.createCriteria().andMd5EqualTo(info.getFileMd5()).andFinishEqualTo("0");
-        List<CmsFileTransInfo> list = fileTransInfoMapper.selectByExample(example);
-        int result = list.size()>0 ? list.get(0).getCursor() : 0;
-        return CommonResult.success(result);
-    }
+
 
     @Override
     public CommonResult getFileInfo(String fileId) {
@@ -193,14 +203,20 @@ public class FileServiceImpl implements FileService, CallBack {
         }
         SimpleFileInfo fileInfo = new SimpleFileInfo();
         BeanUtils.copyProperties(file, fileInfo);
+        if ("0".equals(file.getStatus())){
+            fileInfo.setFinished(false);
+            return CommonResult.success(fileInfo, "操作成功");
+        }
         //得到要访问的文件的URL
         String objectName = fileDirTrans(file.getMd5(), file.getName());
         String url = minioTemplate.getObjectURL("file", objectName, 60 * 60 *24);
         String reg = "^(https|http)(:\\/\\/)[a-zA-Z0-9.]+:[0-9]{1,}";
         url = url.replaceAll(reg, "");
         fileInfo.setUrl(url);
+        fileInfo.setFinished(true);
         return CommonResult.success(fileInfo, "操作成功");
     }
+
 
     @Override
     public CommonResult deleteFile(String fileId) throws Exception {
@@ -210,9 +226,21 @@ public class FileServiceImpl implements FileService, CallBack {
             return CommonResult.failed("找不到相关文件");
         }
         memberFileMapper.deleteByPrimaryKey(file.getId());
-        String objectName = fileDirTrans(file);
-        minioTemplate.removeObject("file", objectName);
+        String msg = userId+":"+fileId+ ":" + fileDirTrans(file);
+        messageSender.send("delete.file.delay.queue" , msg);
+        System.out.println("已删除");
         return CommonResult.success("操作成功");
+    }
+
+    @Override
+    public void deleteFileInMinio(String userId, String fileId, String objectName) throws Exception {
+        CmsMemberFile file = getExistFile(userId, fileId);
+        //事务回滚，文件未被删除
+        if (null != file) {
+            return;
+        }
+        minioTemplate.removeObject("file", objectName);
+        System.out.println("已删除Minio文件");
     }
 
     /**上传文件分片
@@ -245,14 +273,15 @@ public class FileServiceImpl implements FileService, CallBack {
     void mergeFile(CmsFileTransInfo info) throws Exception {
         String parentDirStr = PART_FILE_DIR + info.getMd5();
         File parentDir = new File(parentDirStr);
-        String outFile = parentDirStr + "/" + info.getName();
+        String outFileStr = parentDirStr + "/" + info.getName();
         String[] list =  parentDir.list();
         Arrays.sort(list);
         //合并文件
-        FileUtil.doMergeFiles(outFile, list, parentDirStr);
+        FileUtil.doMergeFiles(outFileStr, list, parentDirStr);
         String hashString = "";
+        File outFile = new File(outFileStr);
         //校验文件MD5
-        hashString = DigestUtils.md5Hex(new FileInputStream(outFile));
+        hashString = DigestUtils.md5Hex(new FileInputStream(outFileStr));
         if (!hashString.equals(info.getMd5())) {
             CmsFileTransInfo info1 = new CmsFileTransInfo();
             info1.setMessage("文件出错");
@@ -261,9 +290,8 @@ public class FileServiceImpl implements FileService, CallBack {
             return;
         }
         String fileName = fileDirTrans(hashString, info.getName());
-        File file = new File(outFile);
         //把文件存到Minio
-        minioTemplate.putObject("file", fileName, new FileInputStream(file), file.length(), "file.getContentType()");
+        minioTemplate.putObject("file", fileName, new FileInputStream(outFile), outFile.length(), "file.getContentType()");
         //数据库操作
         CmsMemberFile memberFile = new CmsMemberFile();
         memberFile.setStatus("1");

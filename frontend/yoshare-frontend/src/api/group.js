@@ -78,3 +78,11 @@ export function quitGroup(groupId) {
     method: "delete"
   });
 }
+
+//管理员删除小组用户
+export function removeMember(groupId, memberId) {
+  return request({
+    url: "/group-service/group/" + groupId + "/" + memberId + "/byAdmin",
+    method: "delete"
+  });
+}

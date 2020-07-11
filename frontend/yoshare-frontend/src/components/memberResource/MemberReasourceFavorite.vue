@@ -104,7 +104,8 @@ export default {
         this.userId,
         this.resourceName,
         this.resourceIntroduction,
-        this.resourceUrl
+        this.resourceUrl,
+        this.destClassis.id
       )
         .then(function() {
           _this.refreshData();

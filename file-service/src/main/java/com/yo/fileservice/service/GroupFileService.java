@@ -22,4 +22,6 @@ public interface GroupFileService {
     CommonResult getFileInfo(String fileId, String goroupId);
 
     CommonResult uploadMultipartFile(VOFileTransInfo info, Long groupId) throws Exception;
+
+    void deleteFileInMinio(String user, String param1, String param2) throws Exception;
 }

@@ -97,6 +97,7 @@ export default {
   },
   watch: {
     noteId: function() {
+      if (!this.noteId) return;
       this.getNote();
     },
     scrollToTop: function(bool) {
@@ -205,8 +206,17 @@ export default {
     //添加阅读记录
     addMemberReadRecord() {
       let userId = this.$store.state.user.info.id;
+      let groupId = this.groupId = this.$route.query.groupId;
+      if (!groupId) groupId="";
+      let noteType;
+      let title = this.note.title;
+      if (groupId) {
+        noteType = "GROUP";
+      } else {
+        noteType = "MEMBER";
+      }
       //发送请求
-      addReadNoteLog(userId, this.noteId)
+      addReadNoteLog(userId, this.noteId, noteType, groupId, title)
         .then()
         .catch();
     }

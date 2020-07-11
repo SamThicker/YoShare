@@ -1,5 +1,6 @@
 package com.yo.fileservice.service.ServiceImpl;
 
+import com.yo.fileservice.components.MessageSender;
 import com.yo.fileservice.components.MinioTemplate;
 import com.yo.fileservice.util.CallBack;
 import com.yo.fileservice.util.FileResInfoAdapter;
@@ -57,10 +58,18 @@ public class GroupFileServiceImpl implements GroupFileService, CallBack {
     private FileUtil fileUtil;
     @Value("${file.rootDir.partFile}")
     private String PART_FILE_DIR;
+    @Autowired
+    private MessageSender messageSender;
 
 
     @Override
     public CommonResult uploadFile(VOFileResourceInfo info, Long groupId) throws Exception {
+        CmsFileTransInfoExample example = new CmsFileTransInfoExample();
+        example.createCriteria().andMd5EqualTo(info.getFileMd5()).andFinishEqualTo("0");
+        List<CmsFileTransInfo> list = fileTransInfoMapper.selectByExample(example);
+        if (list.size()>0){
+            return CommonResult.success(list.get(0).getCursor());
+        }
         String userId = request.getHeader("userId");
         String userName = request.getHeader("userName");
         //设置文件信息
@@ -75,20 +84,15 @@ public class GroupFileServiceImpl implements GroupFileService, CallBack {
         resource.setResourceRef(file.getId().toString());
         resource.setByUserId(Long.parseLong(userId));
         groupResourceMapper.insertSelective(resource);
-        CmsFileTransInfo transInfo = new CmsFileTransInfo();
-        CmsFileTransInfoExample example = new CmsFileTransInfoExample();
-        example.createCriteria().andMd5EqualTo(info.getFileMd5()).andFinishEqualTo("0");
-        List<CmsFileTransInfo> list = fileTransInfoMapper.selectByExample(example);
-        int result = list.size()>0 ? list.get(0).getCursor() : 0;
-        return CommonResult.success(result);
+        return CommonResult.success(0);
     }
 
     @Override
     public CommonResult uploadExistFile(Long groupId, VOFileResourceInfo info) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidExpiresRangeException, InvalidResponseException, ErrorResponseException, XmlParserException, InvalidBucketNameException, InsufficientDataException, InternalException {
-        String userId = request.getHeader("uesrId");
+        String userId = request.getHeader("userId");
         String userName = request.getHeader("userName");
         CmsGroupFileExample example = new CmsGroupFileExample();
-        example.createCriteria().andMd5EqualTo(info.getFileMd5());
+        example.createCriteria().andMd5EqualTo(info.getFileMd5()).andStatusEqualTo("1");
         List<CmsGroupFile> files = groupFileMapper.selectByExample(example);
         if (files.size() == 0){
             return CommonResult.failed("文件不存在");
@@ -102,6 +106,7 @@ public class GroupFileServiceImpl implements GroupFileService, CallBack {
         file.setById(Long.parseLong(userId));
         file.setName(userName);
         file.setGroupId(groupId);
+        file.setStatus("1");
         groupFileMapper.insertSelective(file);
         //复制数据
         CmsGroupResource resource = FileResInfoAdapter.toGroupResource(info);
@@ -122,12 +127,17 @@ public class GroupFileServiceImpl implements GroupFileService, CallBack {
         }
         SimpleFileInfo fileInfo = new SimpleFileInfo();
         BeanUtils.copyProperties(file, fileInfo);
+        if ("0".equals(file.getStatus())){
+            fileInfo.setFinished(false);
+            return CommonResult.success(fileInfo, "操作成功");
+        }
         //得到要访问的文件的URL
         String objectName = fileDirTrans(file.getMd5(), file.getName());
         String url = minioTemplate.getObjectURL("file", objectName, 60 * 60 *24);
         String reg = "^(https|http)(:\\/\\/)[a-zA-Z0-9.]+:[0-9]{1,}";
         url = url.replaceAll(reg, "");
         fileInfo.setUrl(url);
+        fileInfo.setFinished(true);
         return CommonResult.success(fileInfo, "操作成功");
     }
 
@@ -158,11 +168,22 @@ public class GroupFileServiceImpl implements GroupFileService, CallBack {
             return CommonResult.failed("找不到相关文件");
         }
         groupFileMapper.deleteByPrimaryKey(file.getId());
-        String objectName = fileDirTrans(file);
-        minioTemplate.removeObject("file", objectName);
+        String msg = groupId+":"+fileId+ ":" + fileDirTrans(file);
+        messageSender.send("delete.groupfile.delay.queue" , msg);
+        System.out.println("已删除");
         return CommonResult.success("操作成功");
     }
 
+    @Override
+    public void deleteFileInMinio(String groupId, String fileId, String objectName) throws Exception {
+        CmsGroupFile file = getExistFile(groupId, fileId);
+        //事务回滚，文件未被删除
+        if (null != file) {
+            return;
+        }
+        minioTemplate.removeObject("file", objectName);
+        System.out.println("已删除Minio文件");
+    }
 
     /**文件信息转换为minio文件名*/
     String fileDirTrans(CmsGroupFile file){
@@ -195,12 +216,13 @@ public class GroupFileServiceImpl implements GroupFileService, CallBack {
     void mergeFile(CmsFileTransInfo info) throws Exception {
         String parentDirStr = PART_FILE_DIR + info.getMd5();
         File parentDir = new File(parentDirStr);
-        String outFile = parentDirStr + "/" + info.getName();
+        String outFileDir = parentDirStr + "/" + info.getName();
         String[] list =  parentDir.list();
         Arrays.sort(list);
         //合并文件
-        FileUtil.doMergeFiles(outFile, list, parentDirStr);
+        FileUtil.doMergeFiles(outFileDir, list, parentDirStr);
         String hashString = "";
+        File outFile = new File(outFileDir);
         //校验文件MD5
         hashString = DigestUtils.md5Hex(new FileInputStream(outFile));
         if (!hashString.equals(info.getMd5())) {
@@ -211,9 +233,8 @@ public class GroupFileServiceImpl implements GroupFileService, CallBack {
             return;
         }
         String fileName = fileDirTrans(hashString, info.getName());
-        File file = new File(outFile);
         //把文件存到Minio
-        minioTemplate.putObject("file", fileName, new FileInputStream(file), file.length(), "file.getContentType()");
+        minioTemplate.putObject("file", fileName, new FileInputStream(outFile), outFile.length(), "file.getContentType()");
         //数据库操作
         CmsGroupFile groupFile = new CmsGroupFile();
         groupFile.setStatus("1");

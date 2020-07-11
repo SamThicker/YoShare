@@ -2,10 +2,6 @@ package com.yo.resourceservice.service;
 
 import com.yo.yoshare.common.api.CommonResult;
 import com.yo.yoshare.mbg.model.CmsGroupResource;
-import com.yo.yoshare.mbg.model.CmsMemberResource;
-import com.yo.yoshare.mbg.model.CmsMemberResourceClassfication;
-
-import java.util.List;
 
 public interface GroupResourceService {
 
@@ -13,7 +9,7 @@ public interface GroupResourceService {
 
     CommonResult delGroupResource(CmsGroupResource resource, String groupId) throws Exception;
 
-    CommonResult addFavorite(Long userId, String title, String introduction, String url);
+    CommonResult addFavorite(Long userId, String title, String introduction, String url, String classis);
 
     CommonResult getWeb(Long userId, Long webId);
 

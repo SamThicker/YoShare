@@ -3,8 +3,8 @@
 <mapper namespace="com.yo.yoshare.logservice.dao.MemberReadNoteDao">
 
     <insert id="addMemberReadRecord">
-        INSERT INTO lms_member_read_note(member_id, date, note_id)
-        SELECT #{memberId}, #{date}, #{noteId}
+        INSERT INTO lms_member_read_note(member_id, date, note_id, note_type, group_id, title)
+        SELECT #{memberId}, #{date}, #{noteId}, #{noteType}, #{groupId}, #{title}
         FROM DUAL
         WHERE NOT EXISTS(SELECT * FROM lms_member_read_note
                            WHERE member_id=#{memberId}

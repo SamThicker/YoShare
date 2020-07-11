@@ -53,6 +53,7 @@
 <script>
 import SimpleHeaderBarPro from "@/components/group/GroupNoteSimpleHeaderBarPro";
 import { getGroupNote } from "../../api/groupNote";
+import { addReadNoteLog } from "../../api/log";
 
 export default {
   name: "GroupNoteReading",
@@ -98,6 +99,7 @@ export default {
   },
   watch: {
     noteId: function() {
+      if (!this.noteId) return;
       this.getNote();
     },
     scrollToTop: function(bool) {
@@ -184,18 +186,40 @@ export default {
       this.$router.push({ path: path, query: query });
     },
     getNote() {
+      //清除定时器
+      clearTimeout(this.timer);
+      if (!this.noteId) return;
       this.noteLoading = true;
       let _this = this;
       getGroupNote(_this.groupId, _this.noteId)
         .then(function(res) {
           _this.note = res.data;
           _this.noteLoading = false;
+          //设置定时器
+          _this.timer = setTimeout(_this.addMemberReadRecord, 1000 * 30);
         })
         .catch(function(err) {
           console.info("err:" + err);
           _this.$elementMessage("获取笔记失败", "error", 1500);
           _this.noteLoading = false;
         });
+    },
+    //添加阅读记录
+    addMemberReadRecord() {
+      let userId = this.$store.state.user.info.id;
+      let groupId = this.$route.params.groupId;
+      if (!groupId) groupId = "";
+      let noteType;
+      let title = this.note.title;
+      if (groupId) {
+        noteType = "GROUP";
+      } else {
+        noteType = "MEMBER";
+      }
+      //发送请求
+      addReadNoteLog(userId, this.noteId, noteType, groupId, title)
+        .then()
+        .catch();
     }
   }
 };

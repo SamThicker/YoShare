@@ -11,11 +11,30 @@ spring:
       max-request-size: 200MB # 设置最大的请求文件的大小，默认10M，如不限制配置为-1
       file-size-threshold: 10MB  # 当上传文件达到10MB的时候进行磁盘写入
       location: /mydata/yoshare/tmp  # 上传的临时目录
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#    gateway:
+#      discoverty:
+#        locator:
+#          enabled: true # gateway可以通过开启以下配置来打开根据服务的serviceId来匹配路由,默认是大写
+#      routes:
+#        - id: service-member
+#          uri: lb://service-member
+#        - id: service-group
+#          uri: lb://service-group
 
+#忽略eureka，避免eureka和nacos发生冲突
+#spring:
+#  autoconfigure:
+#    exclude: org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
+#
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+
 
 #配置日志
 logging:
@@ -59,7 +78,6 @@ zuul:
     socket-timeout-millis: 60000
     connect-timeout-millis: 60000
 
-
 ribbon:
   ConnectTimeout: 500 # 连接超时时间(ms)
   ReadTimeout: 2000 # 通信超时时间(ms)
@@ -76,6 +94,7 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 15000 # 熔断超时时长：13500ms，不能少于ribbon总超时时间
+
 
 jwt:
   tokenHeader: Authorization #JWT存储的请求头

@@ -60,7 +60,7 @@ export function deleteMemClassification(userId, classificationId) {
   });
 }
 
-export function addMemFavPage(userId, title, introduction, url) {
+export function addMemFavPage(userId, title, introduction, url, classis) {
   return request({
     url: "resource/" + userId + "/ownResource/web",
     method: "put",
@@ -68,7 +68,8 @@ export function addMemFavPage(userId, title, introduction, url) {
       userId: userId,
       title: title,
       introduction: introduction,
-      url: url
+      url: url,
+      classis: classis
     }
   });
 }

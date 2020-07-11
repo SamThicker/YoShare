@@ -43,6 +43,20 @@
       >
         您的浏览器不支持音频预览标签。
       </audio>
+      <div
+        id="other"
+        class="preview-component"
+        v-show="fileType === 'OTHER' && finished"
+      >
+        抱歉，该文件不支持预览，请下载后查看。
+      </div>
+      <div
+        id="unFinished"
+        class="preview-component"
+        v-show="!finished"
+      >
+        该文件尚未上传完毕，请继续上传
+      </div>
     </div>
   </div>
 </template>
@@ -58,7 +72,7 @@ export default {
   computed: {
     type: function() {
       if (!this.fileInfo) return "";
-      let tag = "";
+      let tag = "OTHER";
       switch (this.fileType) {
         case "VIDEO": {
           tag = "视频";
@@ -72,7 +86,7 @@ export default {
           tag = "图片";
           break;
         }
-        case null: {
+        case "OTHER": {
           tag = "文档";
           break;
         }
@@ -80,7 +94,7 @@ export default {
       return this.fileInfo.type + tag;
     },
     size: function() {
-      if (!this.fileInfo) return "";
+      if (!this.fileInfo || !this.fileInfo.finished) return "";
       let tags = ["Byte", "KB", "MB", "GB"];
       let num = this.fileInfo.size;
       for (let index in tags) {
@@ -100,7 +114,8 @@ export default {
       fileType: null,
       videoSrc: "",
       imageSrc: "",
-      audioSrc: ""
+      audioSrc: "",
+      finished: true
     };
   },
   watch: {
@@ -111,22 +126,31 @@ export default {
   },
   methods: {
     setType() {
+      if (!this.fileInfo.finished) {
+        this.finished = false;
+        return;
+      }
+      this.finished = true;
       let type = this.fileInfo.type;
       let _this = this;
       this.fileType = null;
       if (this.imageTag.indexOf(type) > -1) {
         _this.fileType = "IMAGE";
         _this.imageSrc = "http://127.0.0.1:9000" + _this.fileInfo.url;
+        return;
         // _this.fileInfo.url = _this.fileInfo.url.replace(/^(https|http)(:\/\/)[a-zA-Z0-9.]+:[0-9]{1,}/g, "");
       }
       if (this.videoTag.indexOf(type) > -1) {
         _this.fileType = "VIDEO";
         _this.videoSrc = "http://127.0.0.1:9000" + _this.fileInfo.url;
+        return;
       }
       if (this.audioTag.indexOf(type) > -1) {
         _this.fileType = "AUDIO";
         _this.audioSrc = "http://127.0.0.1:9000" + _this.fileInfo.url;
+        return;
       }
+      _this.fileType = "OTHER";
     },
     pausePlaying() {
       let video = document.getElementById("video");
