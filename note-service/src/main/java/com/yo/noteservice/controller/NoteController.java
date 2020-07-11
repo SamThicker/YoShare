@@ -85,7 +85,7 @@ public class NoteController {
     @RequestMapping(value = "/ownNote/{userId}/{noteId}", method = RequestMethod.DELETE)
     @ResponseBody
     public CommonResult delNote(@PathVariable(value = "userId") String userId,
-                                @PathVariable(value = "noteId") String noteId) {
+                                @PathVariable(value = "noteId") String noteId) throws IllegalAccessException {
         return noteService.deleteUserNote(userId, noteId);
     }
 

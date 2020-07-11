@@ -1,237 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="401df921-cd91-457a-82c1-db2c6b20a53a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__cglib_cglib_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_alibaba_cloud_spring_cloud_alibaba_seata_2_1_0_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_alibaba_fastjson_1_2_60.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_fasterxml_woodstox_woodstox_core_5_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_google_errorprone_error_prone_annotations_2_3_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_google_guava_guava_16_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_google_guava_guava_29_0_android.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_11_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_netflix_eureka_eureka_client_1_9_21.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_netflix_eureka_eureka_core_1_9_21.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_netflix_netflix_commons_netflix_commons_util_0_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_rabbitmq_amqp_client_5_7_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_typesafe_config_1_2_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__commons_configuration_commons_configuration_1_10.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__commons_pool_commons_pool_1_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__io_github_openfeign_feign_core_10_10_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__io_github_openfeign_feign_hystrix_10_10_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__io_github_openfeign_feign_slf4j_10_10_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__io_seata_seata_all_1_2_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_junit_vintage_junit_vintage_engine_5_5_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_ow2_asm_asm_4_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_amqp_spring_amqp_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_amqp_spring_rabbit_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_commons_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_context_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_loadbalancer_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_archaius_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_eureka_client_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_eureka_server_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_hystrix_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_ribbon_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_openfeign_core_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_loadbalancer_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_archaius_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_eureka_client_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_eureka_server_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_ribbon_2_2_3_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_retry_spring_retry_1_2_5_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/components/GroupMessageReceiver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/components/MessageReceiver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/components/MessageSender.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/config/DataSourceConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/config/DeleteDelayQueueConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/config/DeleteGroupFileDelayQueueConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../file-service/src/main/resources/file.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../file-service/src/main/resources/registry.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/config/DataSourceConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../note-service/src/main/resources/file.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../note-service/src/main/resources/registry.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/config/DataSourceConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../resource-service/src/main/resources/file.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../resource-service/src/main/resources/registry.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_alibaba_druid_1_1_10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__com_alibaba_druid_1_1_12.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_10_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_10_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_10_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jdk8_2_10_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jsr310_2_10_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_fasterxml_jackson_module_jackson_module_afterburner_2_10_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_fasterxml_jackson_module_jackson_module_parameter_names_2_10_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_squareup_okhttp3_okhttp_3_14_6.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_sun_activation_jakarta_activation_1_2_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__com_sun_mail_jakarta_mail_1_6_4.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__commons_codec_commons_codec_1_13.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__io_micrometer_micrometer_core_1_3_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__io_netty_netty_4_1_13_Final.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__io_netty_netty_buffer_4_1_45_Final.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__io_netty_netty_codec_4_1_45_Final.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__io_netty_netty_codec_http_4_1_45_Final.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__io_netty_netty_common_4_1_45_Final.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__io_netty_netty_handler_4_1_45_Final.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__io_netty_netty_resolver_4_1_45_Final.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__io_netty_netty_transport_4_1_45_Final.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__jakarta_activation_jakarta_activation_api_1_2_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__jakarta_xml_bind_jakarta_xml_bind_api_2_3_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__joda_time_joda_time_2_10_5.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__junit_junit_4_12.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__net_bytebuddy_byte_buddy_1_10_6.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__net_bytebuddy_byte_buddy_agent_1_10_6.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_10.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_12_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_apache_logging_log4j_log4j_to_slf4j_2_12_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_core_9_0_30.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_el_9_0_30.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_websocket_9_0_30.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_assertj_assertj_core_3_13_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_bouncycastle_bcpkix_jdk15on_1_56.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_bouncycastle_bcprov_jdk15on_1_56.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_hamcrest_hamcrest_2_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_hamcrest_hamcrest_core_2_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_hibernate_validator_hibernate_validator_6_0_18_Final.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_5_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_5_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_5_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_5_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_5_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_5_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_mockito_mockito_core_3_1_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_mockito_mockito_junit_jupiter_3_1_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_projectlombok_lombok_1_18_10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_projectlombok_lombok_1_18_8.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_actuator_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_actuator_autoconfigure_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_actuator_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_aop_2_2_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_amqp_2_2_3_RELEASE.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_json_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_logging_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_mail_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_security_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_test_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_tomcat_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_validation_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_web_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_test_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_boot_spring_boot_test_autoconfigure_2_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_netflix_eureka_server_2_2_1_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_eureka_client_2_2_1_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_eureka_client_2_2_2_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_eureka_client_unknown.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_netflix_eureka_server_2_2_1_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_openfeign_2_2_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_openfeign_2_2_3_RELEASE.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_openfeign_unknown.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_2_2_3_RELEASE.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_data_spring_data_commons_2_2_4_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_security_spring_security_config_5_2_1_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_security_spring_security_core_5_2_1_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_security_spring_security_crypto_5_2_1_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_security_spring_security_web_5_2_1_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_spring_aop_5_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_spring_beans_5_2_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_spring_messaging_5_2_3_RELEASE.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_spring_context_5_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_spring_context_support_5_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_spring_core_5_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_spring_expression_5_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_spring_jcl_5_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_spring_test_5_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_spring_web_5_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_springframework_spring_webmvc_5_2_3_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_xmlunit_xmlunit_core_2_6_3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Maven__org_yaml_snakeyaml_1_25.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/.mvn/wrapper/MavenWrapperDownloader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/src/main/java/com/yo/yoshare/eurekaserver/EurekaServerApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../eureka-server/src/test/java/com/yo/yoshare/eurekaserver/EurekaServerApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/FileServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/FileServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/controller/FileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/controller/FileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/GroupFileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/GroupFileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/ServiceImpl/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/ServiceImpl/FileServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/ServiceImpl/GroupFileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/service/ServiceImpl/GroupFileServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/util/FileUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/util/FileUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/vo/SimpleFileInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/java/com/yo/fileservice/vo/SimpleFileInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../file-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../file-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/api/group.js" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/group.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/api/groupResource" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/groupResource" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/api/log.js" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/log.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/api/resource.js" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/api/resource.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/Editor.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/Editor.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/FileUpload.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/FileUpload.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/FileVIew.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/FileVIew.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/Follow.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/Follow.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/Group.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/Group.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/HeaderMenu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/HeaderMenu.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/MarkdownEditor.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/MarkdownEditor.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/NoteReading.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/NoteReading.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/ResourcePanel.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/ResourcePanel.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFavorite.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupFavorite.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupMember.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupMember.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNoteReading.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupNoteReading.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupResourcePanel.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/group/GroupResourcePanel.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberReasourceFavorite.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/MemberReasourceFavorite.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/StudyRecord.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/components/memberResource/StudyRecord.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/store/modules/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/store/modules/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yoshare-frontend/src/views/WorkBench.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yoshare-frontend/src/views/WorkBench.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../group-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../group-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/controller/GroupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/controller/GroupController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/service/GroupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/service/GroupService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/service/groupServiceImpl/GroupServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../group-service/src/main/java/com/yo/groupservice/service/groupServiceImpl/GroupServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/LogServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/LogServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/controller/MemberReadNoteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/controller/MemberReadNoteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/dao/MemberReadNoteDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/dao/MemberReadNoteDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/service/MemberReadNoteLogService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/service/MemberReadNoteLogService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/service/impl/MemberReadNoteLogServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../log-service/src/main/java/com/yo/yoshare/logservice/service/impl/MemberReadNoteLogServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../log-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../log-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../log-service/src/main/resources/com/yo/yoshare/logservice/dao/MemberReadNoteDao.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../log-service/src/main/resources/com/yo/yoshare/logservice/dao/MemberReadNoteDao.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../member-service/src/main/java/com/yo/yoshare/memberservice/MemberServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../member-service/src/main/java/com/yo/yoshare/memberservice/MemberServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../member-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../member-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../note-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../note-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/NoteServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/NoteServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/controller/NoteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/controller/NoteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/service/NoteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/service/NoteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/service/impl/NoteServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../note-service/src/main/java/com/yo/noteservice/service/impl/NoteServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../note-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../note-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../notification-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../notification-service/src/main/java/com/yo/notification/NotificationApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/src/main/java/com/yo/notification/NotificationApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/ResourceServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/ResourceServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/controller/GroupResourceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/controller/GroupResourceController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/controller/ResourceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/controller/ResourceController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/GroupResourceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/GroupResourceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/ResourceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/ResourceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/serviceImpl/GroupResourceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/serviceImpl/GroupResourceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/serviceImpl/ResourceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/java/com/yo/resourceservice/service/serviceImpl/ResourceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../resource-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../resource-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../security-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/SecurityApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../security-service/src/main/java/com/yo/yoshare/security/SecurityApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../security-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../security-service/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yoshare-common/yoshare-common.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../yoshare-common/yoshare-common.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yoshare.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../yoshare.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zuul-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../zuul-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/ZuulServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/ZuulServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/security/ApplicationConfigurerAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../zuul-service/src/main/java/com/yo/zuulservice/security/ApplicationConfigurerAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zuul-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../zuul-service/src/main/resources/application.yml" afterDir="false" />
-    </list>
+    <list default="true" id="401df921-cd91-457a-82c1-db2c6b20a53a" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -356,7 +126,7 @@
     <auto-save>true</auto-save>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="116" />
+    <option name="x" value="170" />
     <option name="y" value="235" />
     <option name="width" value="1518" />
     <option name="height" value="837" />
@@ -367,6 +137,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -467,7 +238,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -649,6 +419,7 @@
       <workItem from="1593708991918" duration="690000" />
       <workItem from="1593752498459" duration="659000" />
       <workItem from="1593786869844" duration="741000" />
+      <workItem from="1594460799814" duration="651000" />
     </task>
     <task id="LOCAL-00001" summary="nothing">
       <created>1585713962975</created>
@@ -689,10 +460,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1280563000" />
+    <option name="totallyTimeSpent" value="1281214000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="116" y="235" width="1518" height="837" extended-state="0" />
+    <frame x="170" y="235" width="1518" height="837" extended-state="0" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4965035" visible="true" weight="0.2231129" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -706,8 +477,8 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.8523714" visible="true" weight="0.28053692" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.14762859" side_tool="true" visible="true" weight="0.28053692" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.8517034" visible="true" weight="0.28053692" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.1482966" side_tool="true" visible="true" weight="0.28053692" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />

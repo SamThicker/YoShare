@@ -25,7 +25,7 @@ public interface NoteService {
     Note getUserNoteById(String userId, String noteId);
 
     /**删除用户笔记*/
-    @TwoPhaseBusinessAction(name = "doDelete", commitMethod = "commitDelete", rollbackMethod = "rollbackDelete")
+    @TwoPhaseBusinessAction(name = "deleteUserNote", commitMethod = "commitDelete", rollbackMethod = "rollbackDelete")
     CommonResult deleteUserNote(String userId, @BusinessActionContextParameter(paramName = "noteId") String noteId) throws IllegalAccessException;
 
     boolean commitDelete(BusinessActionContext context);

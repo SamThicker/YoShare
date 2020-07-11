@@ -66,6 +66,8 @@ public class ResourceServiceImpl implements ResourceService {
                         .andTypeEqualTo("NOTE")
                         .andIdEqualTo(resource.getId());
                 memberResourceMapper.deleteByExample(example);
+                //test global transaction rollback in TCC mode
+                //int i = 1/0;
                 return CommonResult.success("操作成功");
             }
             case "FAVORITE": {
