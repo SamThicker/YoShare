@@ -1,0 +1,60 @@
+version: '3'
+services:
+
+  logstash:
+    image: logstash:7.17.3
+    container_name: logstash
+    restart: always
+    networks:
+      - yoshare_yonet
+    ports:
+      - "4560:4560"
+      - "4561:4561"
+      - "4562:4562"
+      - "4563:4563"
+      - "5044:5044"
+    external_links:
+      - elasticsearch:es
+    volumes:
+      - /mydata/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf #配置文件目录挂载
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.17.3
+    container_name: filebeat
+    restart: always
+    networks:
+      - yoshare_yonet
+    external_links:
+      - logstash:ls
+    volumes:
+      - /mydata/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml           #配置文件目录挂载
+      - /mydata/logs:/var/log/filebeat                                           #日志文件目录挂载
+
+  kibana:
+    image: kibana:7.17.3
+    container_name: kibana
+    restart: always
+    environment:
+      elasticsearch.hosts: http://es:9200
+    networks:
+      - yoshare_yonet
+    ports:
+      - "5601:5601"
+    external_links:
+      - elasticsearch:es
+    volumes:
+      - /mydata/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf   #配置文件目录挂载
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    restart: always
+    networks:
+      - yoshare_yonet
+    ports:
+      - "9411:9411"
+
+networks:
+  yoshare_yonet:
+    external: true
+

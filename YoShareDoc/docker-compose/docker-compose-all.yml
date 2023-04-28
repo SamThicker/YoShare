@@ -1,0 +1,102 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0.13
+    container_name: mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time_zone='+8:00'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root #设置root帐号密码
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - /mydata/mysql/data:/var/lib/mysql     #数据文件挂载
+      - /mydata/mysql/log:/var/log/mysql      #日志文件挂载
+  redis:
+    image: redis:3.2
+    container_name: redis
+    command: redis-server --appendonly yes
+    volumes:
+      - /mydata/redis/data:/data #数据文件挂载
+    ports:
+      - "6379:6379"
+  elasticsearch:
+    image: elasticsearch:7.17.3
+    container_name: elasticsearch
+    restart: always
+    environment:
+      cluster.name: elasticsearch       #设置集群名称为elasticsearch
+      discovery.type: single-node       #以单一节点模式启动
+      ES_JAVA_OPTS: -Xms512m -Xmx1024m  #设置使用jvm内存大小
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - /mydata/elasticsearch/plugins:/usr/share/elasticsearch/plugins  #插件文件挂载
+      - /mydata/elasticsearch/data:/usr/share/elasticsearch/data        #数据文件挂载
+  logstash:
+    image: logstash:7.17.3
+    container_name: logstash
+    restart: always
+    ports:
+      - "4560:4560"
+      - "4561:4561"
+      - "4562:4562"
+      - "4563:4563"
+      - "5044:5044"
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch:es
+    volumes:
+      - /mydata/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf #配置文件目录挂载
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.17.3
+    container_name: filebeat
+    restart: always
+    depends_on:
+      - elasticsearch
+    links:
+      - logstash:ls
+    volumes:
+      - /mydata/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml           #配置文件目录挂载
+      - /mydata/logs:/var/log/filebeat                                           #日志文件目录挂载
+  kibana:
+    image: kibana:7.17.3
+    container_name: kibana
+    restart: always
+    depends_on:
+      - elasticsearch
+    environment:
+      elasticsearch.hosts: http://es:9200
+    ports:
+      - "5601:5601"
+    links:
+      - elasticsearch:es
+    volumes:
+      - /mydata/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf   #配置文件目录挂载
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data --console-address ":9001" #指定数据目录及console运行端口启动
+    restart: always
+    environment:
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: 123456789
+    volumes:
+      - /mydata/minio/data:/data  #数据目录挂载
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    restart: always
+    ports:
+      - "9411:9411"
+
+networks:
+  yonet:
+    driver: bridge
+
