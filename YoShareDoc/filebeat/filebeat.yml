@@ -1,0 +1,32 @@
+setup.ilm.enabled: false
+setup.template.name: "filebeat-161"
+setup.template.pattern: "filebeat-161-*"
+
+setup.template.settings:
+  index.number_of_shards: 5
+  index.number_of_replicas: 0
+  index.codec: best_compression
+
+filebeat.inputs:
+  - type: log       ##文本日志
+    paths:
+      - /var/log/filebeat/**/info.log     ##日志文件修改权限到666
+    multiline.pattern: '^\[' #希望匹配到的结果（正则表达式），这里不是[开头的，就合并为多行
+    multiline.negate: true #值为 true 或 false。使用 false 代表匹配到的行合并到上一行；使用 true 代表不匹配的行合并到上一行
+    multiline.match: after #值为 after 或 before。after 代表合并到上一行的末尾；before 代表合并到下一行的开头
+    multiline.max_lines: 500 #合并的最大行数，默认 500
+    multiline.timeout: 5s #一次合并事件的超时时间，默认为 5s，防止合并消耗太多时间导致 filebeat 进程卡死
+      #fields:
+    #service_ip : 111.99.99.99 #filebeat添加字段，区分ip，filebeat自带hostname也可以区分
+
+    # 为每个项目标识,或者分组，可区分不同格式的日志
+    tags: ["yoshare-logs"]
+
+
+output:
+  logstash:
+    hosts: ["ls:5044"]
+#    worker: 1
+#    loadbalance: true
+#    index: filebeat
+

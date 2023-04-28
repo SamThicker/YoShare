@@ -1,0 +1,90 @@
+version: '3'
+services:
+
+  mysql:
+    image: mysql:8.0.13
+    container_name: mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time_zone='+8:00'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root #设置root帐号密码
+      TZ: Asia/Shanghai
+    networks:
+      - yonet
+    ports:
+      - "3306:3306"
+    volumes:
+      - /mydata/mysql/data:/var/lib/mysql     #数据文件挂载
+      - /mydata/mysql/log:/var/log/mysql      #日志文件挂载
+
+  redis:
+    image: redis:3.2
+    container_name: redis
+    command: redis-server --appendonly yes
+    volumes:
+      - /mydata/redis/data:/data #数据文件挂载
+    networks:
+      - yonet
+    ports:
+      - "6379:6379"
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data --console-address ":9001" #指定数据目录及console运行端口启动
+    restart: always
+    environment:
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: 123456789
+    volumes:
+      - /mydata/minio/data:/data  #数据目录挂载
+    networks:
+      - yonet
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+  mongo:
+    image: mongo:4
+    container_name: mongo
+    restart: always
+    volumes:
+      - /mydata/mongo/db:/data/db  #数据目录挂载
+    networks:
+      - yonet
+    ports:
+      - "27017:27017"
+
+  elasticsearch:
+    image: elasticsearch:7.17.3
+    container_name: elasticsearch
+    restart: always
+    environment:
+      cluster.name: elasticsearch       #设置集群名称为elasticsearch
+      discovery.type: single-node       #以单一节点模式启动
+      ES_JAVA_OPTS: -Xms512m -Xmx1024m  #设置使用jvm内存大小
+    networks:
+      - yonet
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - /mydata/elasticsearch/plugins:/usr/share/elasticsearch/plugins  #插件文件挂载
+      - /mydata/elasticsearch/data:/usr/share/elasticsearch/data        #数据文件挂载
+
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    container_name: rabbitmq
+    restart: always
+    networks:
+      - yonet
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - /mydata/rabbitmq/data:/var/lib/rabbitmq
+
+networks:
+  yonet:
+    external: false
+

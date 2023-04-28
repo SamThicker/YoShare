@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <!--<script language="JavaScript" src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"/>-->
+</head>
+<body>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<div>
+    <form action="/security/member/login" method="post">
+        用户名: <input id="username" type="text" name="username" placeholder="username"/></br>
+        密码: <input id="password" type="password" name="password" placeholder="password"/></br>
+        <!--<input type="submit" value="登录">-->
+        <input type="button" value="登录" onclick="subLogin()">
+    </form>
+    <script type="text/javascript">
+        function subLogin() {
+
+            var tempdata = {
+                "username": $("#username").val(),
+                "password": $("#password").val()
+            };
+            $.ajax({
+                //请求地址
+                url : "/security/member/login",
+                type: "POST",
+                contentType: "application/json",
+                datatype: "json",
+                data: JSON.stringify(tempdata),
+                //请求成功
+                success : function(result) {
+                    console.log(result);
+                },
+                //请求失败，包含具体的错误信息
+                error : function(e){
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+
+        }
+    </script>
+</div>
+</body>
+</html>
