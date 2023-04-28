@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="resource-service" />
+        <module name="eureka-server" />
+        <module name="group-service" />
+        <module name="yoshare-common" />
+        <module name="yoshare-mbg" />
+        <module name="notification-service" />
+        <module name="note-service" />
+        <module name="security-service" />
+        <module name="feed-service" />
+        <module name="log-service" />
+        <module name="zuul-service" />
+        <module name="file-service" />
+        <module name="member-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="eureka-server" target="1.8" />
+      <module name="feed-service" target="1.8" />
+      <module name="file-service" target="1.8" />
+      <module name="group-service" target="1.8" />
+      <module name="log-service" target="1.8" />
+      <module name="member-service" target="1.8" />
+      <module name="note-service" target="1.8" />
+      <module name="notification-service" target="1.8" />
+      <module name="resource-service" target="1.8" />
+      <module name="security-service" target="1.8" />
+      <module name="yoshare" target="1.8" />
+      <module name="yoshare-common" target="1.8" />
+      <module name="yoshare-mbg" target="1.8" />
+      <module name="zuul-service" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="eureka-server" options="-parameters" />
+      <module name="feed-service" options="-parameters" />
+      <module name="file-service" options="-parameters" />
+      <module name="group-service" options="-parameters" />
+      <module name="log-service" options="-parameters" />
+      <module name="member-service" options="-parameters" />
+      <module name="note-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
+      <module name="resource-service" options="-parameters" />
+      <module name="security-service" options="-parameters" />
+      <module name="yoshare" options="-parameters" />
+      <module name="yoshare-common" options="-parameters" />
+      <module name="yoshare-mbg" options="-parameters" />
+      <module name="zuul-service" options="-parameters" />
+    </option>
+  </component>
+</project>

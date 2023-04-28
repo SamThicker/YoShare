@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yo.yoshare.logservice.dao.MemberReadNoteDao">
+
+    <insert id="addMemberReadRecord">
+        INSERT INTO lms_member_read_note(member_id, date, note_id, note_type, group_id, title)
+        SELECT #{memberId}, #{date}, #{noteId}, #{noteType}, #{groupId}, #{title}
+        FROM DUAL
+        WHERE NOT EXISTS(SELECT * FROM lms_member_read_note
+                           WHERE member_id=#{memberId}
+                              AND note_id=#{noteId}
+                              AND TO_DAYS(date)=TO_DAYS(#{date}))
+    </insert>
+
+    <select id="selectMemberReadByWeek" resultType="java.util.HashMap" >
+        SELECT
+        date, COUNT(*) AS count
+        FROM lms_member_read_note
+        WHERE
+        member_id=#{memberId} AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= DATE(date)
+        GROUP BY
+        date
+        ORDER BY
+        date ASC
+    </select>
+
+
+    <select id="selectMemberReadByMonth" resultType="java.util.HashMap">
+        SELECT
+        date, COUNT(*) AS count
+        FROM lms_member_read_note
+        WHERE
+        member_id=#{memberId} AND DATE_SUB(CURDATE(), INTERVAL 1 MONTH) &lt;= DATE(date)
+        GROUP BY
+        date
+        ORDER BY
+        date ASC
+    </select>
+
+    <select id="selectMemberReadByDay" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM lms_member_read_note
+        WHERE
+        member_id=#{memberId} AND to_days(date) = to_days(now());
+    </select>
+</mapper>

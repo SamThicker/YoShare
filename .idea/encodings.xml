@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eureka-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eureka-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/feed-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/feed-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/file-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/file-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/group-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/group-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/log-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/log-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/member-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/member-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/note-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/note-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/notification-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/notification-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resource-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resource-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/security-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/security-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yoshare-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yoshare-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yoshare-mbg" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yoshare-mbg/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zuul-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zuul-service/src/main/java" charset="UTF-8" />
+  </component>
+</project>

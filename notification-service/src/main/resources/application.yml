@@ -1,0 +1,32 @@
+server:
+  port: 9013
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: service-notification
+  mail:
+    host: smtp.aliyun.com
+    username: zhenyuefeng@aliyun.com
+    password: Zyf5662006123
+    port: 465
+    properties:
+      mail:
+        smtp:
+          #设置ssl协议
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+      from: zhenyuefeng@aliyun.com
+  datasource:
+    url: jdbc:mysql://localhost:3306/yoshare?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: root
+
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
+    - classpath*:com/**/mapper/*.xml

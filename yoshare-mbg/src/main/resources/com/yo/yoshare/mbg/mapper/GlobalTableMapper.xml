@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yo.yoshare.mbg.mapper.GlobalTableMapper">
+  <resultMap id="BaseResultMap" type="com.yo.yoshare.mbg.model.GlobalTable">
+    <id column="xid" jdbcType="VARCHAR" property="xid" />
+    <result column="transaction_id" jdbcType="BIGINT" property="transactionId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="application_id" jdbcType="VARCHAR" property="applicationId" />
+    <result column="transaction_service_group" jdbcType="VARCHAR" property="transactionServiceGroup" />
+    <result column="transaction_name" jdbcType="VARCHAR" property="transactionName" />
+    <result column="timeout" jdbcType="INTEGER" property="timeout" />
+    <result column="begin_time" jdbcType="BIGINT" property="beginTime" />
+    <result column="application_data" jdbcType="VARCHAR" property="applicationData" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    xid, transaction_id, `status`, application_id, transaction_service_group, transaction_name, 
+    timeout, begin_time, application_data, gmt_create, gmt_modified
+  </sql>
+  <select id="selectByExample" parameterType="com.yo.yoshare.mbg.model.GlobalTableExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from global_table
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from global_table
+    where xid = #{xid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from global_table
+    where xid = #{xid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yo.yoshare.mbg.model.GlobalTableExample">
+    delete from global_table
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yo.yoshare.mbg.model.GlobalTable">
+    insert into global_table (xid, transaction_id, `status`, 
+      application_id, transaction_service_group, 
+      transaction_name, timeout, begin_time, 
+      application_data, gmt_create, gmt_modified
+      )
+    values (#{xid,jdbcType=VARCHAR}, #{transactionId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
+      #{applicationId,jdbcType=VARCHAR}, #{transactionServiceGroup,jdbcType=VARCHAR}, 
+      #{transactionName,jdbcType=VARCHAR}, #{timeout,jdbcType=INTEGER}, #{beginTime,jdbcType=BIGINT}, 
+      #{applicationData,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yo.yoshare.mbg.model.GlobalTable">
+    insert into global_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="xid != null">
+        xid,
+      </if>
+      <if test="transactionId != null">
+        transaction_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="applicationId != null">
+        application_id,
+      </if>
+      <if test="transactionServiceGroup != null">
+        transaction_service_group,
+      </if>
+      <if test="transactionName != null">
+        transaction_name,
+      </if>
+      <if test="timeout != null">
+        timeout,
+      </if>
+      <if test="beginTime != null">
+        begin_time,
+      </if>
+      <if test="applicationData != null">
+        application_data,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="xid != null">
+        #{xid,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionId != null">
+        #{transactionId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="applicationId != null">
+        #{applicationId,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionServiceGroup != null">
+        #{transactionServiceGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionName != null">
+        #{transactionName,jdbcType=VARCHAR},
+      </if>
+      <if test="timeout != null">
+        #{timeout,jdbcType=INTEGER},
+      </if>
+      <if test="beginTime != null">
+        #{beginTime,jdbcType=BIGINT},
+      </if>
+      <if test="applicationData != null">
+        #{applicationData,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yo.yoshare.mbg.model.GlobalTableExample" resultType="java.lang.Integer">
+    select count(*) from global_table
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update global_table
+    <set>
+      <if test="record.xid != null">
+        xid = #{record.xid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transactionId != null">
+        transaction_id = #{record.transactionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.applicationId != null">
+        application_id = #{record.applicationId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transactionServiceGroup != null">
+        transaction_service_group = #{record.transactionServiceGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transactionName != null">
+        transaction_name = #{record.transactionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timeout != null">
+        timeout = #{record.timeout,jdbcType=INTEGER},
+      </if>
+      <if test="record.beginTime != null">
+        begin_time = #{record.beginTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.applicationData != null">
+        application_data = #{record.applicationData,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update global_table
+    set xid = #{record.xid,jdbcType=VARCHAR},
+      transaction_id = #{record.transactionId,jdbcType=BIGINT},
+      `status` = #{record.status,jdbcType=TINYINT},
+      application_id = #{record.applicationId,jdbcType=VARCHAR},
+      transaction_service_group = #{record.transactionServiceGroup,jdbcType=VARCHAR},
+      transaction_name = #{record.transactionName,jdbcType=VARCHAR},
+      timeout = #{record.timeout,jdbcType=INTEGER},
+      begin_time = #{record.beginTime,jdbcType=BIGINT},
+      application_data = #{record.applicationData,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yo.yoshare.mbg.model.GlobalTable">
+    update global_table
+    <set>
+      <if test="transactionId != null">
+        transaction_id = #{transactionId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="applicationId != null">
+        application_id = #{applicationId,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionServiceGroup != null">
+        transaction_service_group = #{transactionServiceGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionName != null">
+        transaction_name = #{transactionName,jdbcType=VARCHAR},
+      </if>
+      <if test="timeout != null">
+        timeout = #{timeout,jdbcType=INTEGER},
+      </if>
+      <if test="beginTime != null">
+        begin_time = #{beginTime,jdbcType=BIGINT},
+      </if>
+      <if test="applicationData != null">
+        application_data = #{applicationData,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where xid = #{xid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yo.yoshare.mbg.model.GlobalTable">
+    update global_table
+    set transaction_id = #{transactionId,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=TINYINT},
+      application_id = #{applicationId,jdbcType=VARCHAR},
+      transaction_service_group = #{transactionServiceGroup,jdbcType=VARCHAR},
+      transaction_name = #{transactionName,jdbcType=VARCHAR},
+      timeout = #{timeout,jdbcType=INTEGER},
+      begin_time = #{beginTime,jdbcType=BIGINT},
+      application_data = #{applicationData,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where xid = #{xid,jdbcType=VARCHAR}
+  </update>
+</mapper>
