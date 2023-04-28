@@ -37,7 +37,7 @@
 		<security.version>2.2.0.RELEASE</security.version>
 		<spring.cloud.common.version>2.2.0.RELEASE</spring.cloud.common.version>-->
 		    <!-- SpringBoot相关 -->
-		<springboot.version>2.2.3.RELEASE</springboot.version>
+		<springboot.version>2.5.12</springboot.version>
 		<springboot.maven.plugin.version>2.7.9</springboot.maven.plugin.version>
 		    <!-- Spring相关 -->
 		<spring-security-jwt.version>1.0.9.RELEASE</spring-security-jwt.version>
