@@ -73,7 +73,7 @@
 		<seata.version>2.1.0.RELEASE</seata.version>
 		<seata.all.version>1.2.0</seata.all.version>
 		<commons.codec.version>1.11</commons.codec.version>
-		<tika.version>1.12</tika.version>
+		<tika.version>1.22</tika.version>
 		<google.http.version>1.34.2</google.http.version>
 	</properties>
 
