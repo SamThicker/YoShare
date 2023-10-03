@@ -29,15 +29,16 @@ services:
       - "6379:6379"
 
   minio:
-    image: minio/minio
+    image: minio/minio:RELEASE.2023-11-01T18-37-25Z.fips
     container_name: minio
-    command: server /data --console-address ":9001" #指定数据目录及console运行端口启动
+    command: server /data --console-address ":9001" -address ":9000" #指定数据目录及console运行端口启动
     restart: always
     environment:
       MINIO_ACCESS_KEY: admin
       MINIO_SECRET_KEY: 123456789
     volumes:
       - /mydata/minio/data:/data  #数据目录挂载
+      - /mydata/minio/config:/root/.minio
     networks:
       - yonet
     ports:

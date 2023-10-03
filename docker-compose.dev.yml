@@ -1,0 +1,125 @@
+version: '2.1'
+
+networks:
+  yonet:
+    external: true
+    name: yoshare_yonet
+
+services:
+  eureka-server:
+    build: eureka-server
+    container_name: eureka-server
+    restart: 'no'
+    networks:
+      - yonet
+    ports:
+      - 8761:8761
+
+  zull-service:
+    build: zuul-service
+    container_name: zull-service
+    networks:
+      - yonet
+    environment:
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8761
+      DB_HOST: mysql
+      DB_PORT: 3306
+      PROFILES: docker
+      PORT: 9012
+#    depends_on:
+#      eureka-server:
+#        condition: service_healthy
+    ports:
+      - 9012:9012
+
+  member-service:
+    build: member-service
+    container_name: member-service
+    networks:
+      - yonet
+    environment:
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8761
+      DB_HOST: mysql
+      DB_PORT: 3306
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      PROFILES: docker
+      PORT: 9010
+    ports:
+      - 9010:9010
+
+  security-service:
+    build: security-service
+    container_name: security-service
+    networks:
+      - yonet
+    environment:
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8761
+      DB_HOST: mysql
+      DB_PORT: 3306
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      PROFILES: docker
+      PORT: 9011
+    ports:
+      - 9011:9011
+
+  group-service:
+    build: group-service
+    container_name: group-service
+    networks:
+      - yonet
+    environment:
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8761
+      DB_HOST: mysql
+      DB_PORT: 3306
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      PROFILES: docker
+      PORT: 9017
+    ports:
+      - 9017:9017
+
+  note-service:
+    build: note-service
+    container_name: note-service
+    networks:
+      - yonet
+    environment:
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8761
+      DB_HOST: mysql
+      DB_PORT: 3306
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+      ELASTICSEARCH_HOST: elasticsearch
+      ELASTICSEARCH_PORT: 9300
+      PROFILES: docker
+      PORT: 9016
+    ports:
+      - 9016:9016
+
+  resource-service:
+    build: resource-service
+    container_name: resource-service
+    networks:
+      - yonet
+    environment:
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8761
+      DB_HOST: mysql
+      DB_PORT: 3306
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MQ_HOST: rabbitmq
+      MQ_PORT: 5672
+      PROFILES: docker
+      PORT: 9018
+    ports:
+      - 9018:9018
