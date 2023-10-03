@@ -25,7 +25,7 @@ filebeat.inputs:
 
 output:
   logstash:
-    hosts: ["ls:5044"]
+    hosts: ["logstash:5044"]
 #    worker: 1
 #    loadbalance: true
 #    index: filebeat
