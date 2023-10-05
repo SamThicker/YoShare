@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-data-pv
+  namespace: yoshare
+spec:
+  storageClassName: mysql-data
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 100Mi
+  hostPath:
+    path: /mydata/mysql/data
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-log-pv
+  namespace: yoshare
+spec:
+  storageClassName: mysql-log
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 100Mi
+  hostPath:
+    path: /mydata/mysql/log
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data-mysql-0 #(volumeClaimTemplates.name)-(pod_name)
+  namespace: yoshare
+  labels:
+    app: mysql
+spec:
+  storageClassName: mysql-data
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: mysql
+  name: mysql-log-mysql-0 #(volumeClaimTemplates.name)-(pod_name)
+  namespace: yoshare
+spec:
+  storageClassName: mysql-log
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: yoshare
+  labels:
+    app: mysql
+spec:
+  serviceName: "mysql"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: mysql
+          image: mysql:8.0.13
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: TZ
+              value: Asia/Shanghai
+          args:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+            - --default-time_zone=+8:00
+          ports:
+            - containerPort: 3306
+              hostPort: 3306
+              protocol: TCP
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+            - name: mysql-log
+              mountPath: /var/log/mysql
+      restartPolicy: Always
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "mysql-data"
+      resources:
+        requests:
+          storage: 100Mi
+  - metadata:
+      name: mysql-log
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "mysql-log"
+      resources:
+        requests:
+          storage: 100Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: yoshare
+  labels:
+    app: mysql
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  clusterIP: None
+  selector:
+    app: mysql
