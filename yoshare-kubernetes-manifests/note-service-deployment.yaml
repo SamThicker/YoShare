@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: note-service
+  namespace: yoshare
+  labels:
+    app: note-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: note-service
+  template:
+    metadata:
+      labels:
+        app: note-service
+    spec:
+      containers:
+      - name: note-service
+        image: yoshare/note-service
+        ports:
+          - containerPort: 9016
+            hostPort: 9016
+            protocol: TCP
+        env:
+          - name: DB_HOST
+            value: mysql
+          - name: DB_PORT
+            value: "3306"
+          - name: ELASTICSEARCH_HOST
+            value: elasticsearch
+          - name: ELASTICSEARCH_PORT
+            value: "9300"
+          - name: EUREKA_HOST
+            value: eureka-server
+          - name: EUREKA_PORT
+            value: "8761"
+          - name: MONGO_HOST
+            value: mongo
+          - name: MONGO_PORT
+            value: "27017"
+          - name: PORT
+            value: "9016"
+          - name: PROFILES
+            value: docker
+          - name: REDIS_HOST
+            value: redis
+          - name: REDIS_PORT
+            value: "6379"
+      restartPolicy: Always
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: note-service
+  namespace: yoshare
+  labels:
+    app: note-service
+spec:
+  ports:
+    - name: "9016"
+      port: 9016
+      targetPort: 9016
+  selector:
+    app: note-service
+  type: NodePort

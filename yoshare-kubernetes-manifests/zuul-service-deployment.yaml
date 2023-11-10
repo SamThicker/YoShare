@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zuul-service
+  namespace: yoshare
+  labels:
+    app: zuul-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zuul-service
+  template:
+    metadata:
+      labels:
+        app: zuul-service
+    spec:
+      containers:
+        - name: zuul-service
+          image: yoshare/zuul-service
+          ports:
+            - containerPort: 9012
+              hostPort: 9012
+              protocol: TCP
+          env:
+            - name: DB_HOST
+              value: mysql
+            - name: DB_PORT
+              value: "3306"
+            - name: EUREKA_HOST
+              value: eureka-server
+            - name: EUREKA_PORT
+              value: "8761"
+            - name: PORT
+              value: "9012"
+            - name: PROFILES
+              value: docker
+      restartPolicy: Always
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zuul-service
+  namespace: yoshare
+  labels:
+    app: zuul-service
+spec:
+  ports:
+    - name: "9012"
+      port: 9012
+      targetPort: 9012
+  selector:
+    app: zuul-service
+  type: NodePort

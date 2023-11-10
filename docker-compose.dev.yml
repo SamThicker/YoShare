@@ -15,9 +15,9 @@ services:
     ports:
       - 8761:8761
 
-  zull-service:
+  zuul-service:
     build: zuul-service
-    container_name: zull-service
+    container_name: zuul-service
     networks:
       - yonet
     environment:

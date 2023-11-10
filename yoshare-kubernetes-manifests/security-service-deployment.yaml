@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: security-service
+  namespace: yoshare
+  labels:
+    app: security-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: security-service
+  template:
+    metadata:
+      labels:
+        app: security-service
+    spec:
+      containers:
+      - name: security-service
+        image: yoshare/security-service
+        ports:
+          - containerPort: 9011
+            hostPort: 9011
+            protocol: TCP
+        env:
+          - name: DB_HOST
+            value: mysql
+          - name: DB_PORT
+            value: "3306"
+          - name: EUREKA_HOST
+            value: eureka-server
+          - name: EUREKA_PORT
+            value: "8761"
+          - name: PORT
+            value: "9011"
+          - name: PROFILES
+            value: docker
+          - name: REDIS_HOST
+            value: redis
+          - name: REDIS_PORT
+            value: "6379"
+      restartPolicy: Always
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: security-service
+  namespace: yoshare
+  labels:
+    app: security-service
+spec:
+  ports:
+    - name: "9011"
+      port: 9011
+      targetPort: 9011
+  selector:
+    app: security-service
+  type: NodePort

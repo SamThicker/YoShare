@@ -31,12 +31,12 @@ docker exec -it mysql /bin/bash
 
 使用mysql命令打开客户端：
 ```bash
-mysql -uroot -proot --default-character-set=utf8
+mysql -uroot -proot --default-character-set=utf8;
 ``` 
 
 创建数据库
 ```bash
-create database yoshare character set utf8
+create database yoshare character set utf8;
 ```
 
 修改权限，使得任何ip都能访问：
@@ -174,3 +174,37 @@ docker-compose -f docker-compose-all.yml -p yoshare up -d
 docker-compose -f docker-compose-env.yml -p yoshare up -d
 docker-compose -f docker-compose-ext.yml -p yoshare up -d
 ```
+
+
+## Kubernetes
+
+```bash
+minikube start --mount-string="/Users/yo/mydata:/mydata" --mount
+minikube dashboard
+bg && disown
+```
+
+
+```bash
+kubectl apply -f YoShareDoc/kubernetes/env/elasticsearch-stateful.yaml
+kubectl apply -f YoShareDoc/kubernetes/env/minio-stateful.yaml
+kubectl apply -f YoShareDoc/kubernetes/env/mongo-stateful.yaml
+kubectl apply -f YoShareDoc/kubernetes/env/mysql-stateful.yaml
+kubectl apply -f YoShareDoc/kubernetes/env/rabbitmq-stateful.yaml
+kubectl apply -f YoShareDoc/kubernetes/env/redis-stateful.yaml
+```
+
+```bash
+kubectl delete -f YoShareDoc/kubernetes/env/elasticsearch-stateful.yaml
+kubectl delete -f YoShareDoc/kubernetes/env/minio-stateful.yaml
+kubectl delete -f YoShareDoc/kubernetes/env/mongo-stateful.yaml
+kubectl delete -f YoShareDoc/kubernetes/env/mysql-stateful.yaml
+kubectl delete -f YoShareDoc/kubernetes/env/rabbitmq-stateful.yaml
+kubectl delete -f YoShareDoc/kubernetes/env/redis-stateful.yaml
+```
+
+```bash
+skaffold dev
+```
+
+kubectl create namespace yoshare

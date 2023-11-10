@@ -1,0 +1,24 @@
+apiVersion: skaffold/v2beta4
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+    - image: yoshare/eureka-server
+      context: eureka-server
+    - image: yoshare/zuul-service
+      context: zuul-service
+    - image: yoshare/security-service
+      context: security-service
+    - image: yoshare/member-service
+      context: member-service
+    - image: yoshare/group-service
+      context: group-service
+    - image: yoshare/resource-service
+      context: resource-service
+    - image: yoshare/note-service
+      context: note-service
+deploy:
+  kubectl:
+    manifests:
+      - ./yoshare-kubernetes-manifests/*.yaml

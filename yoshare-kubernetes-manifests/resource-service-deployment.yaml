@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resource-service
+  namespace: yoshare
+  labels:
+    app: resource-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resource-service
+  template:
+    metadata:
+      labels:
+        app: resource-service
+    spec:
+      containers:
+      - name: resource-service
+        image: yoshare/resource-service
+        ports:
+          - containerPort: 9018
+            hostPort: 9018
+            protocol: TCP
+        env:
+          - name: DB_HOST
+            value: mysql
+          - name: DB_PORT
+            value: "3306"
+          - name: EUREKA_HOST
+            value: eureka-server
+          - name: EUREKA_PORT
+            value: "8761"
+          - name: MQ_HOST
+            value: rabbitmq
+          - name: MQ_PORT
+            value: "5672"
+          - name: PORT
+            value: "9018"
+          - name: PROFILES
+            value: docker
+          - name: REDIS_HOST
+            value: redis
+          - name: REDIS_PORT
+            value: "6379"
+      restartPolicy: Always
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: resource-service
+  namespace: yoshare
+  labels:
+    app: resource-service
+spec:
+  ports:
+    - name: "9018"
+      port: 9018
+      targetPort: 9018
+  selector:
+    app: resource-service
+  type: NodePort
