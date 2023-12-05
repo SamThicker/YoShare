@@ -4,8 +4,6 @@ build:
   tagPolicy:
     sha256: {}
   artifacts:
-    - image: yoshare/eureka-server
-      context: eureka-server
     - image: yoshare/zuul-service
       context: zuul-service
     - image: yoshare/security-service
