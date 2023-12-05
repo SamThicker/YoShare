@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
-@FeignClient(value = "service-security")
+@FeignClient(value = "security-service")
 public interface SecurityFeign {
 
 

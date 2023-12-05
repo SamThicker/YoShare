@@ -10,7 +10,7 @@ server:
 
 spring:
   application:
-    name: service-file
+    name: file-service
   servlet:
     multipart:
       enabled: true   # 使用http multipart上传处理

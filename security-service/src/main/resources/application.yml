@@ -11,7 +11,7 @@ spring:
   profiles:
     active: dev
   application:
-    name: service-security
+    name: security-service
   datasource:
     url: jdbc:mysql://localhost:3306/yoshare?characterEncoding=UTF-8
     username: root

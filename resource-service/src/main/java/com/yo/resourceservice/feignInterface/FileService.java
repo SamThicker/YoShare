@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 @Repository
-@FeignClient(value = "service-file", configuration = FeignConfiguration.class)
+@FeignClient(value = "file-service", configuration = FeignConfiguration.class)
 public interface FileService {
 
     /**删除个人文件*/

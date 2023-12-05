@@ -10,7 +10,7 @@ eureka:
 
 spring:
   application:
-    name: service-notification
+    name: notification-service
   mail:
     host: smtp.aliyun.com
     username: zhenyuefeng@aliyun.com

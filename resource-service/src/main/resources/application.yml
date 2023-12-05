@@ -16,7 +16,7 @@ file:
 
 spring:
   application:
-    name: service-resource
+    name: resource-service
   servlet:
     multipart:
       enabled: true #开启文件上传

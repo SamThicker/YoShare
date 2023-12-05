@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 @Repository
-@FeignClient(value = "service-note", configuration = FeignConfiguration.class)
+@FeignClient(value = "note-service", configuration = FeignConfiguration.class)
 public interface NoteService {
 
 

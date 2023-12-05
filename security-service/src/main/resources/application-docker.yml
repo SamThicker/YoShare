@@ -16,7 +16,7 @@ jwt:
 
 spring:
   application:
-    name: service-security
+    name: security-service
   datasource:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/yoshare?characterEncoding=UTF-8
     username: root

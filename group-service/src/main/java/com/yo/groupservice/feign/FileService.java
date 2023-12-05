@@ -12,7 +12,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 
-@FeignClient(value = "SERVICE-FILE")
+@FeignClient(value = "FILE-SERVICE")
 public interface FileService {
 
     @RequestMapping(value = "/file/groupAvatarUploadUrl", method = RequestMethod.GET)

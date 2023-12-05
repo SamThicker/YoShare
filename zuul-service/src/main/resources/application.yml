@@ -26,10 +26,10 @@ spring:
 #        locator:
 #          enabled: true # gateway可以通过开启以下配置来打开根据服务的serviceId来匹配路由,默认是大写
 #      routes:
-#        - id: service-member
-#          uri: lb://service-member
-#        - id: service-group
-#          uri: lb://service-group
+#        - id: member-service
+#          uri: lb://member-service
+#        - id: group-service
+#          uri: lb://group-service
 
 mybatis:
   mapper-locations:
@@ -59,30 +59,30 @@ logging:
 
 zuul:
   routes:
-    service-member:
+    member-service:
       path: /member-service/**
-      serviceId: service-member
-    service-security:
+      serviceId: member-service
+    security-service:
       path: /security/**
-      serviceId: service-security
-    service-file:
+      serviceId: security-service
+    file-service:
       path: /file/**
-      serviceId: service-file
+      serviceId: file-service
       stripPrefix: false
-    service-note:
+    note-service:
       path: /note/**
-      serviceId: service-note
+      serviceId: note-service
       stripPrefix: false
-    service-group:
+    group-service:
       path: /group-service/**
-      serviceId: service-group
-    service-resource:
+      serviceId: group-service
+    resource-service:
       path: /resource/**
-      serviceId: service-resource
+      serviceId: resource-service
       stripPrefix: false
-    service-log:
+    log-service:
       path: /log/**
-      serviceId: service-log
+      serviceId: log-service
       stripPrefix: false
   retryable: true
   sensitive-headers:

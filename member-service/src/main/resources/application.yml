@@ -10,7 +10,7 @@ eureka:
 
 spring:
   application:
-    name: service-member
+    name: member-service
   servlet:
     multipart:
       enabled: true #开启文件上传
