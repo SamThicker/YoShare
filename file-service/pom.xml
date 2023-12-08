@@ -16,11 +16,6 @@
     <properties></properties>
 
     <dependencies>
-        <!--Feign-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
         <!--amqp 适用rabbitmq-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
