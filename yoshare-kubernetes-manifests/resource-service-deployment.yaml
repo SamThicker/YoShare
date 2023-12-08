@@ -15,6 +15,7 @@ spec:
       labels:
         app: resource-service
     spec:
+      serviceAccountName: yoshare-admin
       containers:
       - name: resource-service
         image: yoshare/resource-service
